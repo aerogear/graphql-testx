@@ -1,0 +1,6 @@
+## Distribution folder
+dist/
+
+# Dependencies
+node_modules/
+package-lock.json
