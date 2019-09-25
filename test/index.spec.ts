@@ -5,14 +5,14 @@ import { TestX } from "../src";
 
 describe("TestX", () => {
   it("should start the server", async () => {
-    const testx = new TestX(gql`
+    const testx = new TestX(`
       type Item {
         id: ID!
         title: String!
       }
     `);
 
-    const url = testx.start();
+    const url = await testx.start();
 
     const client = new ApolloClient({ uri: url, fetch });
 
@@ -24,7 +24,7 @@ describe("TestX", () => {
             title
           }
         }
-      `,
+      `
     });
   });
 });
