@@ -1,5 +1,9 @@
 # editors
 .vscode
+/tmp
 
 # depedendencies
 node_modules
+
+# artifacts
+dist

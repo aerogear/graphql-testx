@@ -1,0 +1,17 @@
+{
+  "name": "graphql-testx",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "exit 1",
+    "lint": "tslint -p ."
+  },
+  "devDependencies": {
+    "prettier": "1.18.2",
+    "tslint": "5.20.0",
+    "tslint-config-prettier": "1.18.0",
+    "tslint-plugin-prettier": "2.0.1",
+    "typescript": "3.6.3"
+  }
+}
