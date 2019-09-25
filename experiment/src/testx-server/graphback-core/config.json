@@ -1,0 +1,5 @@
+{
+  "resolvers": "./src/testx-server/graphback-server/resolvers",
+  "database": "./src/testx-server/graphback-server/database",
+  "schema": "./src/testx-server/graphback-server/schema"
+}
