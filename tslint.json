@@ -1,4 +1,4 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint:recommended"]
+  "extends": ["tslint:recommended", "tslint-no-unused-expression-chai"]
 }
