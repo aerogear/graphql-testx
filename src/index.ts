@@ -54,7 +54,9 @@ export class TestX {
       modules,
     );
 
+    // tslint:disable-next-line: no-console
     console.log(typeDefs);
+    // tslint:disable-next-line: no-console
     console.log(resolvers);
 
     return "";
