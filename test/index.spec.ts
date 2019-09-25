@@ -1,7 +1,30 @@
-import { expect } from "chai";
+import ApolloClient from "apollo-boost";
+import gql from "graphql-tag";
+import fetch from "node-fetch";
+import { TestX } from "../src";
 
-describe("", () => {
-  it("should be true", () => {
-    expect(true).to.be.true;
+describe("TestX", () => {
+  it("should start the server", async () => {
+    const testx = new TestX(gql`
+      type Item {
+        id: ID!
+        title: String!
+      }
+    `);
+
+    const url = testx.start();
+
+    const client = new ApolloClient({ uri: url, fetch });
+
+    await client.query({
+      query: gql`
+        query findAllItems {
+          findAllItems {
+            id
+            title
+          }
+        }
+      `,
+    });
   });
 });
