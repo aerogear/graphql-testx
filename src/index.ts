@@ -5,7 +5,7 @@ import {
   generateDatabase,
   generateResolvers,
   generateTypeDefs,
-} from "./utils/index";
+} from "./graphback-core/index";
 
 const defaultConfig = {
   create: true,
