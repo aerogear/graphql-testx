@@ -1,8 +1,8 @@
-import gql from "graphql-tag";
 import ApolloClient from "apollo-boost";
-import fetch from "node-fetch";
 import { expect } from "chai";
-import { TestxServer } from "../src/index";
+import gql from "graphql-tag";
+import fetch from "node-fetch";
+import { TestxServer } from "../../../src";
 
 describe("test mutations", () => {
   let server;
@@ -41,24 +41,25 @@ describe("test mutations", () => {
         id: ID!
         name: String
         title: String!
-      }`
+      }`,
     );
     await server.start();
-    console.log(`Running on ${server.url()}`)
+    console.log(`Running on ${server.url()}`);
   });
 
   after("close graphql server", () => {
     server.close();
+    console.log(`Connection with server closed`);
   });
 
   before("initialize apollo client", () => {
-    client = new ApolloClient({ uri: server.url(), fetch: fetch });
+    client = new ApolloClient({ uri: server.url(), fetch });
   });
 
   it("should create a new item", async () => {
     const item = (await client.mutate({
       mutation: CREATE_ITEM,
-      variables: { title: "TestA" }
+      variables: { title: "TestA" },
     })).data.createItem;
 
     expect(item.id).to.not.be.null;
@@ -67,12 +68,12 @@ describe("test mutations", () => {
 
   it("should update existing item", async () => {
     const testA = (await client.query({
-      query: FIND_ALL_ITEMS
-    })).data.findAllItems.find(item => item.title === "TestA");
+      query: FIND_ALL_ITEMS,
+    })).data.findAllItems.find((item) => item.title === "TestA");
 
-    let testB = (await client.mutate({
+    const testB = (await client.mutate({
       mutation: UPDATE_ITEM,
-      variables: { id: testA.id, title: "TestB" }
+      variables: { id: testA.id, title: "TestB" },
     })).data.updateItem;
 
     expect(testB.id).to.be.equal(testA.id);
