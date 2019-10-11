@@ -1,11 +1,7 @@
 import { ApolloServer } from "apollo-server";
+import express from "express";
 import { Server } from "http";
-import {
-  generateContext,
-  generateDatabase,
-  generateResolvers,
-  generateTypeDefs,
-} from "./graphback-core/index";
+import { BackendBuilder } from "./BackendBuilder";
 
 const defaultConfig = {
   create: true,
@@ -30,8 +26,6 @@ export class TestxServer {
 
   public async start() {
     const apolloServer = await this.generateServer();
-    await generateDatabase(this.schema, defaultConfig);
-
     const { server, url } = await apolloServer.listen();
     this.server = server;
     this.serverUrl = url;
@@ -46,9 +40,16 @@ export class TestxServer {
   }
 
   private async generateServer() {
-    const typeDefs = await generateTypeDefs(this.schema, defaultConfig);
-    const resolvers = await generateResolvers(this.schema, defaultConfig);
-    const context = await generateContext();
+    const backendBuilder = new BackendBuilder(this.schema, defaultConfig);
+    const { typeDefs, resolvers, dbConnection } = await backendBuilder.generateBackend();
+
+    const context = async ({ req }: { req: express.Request }) => {
+      return {
+        req,
+        db: dbConnection,
+      };
+    };
+
     const apolloServer = new ApolloServer({ typeDefs, resolvers, context });
     return apolloServer;
   }
