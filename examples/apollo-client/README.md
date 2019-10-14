@@ -5,6 +5,6 @@
 To test the example:
 
 ```bash
-npm install
-npm test
+yarn install
+yarn test
 ```
