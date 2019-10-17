@@ -11,7 +11,7 @@ The following is a set of guidelines for contributing to **GraphQL Testx**. Thes
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by our [Mozilla Code of Conduct](https://www.mozilla.org/en-US/about/governance/policies/participation/). By participating, you are expected to uphold this code.
+This project applies the [Mozilla Code of Conduct](https://www.mozilla.org/en-US/about/governance/policies/participation/). By participating, you are expected to uphold this code.
 
 ## Pull Requests Guideline
 
