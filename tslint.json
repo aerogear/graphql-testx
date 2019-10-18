@@ -1,0 +1,7 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended", "tslint-no-unused-expression-chai"],
+  "rules": {
+    "object-literal-sort-keys": false
+  }
+}
