@@ -1,6 +1,7 @@
-import { ApolloServer } from "apollo-server";
+import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import { Server } from "http";
+import portastic from "portastic";
 import { BackendBuilder } from "./BackendBuilder";
 
 const defaultConfig = {
@@ -25,8 +26,8 @@ export class TestxServer {
   }
 
   public async start() {
-    const apolloServer = await this.generateServer();
-    const { server, url } = await apolloServer.listen();
+    const { server, url } = await this.generateServer();
+
     this.server = server;
     this.serverUrl = url;
   }
@@ -51,6 +52,17 @@ export class TestxServer {
     };
 
     const apolloServer = new ApolloServer({ typeDefs, resolvers, context });
-    return apolloServer;
+
+    // Sets PORT as a random port available in the range 29170 - 29998
+    const ports = await portastic.find({ min: 29170, max: 29998 });
+    const PORT = ports[Math.floor(Math.random() * 100)];
+
+    const app = express();
+    apolloServer.applyMiddleware({ app, path: "/graphql" });
+    const server = app.listen({ port: PORT });
+
+    const url = `http://localhost:${PORT}/graphql`;
+
+    return { server, url };
   }
 }
