@@ -56,13 +56,13 @@ export class TestxServer {
     // Sets port as a random port available in the range 29170 - 29998
     const ports = await portastic.find({ min: 29170, max: 29998 });
     if (ports.length < 1) {
-      throw new Error('no free ports available in range 29170 - 29998'); 
+      throw new Error("no free ports available in range 29170 - 29998");
     }
     const port = ports[0];
 
     const app = express();
     apolloServer.applyMiddleware({ app, path: "/graphql" });
-    const server = app.listen({ port: port });
+    const server = app.listen({ port });
 
     const url = `http://localhost:${port}/graphql`;
 
