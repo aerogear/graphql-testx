@@ -55,7 +55,7 @@ export class TestxServer {
 
     // Sets PORT as a random port available in the range 29170 - 29998
     const ports = await portastic.find({ min: 29170, max: 29998 });
-    const PORT = ports[Math.floor(Math.random() * 100)];
+    const port = ports[Math.floor(Math.random() * 100)];
 
     const app = express();
     apolloServer.applyMiddleware({ app, path: "/graphql" });
