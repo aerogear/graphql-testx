@@ -1,8 +1,8 @@
 import { ApolloServer } from "apollo-server";
 import express from "express";
 import { Server } from "http";
-import { BackendBuilder } from "./BackendBuilder";
 import Knex from "knex";
+import { BackendBuilder } from "./BackendBuilder";
 
 const defaultConfig = {
   create: true,
