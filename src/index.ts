@@ -1,8 +1,8 @@
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import { Server } from "http";
-import portastic from "portastic";
 import { BackendBuilder } from "./BackendBuilder";
+import { getAvailablePort } from "./utils";
 
 const defaultConfig = {
   create: true,
@@ -53,13 +53,7 @@ export class TestxServer {
 
     const apolloServer = new ApolloServer({ typeDefs, resolvers, context });
 
-    // Sets port as a random port available in the range 29170 - 29998
-    const ports = await portastic.find({ min: 29170, max: 29998 });
-    if (ports.length < 1) {
-      throw new Error("no free ports available in range 29170 - 29998");
-    }
-    const port = ports[0];
-
+    const port = await getAvailablePort();
     const app = express();
     apolloServer.applyMiddleware({ app, path: "/graphql" });
     const server = app.listen({ port });
