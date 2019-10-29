@@ -1,7 +1,8 @@
-import { ApolloServer } from "apollo-server";
+import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import { Server } from "http";
 import { BackendBuilder } from "./BackendBuilder";
+import { getAvailablePort } from "./utils";
 
 const defaultConfig = {
   create: true,
@@ -25,8 +26,8 @@ export class TestxServer {
   }
 
   public async start() {
-    const apolloServer = await this.generateServer();
-    const { server, url } = await apolloServer.listen();
+    const { server, url } = await this.generateServer();
+
     this.server = server;
     this.serverUrl = url;
   }
@@ -51,6 +52,14 @@ export class TestxServer {
     };
 
     const apolloServer = new ApolloServer({ typeDefs, resolvers, context });
-    return apolloServer;
+
+    const port = await getAvailablePort();
+    const app = express();
+    apolloServer.applyMiddleware({ app, path: "/graphql" });
+    const server = app.listen({ port });
+
+    const url = `http://localhost:${port}/graphql`;
+
+    return { server, url };
   }
 }
