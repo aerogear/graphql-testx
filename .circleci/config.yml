@@ -9,10 +9,23 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
-      - run: yarn install
+      - run:
+          name: install dependencies
+          command: yarn install
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn lint
-      - run: yarn test
+      - run:
+          name: lint
+          command: yarn lint
+      - run:
+          name: test
+          command: yarn test
+      - run:
+          name: install apollo-client example dependencies
+          command: cd examples/apollo-client && yarn install
+      - run:
+          name: test apollo-client example
+          command: cd examples/apollo-client && yarn test
+

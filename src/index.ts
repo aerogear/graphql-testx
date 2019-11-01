@@ -1,6 +1,7 @@
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import { Server } from "http";
+import Knex from "knex";
 import { BackendBuilder } from "./BackendBuilder";
 import { getAvailablePort } from "./utils";
 
@@ -20,6 +21,7 @@ export class TestxServer {
   private schema: string;
   private server: Server;
   private serverUrl: string;
+  private dbConnection: Knex;
 
   constructor(schema: string) {
     this.schema = schema;
@@ -34,6 +36,7 @@ export class TestxServer {
 
   public close() {
     this.server.close();
+    this.dbConnection.destroy();
   }
 
   public url() {
@@ -43,6 +46,7 @@ export class TestxServer {
   private async generateServer() {
     const backendBuilder = new BackendBuilder(this.schema, defaultConfig);
     const { typeDefs, resolvers, dbConnection } = await backendBuilder.generateBackend();
+    this.dbConnection = dbConnection;
 
     const context = async ({ req }: { req: express.Request }) => {
       return {
