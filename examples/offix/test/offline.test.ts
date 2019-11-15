@@ -30,6 +30,9 @@ class ToggleableNetworkStatus implements NetworkStatus {
   }
 }
 
+// TODO: remove this queries once we expose client queries/mutations
+// TODO: from the TestxServer API
+// TODO: https://github.com/aerogear/graphql-testx/issues/15
 export const FIND_ALL_TASKS = gql`
   query findAllTasks {
     findAllTasks {
@@ -92,8 +95,6 @@ export const UPDATE_TASK = gql`
   }
 `;
 
-jest.setTimeout(60 * 60 * 1000);
-
 describe("Offline mutations", () => {
   let server: TestxServer;
   let networkStatus: ToggleableNetworkStatus;
@@ -113,7 +114,7 @@ describe("Offline mutations", () => {
 
     networkStatus = new ToggleableNetworkStatus();
     client = await createClient({ networkStatus, httpUrl: server.url() });
-  });
+  }, 10 * 1000);
 
   afterAll(() => {
     server.close();
