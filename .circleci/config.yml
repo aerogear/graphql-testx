@@ -28,4 +28,9 @@ jobs:
       - run:
           name: test apollo-client example
           command: cd examples/apollo-client && yarn test
-
+      - run:
+          name: test offix example
+          command: |
+            cd examples/offix
+            yarn install
+            yarn test
