@@ -22,7 +22,7 @@
     "tslint-config-prettier": "1.18.0",
     "tslint-no-unused-expression-chai": "0.1.4",
     "tslint-plugin-prettier": "2.0.1",
-    "typescript": "3.6.3"
+    "typescript": "3.7.2"
   },
   "dependencies": {
     "apollo-server-express": "2.9.7",
