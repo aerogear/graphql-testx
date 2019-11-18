@@ -47,7 +47,7 @@ offers persistent data between queries and mutation using in-memory SQLite datab
   expect(result.data.findAllItems[0].title).to.be.equal("TestA");
   ```
 
-- Auto generated client queries, mutations and subscriptions (wip: [15](https://github.com/aerogear/graphql-testx/issues/15))
+- Auto generated client queries, mutations and subscriptions (wip: [#15](https://github.com/aerogear/graphql-testx/issues/15))
 
 - Rich API to control the server execution and database state
   [ `start()`, `stop()`, `close()`, `cleanDatabase()`, ... ]
