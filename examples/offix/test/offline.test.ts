@@ -30,6 +30,16 @@ class ToggleableNetworkStatus implements NetworkStatus {
   }
 }
 
+async function newClient(
+  url: string
+): Promise<[ApolloOfflineClient, ToggleableNetworkStatus]> {
+  const network = new ToggleableNetworkStatus();
+
+  const client = await createClient({ networkStatus: network, httpUrl: url });
+
+  return [client, network];
+}
+
 // TODO: remove this queries once we expose client queries/mutations
 // TODO: from the TestxServer API
 // TODO: https://github.com/aerogear/graphql-testx/issues/15
@@ -95,91 +105,86 @@ export const UPDATE_TASK = gql`
   }
 `;
 
-describe("Offline mutations", () => {
-  let server: TestxServer;
-  let networkStatus: ToggleableNetworkStatus;
-  let client: ApolloOfflineClient;
+let server: TestxServer;
 
-  beforeAll(async () => {
-    server = new TestxServer(`
-      type Task {
-        id: ID!
-        version: Int!
-        title: String!
-        description: String!
-        author: String!
-      }`);
-    await server.start();
-    console.log(`Running on ${server.url()}`);
+beforeAll(async () => {
+  server = new TestxServer(`
+  type Task {
+    id: ID!
+    version: Int!
+    title: String!
+    description: String!
+    author: String!
+  }`);
 
-    networkStatus = new ToggleableNetworkStatus();
-    client = await createClient({ networkStatus, httpUrl: server.url() });
-  }, 10 * 1000);
+  await server.start();
+  console.log(`Running on ${server.url()}`);
+}, 10 * 1000);
 
-  afterAll(() => {
-    server.close();
+afterAll(() => {
+  server.close();
+});
+
+it("update an object while offline and assert that the object get updated on the server when returning online", async () => {
+  expect.assertions(10);
+
+  // setup client and network status in each tests
+  const [client, network] = await newClient(server.url());
+
+  network.setOnline(true);
+
+  // create the task while online
+  const createTaskResult = await client.offlineMutation({
+    mutation: ADD_TASK,
+    variables: {
+      version: 1,
+      title: "bo",
+      description: "some random words",
+      author: "myself"
+    }
   });
+  const newTask = createTaskResult.data.createTask;
 
-  it("Update object while offline", async () => {
-    expect.assertions(10);
+  expect(newTask.id).toBeDefined();
+  expect(newTask.title).toEqual("bo");
+  expect(newTask.description).toEqual("some random words");
 
-    let result;
+  // go offline
+  network.setOnline(false);
 
-    networkStatus.setOnline(true);
-
-    // create the task while online
-    result = await client.offlineMutation({
-      mutation: ADD_TASK,
+  // update the task while offline
+  try {
+    await client.offlineMutation({
+      mutation: UPDATE_TASK,
       variables: {
-        version: 1,
-        title: "bo",
-        description: "some random words",
-        author: "myself"
+        ...newTask,
+        title: "something new",
+        description: "updated desc"
       }
     });
-    const newTask = result.data.createTask;
+  } catch (e) {
+    expect(e.networkError).toBeDefined();
+    expect(e.networkError.offline).toBeTruthy();
+  }
 
-    expect(newTask.id).toBeDefined();
-    expect(newTask.title).toEqual("bo");
-    expect(newTask.description).toEqual("some random words");
+  // go back online
+  network.setOnline(true);
 
-    // go offline
-    networkStatus.setOnline(false);
+  // give it some times to process the offline mutation
+  await new Promise(r => setTimeout(r, 300));
 
-    // update the task while offline
-    try {
-      await client.offlineMutation({
-        mutation: UPDATE_TASK,
-        variables: {
-          ...newTask,
-          title: "something new",
-          description: "updated desc"
-        }
-      });
-    } catch (e) {
-      expect(e.networkError).toBeDefined();
-      expect(e.networkError.offline).toBeTruthy();
-    }
-
-    // go back online
-    networkStatus.setOnline(true);
-
-    // give it some times to process the offline mutation
-    await new Promise(r => setTimeout(r, 300));
-
-    // query all tasks ignoring the cache
-    result = await client.query({
-      query: FIND_ALL_TASKS,
-      fetchPolicy: "network-only"
-    });
-
-    const tasks = result.data.findAllTasks;
-    expect(tasks).toHaveLength(1);
-
-    const updatedTask = tasks[0];
-    expect(updatedTask.id).toEqual(newTask.id);
-    expect(updatedTask.title).toEqual("something new");
-    expect(updatedTask.description).toEqual("updated desc");
-    expect(updatedTask.author).toEqual("myself");
+  // query all tasks ignoring the cache
+  const findAllTasksResult = await client.query({
+    query: FIND_ALL_TASKS,
+    fetchPolicy: "network-only"
   });
+
+  const tasks = findAllTasksResult.data.findAllTasks;
+  expect(tasks).toHaveLength(1);
+
+  const updatedTask = tasks[0];
+  expect(updatedTask.id).toEqual(newTask.id);
+  expect(updatedTask.title).toEqual("something new");
+  expect(updatedTask.description).toEqual("updated desc");
+  expect(updatedTask.author).toEqual("myself");
 });
