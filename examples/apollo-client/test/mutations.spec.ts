@@ -41,8 +41,7 @@ describe("test mutations", () => {
         id: ID!
         name: String
         title: String!
-      }`,
-    );
+      }`);
     await server.start();
     console.log(`Running on ${server.url()}`);
   });
@@ -57,26 +56,30 @@ describe("test mutations", () => {
   });
 
   it("should create a new item", async () => {
-    const item = (await client.mutate({
+    const result = await client.mutate({
       mutation: CREATE_ITEM,
-      variables: { title: "TestA" },
-    })).data.createItem;
+      variables: { title: "TestA" }
+    });
+    const item = result.data.createItem;
 
     expect(item.id).to.not.be.null;
     expect(item.title).to.be.equal("TestA");
   });
 
   it("should update existing item", async () => {
-    const testA = (await client.query({
-      query: FIND_ALL_ITEMS,
-    })).data.findAllItems.find((item) => item.title === "TestA");
+    const findResult = await client.query({
+      query: FIND_ALL_ITEMS
+    });
+    const itemV1 = findResult.data.findAllItems.find(i => i.title === "TestA");
+    expect(itemV1).to.be.exist;
 
-    const testB = (await client.mutate({
+    const updateResult = await client.mutate({
       mutation: UPDATE_ITEM,
-      variables: { id: testA.id, title: "TestB" },
-    })).data.updateItem;
+      variables: { id: itemV1.id, title: "TestB" }
+    });
+    const itemV2 = updateResult.data.updateItem;
 
-    expect(testB.id).to.be.equal(testA.id);
-    expect(testB.title).to.be.equal("TestB");
+    expect(itemV2.id).to.be.equal(itemV1.id);
+    expect(itemV2.title).to.be.equal("TestB");
   });
 });
