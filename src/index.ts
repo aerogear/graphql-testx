@@ -1,9 +1,9 @@
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import { Server } from "http";
+import knexCleaner from "knex-cleaner";
 import { BackendBuilder } from "./BackendBuilder";
 import { getAvailablePort } from "./utils";
-import knexCleaner from "knex-cleaner";
 
 const defaultConfig = {
   create: true,
@@ -28,10 +28,10 @@ export class TestxServer {
   }
 
   public async start() {
-    if (!this.backendContext) { await this.generateBackend() }
+    if (!this.backendContext) { await this.generateBackend(); }
     await this.generateServer();
   }
-  
+
   public stop() {
     this.server.close();
   }
