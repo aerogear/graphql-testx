@@ -4,7 +4,7 @@
   <img width="256" src="./logo/graphql-testx.png">
 </p>
 
-graphql-testx is a full featured GraphQL server, with minimum configuration required, based on Graphback and Apollo Server, used for testing GraphQL client applications or libraries. It should not be confused with mocking alternatives because graphql-testx offers persistent data between queries and mutation using in-memory SQLite database.
+graphql-testx is a full-featured GraphQL server, with the minimum configuration required, based on Graphback and Apollo Server, used for testing GraphQL client applications or libraries. It should not be confused with mocking alternatives because graphql-testx offers persistent data between queries and mutation using in-memory SQLite database.
 
 ## Getting Started
 
@@ -26,7 +26,7 @@ yarn add graphql-testx
 
 ### Create and Start the server
 
-The only thing you need to pass to `TestxServer` is the Data Model, because `TestxServer` is using Graphback under the hood, we are using the same [Data Model Definition](https://graphback.dev/docs/datamodel) as Graphback.
+The only thing you need to pass to `TestxServer` is the Data Model because `TestxServer` is using Graphback under the hood, we are using the same [Data Model Definition](https://graphback.dev/docs/datamodel) as Graphback.
 
 ```js
 // create the server using a data model
@@ -56,7 +56,7 @@ graphql-testx doesn't provide any graphql client, which means that you can use t
 
 ### Using a test framework
 
-We have a couple of [Examples](#examples) that shows how integrate graphql-testx with different javascript test framework for testing graphql client libraries.
+We have a couple of [Examples](#examples) that shows how to integrate graphql-testx with different javascript test framework for testing graphql client libraries.
 
 ## Features
 
