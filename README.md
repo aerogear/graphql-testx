@@ -1,10 +1,12 @@
 # graphql-testx
 
 <p align="center">
-  <img width="256" src="./logo/graphql-testx.png">
+  <img width="128" src="./logo/graphql-testx.png">
 </p>
 
 graphql-testx is a full-featured GraphQL server, with the minimum configuration required, based on Graphback and Apollo Server, used for testing GraphQL client applications or libraries. It should not be confused with mocking alternatives because graphql-testx offers persistent data between queries and mutation using in-memory SQLite database.
+
+![graphql-testx](https://user-images.githubusercontent.com/7964685/69070551-9dc31980-0a28-11ea-8b55-97707b26693c.png)
 
 ## Getting Started
 
