@@ -9,7 +9,7 @@ const ITEM_MODEL = `
   }
 `;
 
-test("start TestxServer server", async t => {
+test.serial("start TestxServer server", async t => {
   const FIND_ALL_ITEMS = `
     query findAllItems {
       findAllItems {
