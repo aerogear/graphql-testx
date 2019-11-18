@@ -18,7 +18,7 @@ export class BackendBuilder {
     this.config = config;
   }
 
-  public async generateBackend() {
+  public async generate() {
     await this.init();
     const typeDefs = await this.generateTypeDefs();
     const resolvers = await this.generateResolvers();
