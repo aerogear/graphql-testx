@@ -56,7 +56,7 @@ server.close();
 
 graphql-testx doesn't provide any graphql client, which means that you can use the `server.url()` graphql endpoint with your preferred client or your own developed client.
 
-### Using graphql-testx a test framework
+### Using graphql-testx with a test framework
 
 We have a couple of [Examples](#examples) that shows how to integrate graphql-testx with different javascript test framework for testing graphql client libraries.
 
