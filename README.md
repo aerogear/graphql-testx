@@ -24,7 +24,7 @@ or yarn:
 yarn add graphql-testx
 ```
 
-### Generate and Start the server
+### Create and Start the server
 
 The only thing you need to pass to `TestxServer` is the Data Model, because `TestxServer` is using Graphback under the hood, we are using the same [Data Model Definition](https://graphback.dev/docs/datamodel) as Graphback.
 
@@ -103,5 +103,10 @@ We have a couple of [Examples](#examples) that shows how integrate graphql-testx
 
 ## Examples
 
-- [graphql-testx-apollo-client-example](./examples/apollo-client)
-- [graphql-testx-offix-example](./examples/offix)
+- Testing **Apollo Client** library with **mocha**
+
+  [graphql-testx-apollo-client-example](./examples/apollo-client)
+
+- Testing **Offix** library with **Jest**
+
+  [graphql-testx-offix-example](./examples/offix)
