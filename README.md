@@ -29,7 +29,7 @@ yarn add graphql-testx
 The only thing you need to pass to `TestxServer` is the Data Model, because `TestxServer` is using Graphback under the hood, we are using the same [Data Model Definition](https://graphback.dev/docs/datamodel) as Graphback.
 
 ```js
-// create the server using a model
+// create the server using a data model
 const server = new TestxServer(`
   type Item {
     id: ID!
