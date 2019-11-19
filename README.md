@@ -31,8 +31,6 @@ yarn add graphql-testx
 
 ### Create and Start the server
 
-The only thing you need to pass to `TestxServer` is the Data Model because `TestxServer` is using Graphback under the hood, we are using the same [Data Model Definition](https://graphback.dev/docs/datamodel) as Graphback.
-
 ```js
 // create the server using a data model
 const server = new TestxServer(`
@@ -50,10 +48,12 @@ console.log(`Running on ${server.url()}`);
 
 // ...
 
-// close the server otherwise the server
+// close the server once you finish otherwise it
 // will not allow nodejs to exit
 server.close();
 ```
+
+Under to hood we use Graphback to parse the Type Definitions/Data Model and generate the GraphQL schema and resolvers. See the [Graphback Docs on Data Model Definition](https://graphback.dev/docs/datamodel)
 
 ### Create the client
 
