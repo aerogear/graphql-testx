@@ -1,8 +1,8 @@
 # graphql-testx-apollo-client-example
 
-> This example will be update once the graphql-testx library is ready
+This example is testing the [Apollo Client](https://github.com/aerogear/offix) library using graphql-testx and [Mocha](https://mochajs.org/)
 
-To test the example:
+To try the example:
 
 ```bash
 yarn install
