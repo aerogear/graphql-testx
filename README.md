@@ -65,7 +65,7 @@ We have a couple of [Examples](#examples) that shows how to integrate graphql-te
 
 ## Features
 
-- Major tests framework supported: **Mocha**, **Jasmine** and **Jest**
+- Major tests framework supported: **Mocha**, **Ava**, **Jasmine** and **Jest**
 
 - Minimum configuration required to generate out-of-the-box queries, mutations
   and subscriptions (subscriptions are in wip: [#13](https://github.com/aerogear/graphql-testx/issues/13)):
