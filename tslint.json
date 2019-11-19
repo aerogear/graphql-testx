@@ -1,10 +1,6 @@
 {
   "defaultSeverity": "error",
-  "extends": [
-    "tslint:recommended",
-    "tslint-no-unused-expression-chai",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
   "rules": {
     "object-literal-sort-keys": false
   }
