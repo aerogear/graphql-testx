@@ -1,4 +1,9 @@
-import { DatabaseSchemaManager, GraphQLBackendCreator, IGraphQLBackend } from "graphback";
+import {
+  DatabaseSchemaManager,
+  GraphQLBackendCreator,
+  IGraphQLBackend
+} from "graphback";
+import Knex from "knex";
 import { transpile } from "typescript";
 import { sourceModule } from "./utils";
 
@@ -36,20 +41,22 @@ export class BackendBuilder {
 
     for (const resolver of this.backend.resolvers.types) {
       modules[`./generated/${resolver.name}`] = sourceModule(
-        transpile(resolver.output),
+        transpile(resolver.output)
       );
     }
 
     const { resolvers } = sourceModule(
       transpile(this.backend.resolvers.index),
-      modules,
+      modules
     );
 
     return resolvers;
   }
 
-  private async generateDatabase() {
-    const manager = new DatabaseSchemaManager("sqlite3", { filename: ":memory:" });
+  private async generateDatabase(): Promise<Knex> {
+    const manager = new DatabaseSchemaManager("sqlite3", {
+      filename: ":memory:"
+    });
     this.backendCreator.registerDataResourcesManager(manager);
     await this.backendCreator.createDatabase();
     return manager.getConnection();
