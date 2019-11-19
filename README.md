@@ -9,6 +9,8 @@ Unlike mocking alternatives, graphql-testx offers persistent data between querie
 
 ![graphql-testx](https://user-images.githubusercontent.com/7964685/69070551-9dc31980-0a28-11ea-8b55-97707b26693c.png)
 
+Read our [contributing guide](CONTRIBUTING.md) if you're looking to contribute.
+
 ## Getting Started
 
 ### Install graphql-testx
