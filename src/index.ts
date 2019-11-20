@@ -1,82 +1,58 @@
-import { ApolloServer, PubSub } from "apollo-server-express";
-import express from "express";
-import {
-  GraphQLBackendCreator,
-  KnexDBDataProvider,
-  UpdateDatabaseIfChanges
-} from "graphback";
-import { Server } from "http";
-import Knex from "knex";
-import tmp from "tmp";
-import { Schema } from "./Schema";
-import { getAvailablePort } from "./utils";
-
-const defaultConfig = {
-  create: true,
-  update: true,
-  findAll: true,
-  find: true,
-  delete: true,
-  subCreate: false,
-  subUpdate: false,
-  subDelete: false,
-  disableGen: false
-};
+import { Express } from "express-serve-static-core";
+import { GraphbackDataProvider } from "graphback";
+import { ExpressServer } from "./ExpressServer";
+import { GraphbackSchema } from "./GraphbackSchema";
+import { InMemoryDatabase } from "./InMemoryDatabase";
 
 export class TestxServer {
-  private schema: Schema;
-  private server: Server;
-  private serverUrl: string;
-  private dbConnection: Knex;
+  private schema: GraphbackSchema;
+  private server: ExpressServer;
+  private database: InMemoryDatabase;
 
   constructor(schema: string) {
-    this.schema = new Schema(schema);
+    this.schema = new GraphbackSchema(schema);
   }
 
   public async start() {
-    const { server, url } = await this.generateServer();
-
-    this.server = server;
-    this.serverUrl = url;
+    await this.bootstrapDatabase();
+    await this.bootstrapServer(this.database.getProvider());
+    await this.server.start();
   }
 
-  public close() {
-    this.server.close();
-    this.dbConnection.destroy();
+  public async close() {
+    await this.server.stop();
+    await this.database.destroy();
   }
 
   public url() {
-    return this.serverUrl;
+    return this.server.getHttpUrl();
   }
 
-  private async generateServer() {
-    // db
-    const knex = Knex({
-      client: "sqlite3",
-      connection: { filename: ":memory:" }
-    });
-    const migrater = new UpdateDatabaseIfChanges(knex, tmp.dirSync().name);
-    await migrater.init(this.schema.getSchemaText());
+  /**
+   * Generate the sqlite3 in-memory-db from the graphback schema
+   */
+  private async bootstrapDatabase() {
+    if (this.database) {
+      return;
+    }
 
-    // backend
-    const backend = new GraphQLBackendCreator(this.schema, defaultConfig);
-    const runtime = await backend.createRuntime(
-      new KnexDBDataProvider(knex),
-      new PubSub()
-    );
+    const database = new InMemoryDatabase();
+    await database.init(this.schema);
+    this.database = database;
+  }
 
-    const apolloServer = new ApolloServer({
-      typeDefs: runtime.schema,
-      resolvers: runtime.resolvers
-    });
+  /**
+   * Generate the Apollo Server and Express server from the graphback schema
+   */
+  private async bootstrapServer(
+    provider: GraphbackDataProvider
+  ): Promise<Express> {
+    if (this.server) {
+      return;
+    }
 
-    const port = await getAvailablePort();
-    const app = express();
-    apolloServer.applyMiddleware({ app, path: "/graphql" });
-    const server = app.listen({ port });
-
-    const url = `http://localhost:${port}/graphql`;
-
-    return { server, url };
+    const server = new ExpressServer();
+    await server.init(this.schema, provider);
+    this.server = server;
   }
 }

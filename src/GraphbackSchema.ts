@@ -1,6 +1,6 @@
 import { SchemaProvider } from "graphback";
 
-export class Schema implements SchemaProvider {
+export class GraphbackSchema implements SchemaProvider {
   private schema: string;
 
   constructor(schema: string) {
