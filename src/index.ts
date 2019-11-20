@@ -1,8 +1,14 @@
-import { ApolloServer } from "apollo-server-express";
+import { ApolloServer, PubSub } from "apollo-server-express";
 import express from "express";
+import {
+  GraphQLBackendCreator,
+  KnexDBDataProvider,
+  UpdateDatabaseIfChanges
+} from "graphback";
 import { Server } from "http";
 import Knex from "knex";
-import { BackendBuilder } from "./BackendBuilder";
+import tmp from "tmp";
+import { Schema } from "./Schema";
 import { getAvailablePort } from "./utils";
 
 const defaultConfig = {
@@ -14,17 +20,17 @@ const defaultConfig = {
   subCreate: false,
   subUpdate: false,
   subDelete: false,
-  disableGen: false,
+  disableGen: false
 };
 
 export class TestxServer {
-  private schema: string;
+  private schema: Schema;
   private server: Server;
   private serverUrl: string;
   private dbConnection: Knex;
 
   constructor(schema: string) {
-    this.schema = schema;
+    this.schema = new Schema(schema);
   }
 
   public async start() {
@@ -44,18 +50,25 @@ export class TestxServer {
   }
 
   private async generateServer() {
-    const backendBuilder = new BackendBuilder(this.schema, defaultConfig);
-    const { typeDefs, resolvers, dbConnection } = await backendBuilder.generateBackend();
-    this.dbConnection = dbConnection;
+    // db
+    const knex = Knex({
+      client: "sqlite3",
+      connection: { filename: ":memory:" }
+    });
+    const migrater = new UpdateDatabaseIfChanges(knex, tmp.dirSync().name);
+    await migrater.init(this.schema.getSchemaText());
 
-    const context = async ({ req }: { req: express.Request }) => {
-      return {
-        req,
-        db: dbConnection,
-      };
-    };
+    // backend
+    const backend = new GraphQLBackendCreator(this.schema, defaultConfig);
+    const runtime = await backend.createRuntime(
+      new KnexDBDataProvider(knex),
+      new PubSub()
+    );
 
-    const apolloServer = new ApolloServer({ typeDefs, resolvers, context });
+    const apolloServer = new ApolloServer({
+      typeDefs: runtime.schema,
+      resolvers: runtime.resolvers
+    });
 
     const port = await getAvailablePort();
     const app = express();
