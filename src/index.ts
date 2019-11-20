@@ -28,6 +28,8 @@ export class TestxServer {
   private expressServer: Express;
   private dbConnection: Knex;
   private typeDefs: ASTNode;
+  private queries: { [id: string]: any };
+  private mutations: { [id: string]: any };
 
   constructor(schema: string) {
     this.schema = schema;
@@ -83,11 +85,13 @@ export class TestxServer {
 
   public async bootstrap() {
     if(!this.expressServer) { 
-      const { typeDefs, resolvers, dbConnection } = await this.generateBackend(); 
+      const { typeDefs, resolvers, dbConnection, clientQueries, clientMutations } = await this.generateBackend(); 
       const app = this.generateServer({ typeDefs, resolvers, dbConnection });
+      this.expressServer = app;
       this.dbConnection = dbConnection;
       this.typeDefs = typeDefs;
-      this.expressServer = app;
+      this.queries = clientQueries;
+      this.mutations = clientMutations;
     }
   }
   
@@ -95,16 +99,31 @@ export class TestxServer {
     return (await this.dbConnection('sqlite_master').where('type', 'table')).map(x => x.name).filter(x => !x.includes('sqlite'));
   }
 
-  private async generateBackend() {
-    const backendBuilder = new BackendBuilder(this.schema, defaultConfig);
+  public getQueries() {
+    return this.queries;
+  }
 
+  public getMutations() {
+    return this.mutations;
+  }
+
+  private async generateBackend() {
+  const backendBuilder = new BackendBuilder(this.schema, defaultConfig);
     const {
       typeDefs,
       resolvers,
       dbConnection,
+      clientQueries, 
+      clientMutations
     } = await backendBuilder.generate();
 
-    return { typeDefs, resolvers, dbConnection };
+    return { 
+      typeDefs, 
+      resolvers, 
+      dbConnection, 
+      clientQueries, 
+      clientMutations 
+    };
   }
 
   private generateServer({ typeDefs, resolvers, dbConnection }) {
