@@ -21,14 +21,12 @@
     "tslint-plugin-prettier": "2.0.1"
   },
   "dependencies": {
-    "@types/tmp": "0.1.0",
     "apollo-server-express": "2.9.9",
     "express": "4.17.1",
     "graphback": "0.10.0-dev2",
     "graphql": "14.5.8",
     "graphql-tag": "2.10.1",
     "portastic": "1.0.1",
-    "tmp": "0.1.0",
     "typescript": "3.7.2"
   }
 }
