@@ -3,6 +3,7 @@ import {
   GraphQLBackendCreator,
   IGraphQLBackend
 } from "graphback";
+import { print } from 'graphql/language/printer'
 import Knex from "knex";
 import { transpile } from "typescript";
 import { sourceModule } from "./utils";
@@ -23,7 +24,17 @@ export class BackendBuilder {
     const typeDefs = await this.generateTypeDefs();
     const resolvers = await this.generateResolvers();
     const dbConnection = await this.generateDatabase();
-    return { typeDefs, resolvers, dbConnection };
+    const {
+      clientQueries,
+      clientMutations,
+    } = await this.generateClientQueriesAndMutations();
+    return {
+      typeDefs,
+      resolvers,
+      dbConnection,
+      clientQueries,
+      clientMutations,
+    };
   }
 
   private async init() {
@@ -39,11 +50,11 @@ export class BackendBuilder {
   private generateResolvers() {
     const modules: { [id: string]: any } = {};
 
-    for (const resolver of this.backend.resolvers.types) {
-      modules[`./generated/${resolver.name}`] = sourceModule(
-        transpile(resolver.output)
+    this.backend.resolvers.types.map((item) => {
+      modules[`./generated/${item.name}`] = sourceModule(
+        transpile(item.output),
       );
-    }
+    });
 
     const { resolvers } = sourceModule(
       transpile(this.backend.resolvers.index),
@@ -60,5 +71,39 @@ export class BackendBuilder {
     this.backendCreator.registerDataResourcesManager(manager);
     await this.backendCreator.createDatabase();
     return manager.getConnection();
+  }
+
+  private async generateClientQueriesAndMutations() {
+    const {
+      fragments,
+      queries,
+      mutations,
+    } = await this.backendCreator.createClient();
+
+    const modules: { [id: string]: any } = {};
+
+    fragments.map((item) => {
+      modules[`../fragments/${item.name}`] = sourceModule(
+        transpile(item.implementation),
+      );
+    });
+
+    const clientQueries = {};
+    queries.map((item) => {
+      clientQueries[item.name] = print(sourceModule(
+        transpile(item.implementation),
+        modules,
+      )[item.name]);
+    });
+
+    const clientMutations = {};
+    mutations.map((item) => {
+      clientMutations[item.name] = print(sourceModule(
+        transpile(item.implementation),
+        modules,
+      )[item.name]);
+    });
+
+    return { clientQueries, clientMutations };
   }
 }
