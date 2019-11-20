@@ -28,13 +28,12 @@ const CREATE_ITEM = `
 `;
 
 test.serial("start TestxServer server", async t => {
-
   const server = new TestxServer(ITEM_MODEL);
 
   await server.start();
   t.assert(server.url());
 
-  const result = await request(server.url(), FIND_ALL_ITEMS);
+  const result = await request(server.url(), server.getQueries().findAllItems);
   t.assert(result.findAllItems.length === 0);
 });
 
