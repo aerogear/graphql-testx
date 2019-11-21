@@ -50,7 +50,7 @@ export class BackendBuilder {
   private generateResolvers() {
     const modules: { [id: string]: any } = {};
 
-    this.backend.resolvers.types.map((item) => {
+    this.backend.resolvers.types.forEach((item) => {
       modules[`./generated/${item.name}`] = sourceModule(
         transpile(item.output),
       );
@@ -82,14 +82,14 @@ export class BackendBuilder {
 
     const modules: { [id: string]: any } = {};
 
-    fragments.map((item) => {
+    fragments.forEach((item) => {
       modules[`../fragments/${item.name}`] = sourceModule(
         transpile(item.implementation),
       );
     });
 
     const clientQueries = {};
-    queries.map((item) => {
+    queries.forEach((item) => {
       clientQueries[item.name] = print(sourceModule(
         transpile(item.implementation),
         modules,
@@ -97,7 +97,7 @@ export class BackendBuilder {
     });
 
     const clientMutations = {};
-    mutations.map((item) => {
+    mutations.forEach((item) => {
       clientMutations[item.name] = print(sourceModule(
         transpile(item.implementation),
         modules,
