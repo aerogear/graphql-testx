@@ -30,6 +30,7 @@ export class TestxServer {
   }
 
   public async start() {
+    await this.bootstrap();
     const port = await getAvailablePort();
     this.server = this.expressServer.listen({ port });
     this.serverUrl = `http://localhost:${port}/graphql`;
