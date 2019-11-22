@@ -1,7 +1,7 @@
-import process from "process";
-import { readFileSync } from "fs";
-import { printSchema, introspectionQuery, buildClientSchema } from "graphql";
 import axios from "axios";
+import { readFileSync } from "fs";
+import { buildClientSchema, introspectionQuery, printSchema } from "graphql";
+import process from "process";
 
 import { TestxServer } from "../";
 
@@ -13,6 +13,8 @@ import { TestxServer } from "../";
   await server.start();
 
   const response = await axios.post(server.url(), { query: introspectionQuery });
+
+  // tslint:disable-next-line:no-console
   console.log(printSchema(buildClientSchema(response.data.data)));
 
   server.close();
