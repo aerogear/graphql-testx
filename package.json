@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "test": "ava",
-    "lint": "eslint '*(src|examples)/**/*.ts'"
+    "lint": "eslint '*(src|examples)/**/*.ts'",
+    "print-schema": "ts-node src/utils/printSchema.ts"
   },
   "devDependencies": {
     "@types/express": "4.17.2",
@@ -15,6 +16,7 @@
     "@typescript-eslint/parser": "2.8.0",
     "apollo-boost": "0.4.4",
     "ava": "2.4.0",
+    "axios": "^0.19.0",
     "eslint": "6.6.0",
     "eslint-config-prettier": "6.7.0",
     "graphql-request": "1.8.2",
