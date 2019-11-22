@@ -1,7 +1,8 @@
 import { ApolloServer } from "apollo-server-express";
-import express from "express";
+import express, { Express } from "express";
 import { Server } from "http";
 import Knex from "knex";
+import knexCleaner from "knex-cleaner";
 import { BackendBuilder } from "./BackendBuilder";
 import { getAvailablePort } from "./utils";
 
@@ -21,6 +22,7 @@ export class TestxServer {
   private schema: string;
   private server: Server;
   private serverUrl: string;
+  private expressServer: Express;
   private dbConnection: Knex;
 
   constructor(schema: string) {
@@ -28,26 +30,52 @@ export class TestxServer {
   }
 
   public async start() {
-    const { server, url } = await this.generateServer();
+    await this.bootstrap();
+    const port = await getAvailablePort();
+    this.server = this.expressServer.listen({ port });
+    this.serverUrl = `http://localhost:${port}/graphql`;
+  }
 
-    this.server = server;
-    this.serverUrl = url;
+  public stop() {
+    this.server.close();
   }
 
   public close() {
-    this.server.close();
+    this.stop();
     this.dbConnection.destroy();
+    this.expressServer = null;
+  }
+
+  public async cleanDatabase() {
+    await knexCleaner.clean(this.dbConnection);
   }
 
   public url() {
     return this.serverUrl;
   }
 
-  private async generateServer() {
-    const backendBuilder = new BackendBuilder(this.schema, defaultConfig);
-    const { typeDefs, resolvers, dbConnection } = await backendBuilder.generateBackend();
-    this.dbConnection = dbConnection;
+  public async bootstrap() {
+    if(!this.expressServer) { 
+      const { typeDefs, resolvers, dbConnection } = await this.generateBackend(); 
+      const app = await this.generateServer({ typeDefs, resolvers, dbConnection });
+      this.dbConnection = dbConnection;
+      this.expressServer = app;
+    }
+  }
 
+  private async generateBackend() {
+    const backendBuilder = new BackendBuilder(this.schema, defaultConfig);
+
+    const {
+      typeDefs,
+      resolvers,
+      dbConnection,
+    } = await backendBuilder.generate();
+
+    return { typeDefs, resolvers, dbConnection };
+  }
+
+  private async generateServer({ typeDefs, resolvers, dbConnection }) {
     const context = async ({ req }: { req: express.Request }) => {
       return {
         req,
@@ -56,14 +84,9 @@ export class TestxServer {
     };
 
     const apolloServer = new ApolloServer({ typeDefs, resolvers, context });
-
-    const port = await getAvailablePort();
     const app = express();
     apolloServer.applyMiddleware({ app, path: "/graphql" });
-    const server = app.listen({ port });
 
-    const url = `http://localhost:${port}/graphql`;
-
-    return { server, url };
+    return app;
   }
 }
