@@ -116,6 +116,7 @@ beforeAll(async () => {
     description: String!
     author: String!
   }`);
+
   await server.start();
   console.log(`Running on ${server.url()}`);
 }, 10 * 1000);
