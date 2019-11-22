@@ -57,7 +57,7 @@ export class TestxServer {
   public async bootstrap() {
     if(!this.expressServer) { 
       const { typeDefs, resolvers, dbConnection } = await this.generateBackend(); 
-      const app = await this.generateServer({ typeDefs, resolvers, dbConnection });
+      const app = this.generateServer({ typeDefs, resolvers, dbConnection });
       this.dbConnection = dbConnection;
       this.expressServer = app;
     }
@@ -75,7 +75,8 @@ export class TestxServer {
     return { typeDefs, resolvers, dbConnection };
   }
 
-  private async generateServer({ typeDefs, resolvers, dbConnection }) {
+  private generateServer({ typeDefs, resolvers, dbConnection }) {
+    // eslint-disable-next-line @typescript-eslint/require-await
     const context = async ({ req }: { req: express.Request }) => {
       return {
         req,
