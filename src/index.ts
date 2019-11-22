@@ -54,6 +54,25 @@ export class TestxServer {
     return this.serverUrl;
   }
 
+  public async getDbSchema() {
+    const tables = await this.getDbTables();
+    const schema = {};
+    for (const table of tables) {
+      schema[table] = Object.keys(await this.dbConnection('task').columnInfo());
+    }
+    return schema;
+  }
+
+  public async setData(data) {
+    const tables = await this.getDbTables();
+    for (const table of tables) {
+      await this.dbConnection(table).del();
+      if (data[table]) {
+        await this.dbConnection(table).insert(data[table]);
+      }
+    }
+  }
+
   public async bootstrap() {
     if(!this.expressServer) { 
       const { typeDefs, resolvers, dbConnection } = await this.generateBackend(); 
@@ -61,6 +80,10 @@ export class TestxServer {
       this.dbConnection = dbConnection;
       this.expressServer = app;
     }
+  }
+  
+  private async getDbTables() {
+    return (await this.dbConnection('sqlite_master').where('type', 'table')).map(x => x.name).filter(x => !x.includes('sqlite'));
   }
 
   private async generateBackend() {

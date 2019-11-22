@@ -15,7 +15,10 @@ import { TestxServer } from "../";
   const response = await axios.post(server.url(), { query: introspectionQuery });
 
   // tslint:disable-next-line:no-console
-  console.log(printSchema(buildClientSchema(response.data.data)));
+  console.log('GraphQL Schema\n', printSchema(buildClientSchema(response.data.data)));
+
+  // tslint:disable-next-line:no-console
+  console.log('DB Schema\n', await server.getDbSchema());
 
   server.close();
 })();

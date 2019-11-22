@@ -61,12 +61,26 @@ graphql-testx doesn't provide any graphql client, which means that you can use t
 
 We have a couple of [Examples](#examples) that shows how to integrate graphql-testx with different javascript test framework for testing graphql client libraries.
 
-### Print generated graphql schema
+### Print generated GraphQL and DB schema
 
-To see the graphback generated schema run:
+To see the generated schemas run:
 
 ```bash
 npm run print-schema -- <FILE_WITH_GRAPHQL_SCHEMA>
+```
+
+### Initialize DB
+
+It is possible to initialize DB with some data. For this use `setData` method of `TestxServer`. Method will replace data in DB with data provided. `setData` expects one argument - object where keys correspond to table names and values represent rows that should be inserted to table. Example:
+
+```js
+await server.setData({
+  task: [
+    { title: 'test1' },
+    { title: 'test2' },
+    { title: 'test3' }
+  ]
+});
 ```
 
 ## Features
