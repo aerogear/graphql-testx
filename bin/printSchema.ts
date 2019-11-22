@@ -1,9 +1,11 @@
+#!/usr/bin/env node
+
 import axios from "axios";
 import { readFileSync } from "fs";
 import { buildClientSchema, introspectionQuery, printSchema } from "graphql";
 import process from "process";
 
-import { TestxServer } from "../";
+import { TestxServer } from "../src";
 
 (async () => {
   const schemaFile = process.argv[2];
