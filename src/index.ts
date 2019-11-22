@@ -58,7 +58,7 @@ export class TestxServer {
     return this.serverUrl;
   }
 
-  public async getGraphQlSchema() {
+  public getGraphQlSchema() {
     return print(this.typeDefs);
   }
 

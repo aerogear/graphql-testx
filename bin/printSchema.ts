@@ -13,7 +13,7 @@ import { TestxServer } from "../src";
   await server.bootstrap();
 
   // tslint:disable-next-line:no-console
-  console.log('GraphQL Schema\n', await server.getGraphQlSchema());
+  console.log('GraphQL Schema\n', server.getGraphQlSchema());
 
   // tslint:disable-next-line:no-console
   console.log('DB Schema\n', await server.getDatabaseSchema());
