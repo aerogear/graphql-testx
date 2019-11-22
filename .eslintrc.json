@@ -16,7 +16,7 @@
     "prettier/@typescript-eslint"
   ],
   "rules": {
-      "@typescript-eslint/require-await": "warn"
+    "@typescript-eslint/require-await": "warn"
   },
   "overrides": [
     {
