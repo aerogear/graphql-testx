@@ -2,6 +2,8 @@ import ApolloClient from "apollo-boost";
 import { expect } from "chai";
 import gql from "graphql-tag";
 import fetch from "node-fetch";
+import { readFileSync } from "fs";
+import { resolve } from "path";
 import { TestxServer } from "../../../src";
 
 describe("test mutations", () => {
@@ -36,12 +38,8 @@ describe("test mutations", () => {
   `;
 
   before("start graphql server", async () => {
-    server = new TestxServer(`
-      type Item {
-        id: ID!
-        name: String
-        title: String!
-      }`);
+    const schema = readFileSync(resolve(__dirname, '../fixtures/schema.graphql'), 'utf8');
+    server = new TestxServer(schema);
     await server.start();
     console.log(`Running on ${server.url()}`);
   });

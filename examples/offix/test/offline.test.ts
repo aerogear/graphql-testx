@@ -8,6 +8,8 @@ import {
   NetworkStatus,
   NetworkStatusChangeCallback
 } from "offix-client";
+import { readFileSync } from "fs";
+import { resolve } from "path";
 import { TestxServer } from "../../../src";
 
 class ToggleableNetworkStatus implements NetworkStatus {
@@ -109,14 +111,8 @@ export const UPDATE_TASK = gql`
 let server: TestxServer;
 
 beforeAll(async () => {
-  server = new TestxServer(`
-  type Task {
-    id: ID!
-    version: Int!
-    title: String!
-    description: String!
-    author: String!
-  }`);
+  const schema = readFileSync(resolve(__dirname, '../fixtures/schema.graphql'), 'utf8');
+  server = new TestxServer(schema);
 
   await server.start();
   console.log(`Running on ${server.url()}`);
