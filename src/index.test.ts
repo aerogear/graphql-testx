@@ -69,7 +69,7 @@ test.serial("stop() method should keep the db connection", async t => {
   t.assert(result.findAllItems.length === 1, "The item should be still present after resuming the server")
 })
 
-test.serial("cleanDatabase() method should work correctly", async t => {
+test.serial("cleanDatabase() method should remove all items", async t => {
   const server = new TestxServer(ITEM_MODEL);
   
   await server.start();
