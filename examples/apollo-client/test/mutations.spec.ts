@@ -38,7 +38,10 @@ describe("test mutations", () => {
   `;
 
   before("start graphql server", async () => {
-    const schema = readFileSync(resolve(__dirname, '../fixtures/schema.graphql'), 'utf8');
+    const schema = readFileSync(
+      resolve(__dirname, "../fixtures/mutations-schema.graphql"),
+      "utf8"
+    );
     server = new TestxServer(schema);
     await server.start();
     console.log(`Running on ${server.url()}`);
