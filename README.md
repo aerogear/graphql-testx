@@ -66,7 +66,7 @@ We have a couple of [Examples](#examples) that shows how to integrate graphql-te
 To see the generated schemas run:
 
 ```bash
-npm run print-schema -- <FILE_WITH_GRAPHQL_SCHEMA>
+npx -p graphql-testx print-schema <FILE_WITH_GRAPHQL_SCHEMA>
 ```
 
 ### Initialize DB
