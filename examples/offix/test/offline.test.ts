@@ -18,6 +18,7 @@ class ToggleableNetworkStatus implements NetworkStatus {
     this.callbacks.push(callback);
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async isOffline(): Promise<boolean> {
     return !this.online;
   }

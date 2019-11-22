@@ -31,12 +31,12 @@ export class BackendBuilder {
     this.backend = await this.backendCreator.createBackend("sqlite3");
   }
 
-  private async generateTypeDefs() {
+  private generateTypeDefs() {
     const { typeDefs } = sourceModule(transpile(this.backend.schema));
     return typeDefs;
   }
 
-  private async generateResolvers() {
+  private generateResolvers() {
     const modules: { [id: string]: any } = {};
 
     for (const resolver of this.backend.resolvers.types) {
