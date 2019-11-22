@@ -60,7 +60,7 @@ test.serial("stop() method should preserve stored items", async t => {
   let result = await request(serverUrl, FIND_ALL_ITEMS);
   t.assert(result.findAllItems.length === 1, "Created item should be successfully fetched")
 
-  await server.stop()
+  server.stop()
 
   await t.throwsAsync(async() => { await request(serverUrl, FIND_ALL_ITEMS) }, null, "Should throw an error after stopping the server (ECONNREFUSED)")
   
