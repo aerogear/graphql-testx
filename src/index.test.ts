@@ -49,7 +49,7 @@ test.skip("start multiple TestxServer servers at the same time", async t => {
   t.assert(true);
 });
 
-test.serial("stop() method should keep the db connection", async t => {
+test.serial("stop() method should preserve stored items", async t => {
 
   const server = new TestxServer(ITEM_MODEL);
   
