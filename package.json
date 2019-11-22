@@ -21,7 +21,7 @@
     "tslint-plugin-prettier": "2.0.1"
   },
   "dependencies": {
-    "apollo-server-express": "2.9.11",
+    "apollo-server-express": "2.9.12",
     "express": "4.17.1",
     "graphback": "0.9.6",
     "graphql": "14.5.8",
