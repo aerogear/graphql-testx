@@ -61,6 +61,14 @@ graphql-testx doesn't provide any graphql client, which means that you can use t
 
 We have a couple of [Examples](#examples) that shows how to integrate graphql-testx with different javascript test framework for testing graphql client libraries.
 
+### Print generated graphql schema
+
+To see the graphback generated schema run:
+
+```bash
+npm run print-schema -- <FILE_WITH_GRAPHQL_SCHEMA>
+```
+
 ## Features
 
 - Major tests framework supported: **Mocha**, **Ava**, **Jasmine** and **Jest**
