@@ -3,10 +3,13 @@ import express, { Express } from "express";
 import { Server } from "http";
 import Knex from "knex";
 import knexCleaner from "knex-cleaner";
+import { print } from "graphql/language/printer";
+import { ASTNode } from "graphql";
+
 import { BackendBuilder } from "./BackendBuilder";
 import { getAvailablePort } from "./utils";
 
-const defaultConfig = {
+export const defaultConfig = {
   create: true,
   update: true,
   findAll: true,
@@ -24,6 +27,7 @@ export class TestxServer {
   private serverUrl: string;
   private expressServer: Express;
   private dbConnection: Knex;
+  private typeDefs: ASTNode;
 
   constructor(schema: string) {
     this.schema = schema;
@@ -37,7 +41,7 @@ export class TestxServer {
   }
 
   public stop() {
-    this.server.close();
+    this.server && this.server.close();
   }
 
   public close() {
@@ -54,7 +58,11 @@ export class TestxServer {
     return this.serverUrl;
   }
 
-  public async getDbSchema() {
+  public async getGraphQlSchema() {
+    return print(this.typeDefs);
+  }
+
+  public async getDatabaseSchema() {
     const tables = await this.getDbTables();
     const schema = {};
     for (const table of tables) {
@@ -64,9 +72,9 @@ export class TestxServer {
   }
 
   public async setData(data) {
+    await this.cleanDatabase();
     const tables = await this.getDbTables();
     for (const table of tables) {
-      await this.dbConnection(table).del();
       if (data[table]) {
         await this.dbConnection(table).insert(data[table]);
       }
@@ -78,6 +86,7 @@ export class TestxServer {
       const { typeDefs, resolvers, dbConnection } = await this.generateBackend(); 
       const app = this.generateServer({ typeDefs, resolvers, dbConnection });
       this.dbConnection = dbConnection;
+      this.typeDefs = typeDefs;
       this.expressServer = app;
     }
   }

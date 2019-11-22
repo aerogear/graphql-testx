@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 
-import axios from "axios";
 import { readFileSync } from "fs";
-import { buildClientSchema, introspectionQuery, printSchema } from "graphql";
 import process from "process";
 
 import { TestxServer } from "../src";
@@ -12,15 +10,13 @@ import { TestxServer } from "../src";
   const schema = readFileSync(schemaFile, 'utf8');
 
   const server = new TestxServer(schema);
-  await server.start();
-
-  const response = await axios.post(server.url(), { query: introspectionQuery });
+  await server.bootstrap();
 
   // tslint:disable-next-line:no-console
-  console.log('GraphQL Schema\n', printSchema(buildClientSchema(response.data.data)));
+  console.log('GraphQL Schema\n', await server.getGraphQlSchema());
 
   // tslint:disable-next-line:no-console
-  console.log('DB Schema\n', await server.getDbSchema());
+  console.log('DB Schema\n', await server.getDatabaseSchema());
 
   server.close();
 })();
