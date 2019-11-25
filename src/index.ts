@@ -68,7 +68,7 @@ export class TestxServer {
     const tables = await this.getDbTables();
     const schema = {};
     for (const table of tables) {
-      schema[table] = Object.keys(await this.dbConnection('task').columnInfo());
+      schema[table] = Object.keys(await this.dbConnection(table).columnInfo());
     }
     return schema;
   }
