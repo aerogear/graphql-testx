@@ -18,6 +18,12 @@
   "rules": {},
   "overrides": [
     {
+      "files": "src/**/*.test.ts",
+      "parserOptions": {
+        "project": "tsconfig.tests.json"
+      }
+    },
+    {
       "files": "examples/offix/**",
       "parserOptions": {
         "project": "examples/offix/tsconfig.json"
