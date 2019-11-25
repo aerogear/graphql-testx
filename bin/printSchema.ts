@@ -5,7 +5,7 @@ import process from "process";
 
 import { TestxServer } from "../src";
 
-(async () => {
+(async (): Promise<void> => {
   const schemaFile = process.argv[2];
   const schema = readFileSync(schemaFile, 'utf8');
 
