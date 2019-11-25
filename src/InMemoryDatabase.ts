@@ -10,8 +10,8 @@ import knexCleaner from "knex-cleaner";
 
 export interface ImportData {
   [table: string]: {
-    [column: string]: any;
-  };
+    [column: string]: unknown;
+  }[];
 }
 
 export interface DatabaseSchema {
