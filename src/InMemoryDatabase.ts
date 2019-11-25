@@ -1,4 +1,4 @@
-import Knex, { ColumnInfo } from "knex";
+import Knex from "knex";
 import {
   KnexDBDataProvider,
   DropCreateDatabaseAlways,
@@ -7,7 +7,6 @@ import {
 } from "graphback";
 import { GraphbackSchema } from "./GraphbackSchema";
 import knexCleaner from "knex-cleaner";
-import { Data } from "ws";
 
 export interface ImportData {
   [table: string]: {
