@@ -1,144 +1,128 @@
-import { ApolloServer } from "apollo-server-express";
-import express, { Express } from "express";
-import { Server } from "http";
-import Knex from "knex";
-import knexCleaner from "knex-cleaner";
-import { print } from "graphql/language/printer";
-import { ASTNode } from "graphql";
-
-import { BackendBuilder } from "./BackendBuilder";
-import { getAvailablePort } from "./utils";
-
-export const defaultConfig = {
-  create: true,
-  update: true,
-  findAll: true,
-  find: true,
-  delete: true,
-  subCreate: false,
-  subUpdate: false,
-  subDelete: false,
-  disableGen: false,
-};
+import {
+  initInMemoryDatabase,
+  InMemoryDatabase,
+  ImportData,
+  DatabaseSchema
+} from "./InMemoryDatabase";
+import { initGraphbackServer, GraphbackServer } from "./GraphbackServer";
+import { GraphbackSchema } from "./GraphbackSchema";
+import { ColumnInfo } from "knex";
 
 export class TestxServer {
-  private schema: string;
-  private server: Server;
-  private serverUrl: string;
-  private expressServer: Express;
-  private dbConnection: Knex;
-  private typeDefs: ASTNode;
-  private queries: { [id: string]: any };
-  private mutations: { [id: string]: any };
+  private schema: GraphbackSchema;
+  private server?: GraphbackServer;
+  private database?: InMemoryDatabase;
 
   constructor(schema: string) {
-    this.schema = schema;
+    this.schema = new GraphbackSchema(schema);
   }
 
-  public async start() {
+  public async start(): Promise<void> {
     await this.bootstrap();
-    const port = await getAvailablePort();
-    this.server = this.expressServer.listen({ port });
-    this.serverUrl = `http://localhost:${port}/graphql`;
-  }
 
-  public stop() {
-    this.server && this.server.close();
-  }
-
-  public close() {
-    this.stop();
-    this.dbConnection.destroy();
-    this.expressServer = null;
-  }
-
-  public async cleanDatabase() {
-    await knexCleaner.clean(this.dbConnection);
-  }
-
-  public url() {
-    return this.serverUrl;
-  }
-
-  public getGraphQlSchema() {
-    return print(this.typeDefs);
-  }
-
-  public async getDatabaseSchema() {
-    const tables = await this.getDbTables();
-    const schema = {};
-    for (const table of tables) {
-      schema[table] = Object.keys(await this.dbConnection(table).columnInfo());
+    if (this.server === undefined) {
+      // should be impossible until the bootstrap method create it
+      throw new Error("server is undefined");
     }
-    return schema;
+
+    await this.server.start();
   }
 
-  public async setData(data) {
-    await this.cleanDatabase();
-    const tables = await this.getDbTables();
-    for (const table of tables) {
-      if (data[table]) {
-        await this.dbConnection(table).insert(data[table]);
-      }
+  public async stop(): Promise<void> {
+    if (this.server !== undefined) {
+      await this.server.stop();
     }
   }
 
-  public async bootstrap() {
-    if(!this.expressServer) { 
-      const { typeDefs, resolvers, dbConnection, clientQueries, clientMutations } = await this.generateBackend(); 
-      const app = this.generateServer({ typeDefs, resolvers, dbConnection });
-      this.expressServer = app;
-      this.dbConnection = dbConnection;
-      this.typeDefs = typeDefs;
-      this.queries = clientQueries;
-      this.mutations = clientMutations;
+  public async close(): Promise<void> {
+    await this.stop();
+
+    if (this.database !== undefined) {
+      await this.database.destroy();
+    }
+
+    this.server = undefined;
+    this.database = undefined;
+  }
+
+  public async cleanDatabase(): Promise<void> {
+    if (this.database !== undefined) {
+      await this.database.clean();
     }
   }
-  
-  private async getDbTables() {
-    return (await this.dbConnection('sqlite_master').where('type', 'table')).map(x => x.name).filter(x => !x.includes('sqlite'));
+
+  public url(): string {
+    if (this.server === undefined) {
+      throw new Error(
+        `can not retrieve the http url from undefined server, ` +
+          `use bootstrap() or start() in order to initialize the server`
+      );
+    }
+
+    return this.server.getHttpUrl();
+  }
+
+  public getGraphQlSchema(): string {
+    if (this.server === undefined) {
+      throw new Error(
+        `can not retrieve the graphql schema from undefined server, ` +
+          `use bootstrap() or start() in order to initialize the server`
+      );
+    }
+
+    return this.server.getSchema();
+  }
+
+  public async getDatabaseSchema(): Promise<DatabaseSchema> {
+    if (this.database === undefined) {
+      throw new Error(
+        `can not retrieve database schema from undefined database, ` +
+          `use bootstrap() or start() in order to initialize the database`
+      );
+    }
+
+    return await this.database.getSchema();
+  }
+
+  public async setData(data: ImportData): Promise<void> {
+    if (this.database === undefined) {
+      throw new Error(
+        `can not import data into undefined database, ` +
+          `use bootstrap() or start() in order to initialize the database`
+      );
+    }
+
+    await this.database.importData(data);
+  }
+
+  public async bootstrap(): Promise<void> {
+    if (this.database === undefined) {
+      this.database = await initInMemoryDatabase(this.schema);
+    }
+
+    if (this.server === undefined) {
+      this.server = await initGraphbackServer(
+        this.schema,
+        this.database.getProvider()
+      );
+    }
   }
 
   public getQueries() {
-    return this.queries;
+    return {
+      findAllItems: `
+        query findAllItems {
+          findAllItems {
+            id
+            title
+          }
+        }
+      `
+    };
   }
 
   public getMutations() {
+    // @ts-ignore
     return this.mutations;
-  }
-
-  private async generateBackend() {
-  const backendBuilder = new BackendBuilder(this.schema, defaultConfig);
-    const {
-      typeDefs,
-      resolvers,
-      dbConnection,
-      clientQueries, 
-      clientMutations
-    } = await backendBuilder.generate();
-
-    return { 
-      typeDefs, 
-      resolvers, 
-      dbConnection, 
-      clientQueries, 
-      clientMutations 
-    };
-  }
-
-  private generateServer({ typeDefs, resolvers, dbConnection }) {
-    // eslint-disable-next-line @typescript-eslint/require-await
-    const context = async ({ req }: { req: express.Request }) => {
-      return {
-        req,
-        db: dbConnection,
-      };
-    };
-
-    const apolloServer = new ApolloServer({ typeDefs, resolvers, context });
-    const app = express();
-    apolloServer.applyMiddleware({ app, path: "/graphql" });
-
-    return app;
   }
 }
