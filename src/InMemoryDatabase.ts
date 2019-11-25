@@ -1,11 +1,6 @@
 import Knex from "knex";
-import {
-  KnexDBDataProvider,
-  DropCreateDatabaseAlways,
-  migrate,
-  GraphbackDataProvider
-} from "graphback";
-import { GraphbackSchema } from "./GraphbackSchema";
+import { KnexDBDataProvider, GraphbackDataProvider } from "graphback";
+import { DropCreateDatabaseAlways, migrate } from "graphql-migrations";
 import knexCleaner from "knex-cleaner";
 
 export interface ImportData {
@@ -72,7 +67,7 @@ export class InMemoryDatabase {
 }
 
 export async function initInMemoryDatabase(
-  schema: GraphbackSchema
+  schema: string
 ): Promise<InMemoryDatabase> {
   // initialize the knex db
   const knex = Knex({
@@ -82,7 +77,7 @@ export async function initInMemoryDatabase(
 
   // migrate the schema
   const strategy = new DropCreateDatabaseAlways("sqlite3", knex);
-  await migrate(schema.getSchemaText(), strategy);
+  await migrate(schema, strategy);
 
   return new InMemoryDatabase(knex);
 }

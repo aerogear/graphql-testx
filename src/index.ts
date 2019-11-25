@@ -5,7 +5,6 @@ import {
   DatabaseSchema
 } from "./InMemoryDatabase";
 import { initGraphbackServer, GraphbackServer } from "./GraphbackServer";
-import { GraphbackSchema } from "./GraphbackSchema";
 import { GraphQLBackendCreator } from "graphback";
 import { GraphbackClient, initGraphbackClient } from "./GraphbackClient";
 
@@ -22,14 +21,14 @@ const DEFAULT_CONFIG = {
 };
 
 export class TestxServer {
-  private schema: GraphbackSchema;
+  private schema: string;
   private creator?: GraphQLBackendCreator;
   private client?: GraphbackClient;
   private server?: GraphbackServer;
   private database?: InMemoryDatabase;
 
   constructor(schema: string) {
-    this.schema = new GraphbackSchema(schema);
+    this.schema = schema;
   }
 
   public async start(): Promise<void> {
