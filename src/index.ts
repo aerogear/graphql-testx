@@ -6,10 +6,25 @@ import {
 } from "./InMemoryDatabase";
 import { initGraphbackServer, GraphbackServer } from "./GraphbackServer";
 import { GraphbackSchema } from "./GraphbackSchema";
-import { ColumnInfo } from "knex";
+import { GraphQLBackendCreator } from "graphback";
+import { GraphbackClient, initGraphbackClient } from "./GraphbackClient";
+
+const DEFAULT_CONFIG = {
+  create: true,
+  update: true,
+  findAll: true,
+  find: true,
+  delete: true,
+  subCreate: false,
+  subUpdate: false,
+  subDelete: false,
+  disableGen: false
+};
 
 export class TestxServer {
   private schema: GraphbackSchema;
+  private creator?: GraphQLBackendCreator;
+  private client?: GraphbackClient;
   private server?: GraphbackServer;
   private database?: InMemoryDatabase;
 
@@ -100,29 +115,41 @@ export class TestxServer {
       this.database = await initInMemoryDatabase(this.schema);
     }
 
+    if (this.creator === undefined) {
+      this.creator = new GraphQLBackendCreator(this.schema, DEFAULT_CONFIG);
+    }
+
     if (this.server === undefined) {
       this.server = await initGraphbackServer(
-        this.schema,
+        this.creator,
         this.database.getProvider()
       );
     }
+
+    if (this.client === undefined) {
+      this.client = await initGraphbackClient(this.creator);
+    }
   }
 
-  public getQueries() {
-    return {
-      findAllItems: `
-        query findAllItems {
-          findAllItems {
-            id
-            title
-          }
-        }
-      `
-    };
+  public getQueries(): { [name: string]: string } {
+    if (this.client === undefined) {
+      throw new Error(
+        `can not retrieve client queries from undefined client, ` +
+          `use bootstrap() or start() in order to initialize the client`
+      );
+    }
+
+    return this.client.getQueries();
   }
 
-  public getMutations() {
-    // @ts-ignore
-    return this.mutations;
+  public getMutations(): { [name: string]: string } {
+    if (this.client === undefined) {
+      throw new Error(
+        `can not retrieve client mutations from undefined client, ` +
+          `use bootstrap() or start() in order to initialize the client`
+      );
+    }
+
+    return this.client.getMutations();
   }
 }

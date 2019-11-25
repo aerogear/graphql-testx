@@ -3,20 +3,7 @@ import newExpress from "express";
 import { Express } from "express-serve-static-core";
 import { GraphbackDataProvider, GraphQLBackendCreator } from "graphback";
 import { Server } from "http";
-import { GraphbackSchema } from "./GraphbackSchema";
 import { getAvailablePort } from "./utils";
-
-const DEFAULT_CONFIG = {
-  create: true,
-  update: true,
-  findAll: true,
-  find: true,
-  delete: true,
-  subCreate: false,
-  subUpdate: false,
-  subDelete: false,
-  disableGen: false
-};
 
 const ENDPOINT = "/graphql";
 
@@ -80,13 +67,12 @@ export class GraphbackServer {
 }
 
 export async function initGraphbackServer(
-  schema: GraphbackSchema,
+  creator: GraphQLBackendCreator,
   provider: GraphbackDataProvider
 ): Promise<GraphbackServer> {
-  const express = newExpress();
-
-  const creator = new GraphQLBackendCreator(schema, DEFAULT_CONFIG);
   const runtime = await creator.createRuntime(provider, new PubSub());
+
+  const express = newExpress();
 
   const apollo = new ApolloServer({
     typeDefs: runtime.schema,
