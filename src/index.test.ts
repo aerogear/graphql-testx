@@ -1,5 +1,6 @@
 import test from "ava";
 import { request } from "graphql-request";
+import gql from "graphql-tag"
 import { TestxServer } from ".";
 
 const ITEM_MODEL = `
@@ -89,20 +90,26 @@ test.serial("setData() should init DB with specified data and replace existing d
   let result = await request(serverUrl, server.getQueries().findAllItems);
   t.assert(result.findAllItems.length === 1, "Created item should be successfully fetched")
 
+  const dataToSet = [ {id: '0', title: 'foo'}, {id: '1', title: 'bar'} ]
   await server.setData({
-    item: [ {id: 0, title: "foo"}, {id: 1, title: "bar"} ]
+    item: dataToSet
   })
   result = await request(serverUrl, server.getQueries().findAllItems);
-  t.assert(result.findAllItems.length === 2, "Only items created with setData() method should be fetched")
-  t.assert(result.findAllItems.filter(i => i.title.match(/foo|bar/g).length === 2))
+  t.deepEqual(result.findAllItems, dataToSet, "Only items created with setData() method should be fetched")
 })
 
-test.serial("getGraphQLSchema() method should produce GQL schema", async t => {
+test.serial("getGraphQLSchema() method should produce GQL schema with required definitions", async t => {
   const server = new TestxServer(ITEM_MODEL);
+  const defsToBeGenerated = ['Item', 'ItemInput', 'ItemFilter', 'Query', 'Mutation']
   
   await server.start()
   const schema = server.getGraphQlSchema()
   t.assert(typeof schema === 'string')
+
+  const parsedSchema = gql`${schema}`
+  const definitions = parsedSchema.definitions.map(d => d.name.value)
+  t.deepEqual(definitions, defsToBeGenerated)
+
 })
 
 test.serial("getDatabaseSchema() method should return column names for all types to be stored at DB", async t => {
@@ -112,6 +119,5 @@ test.serial("getDatabaseSchema() method should return column names for all types
   await server.start();
   const dbSchema = await server.getDatabaseSchema()
   t.assert(dbSchema['item'])
-  t.assert(dbSchema['item'].length === itemDbSchema.length)
-  t.assert(dbSchema['item'].every(c => itemDbSchema.includes(c)))
+  t.deepEqual(dbSchema['item'], itemDbSchema)
 })
