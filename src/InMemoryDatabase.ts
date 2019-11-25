@@ -10,7 +10,7 @@ import knexCleaner from "knex-cleaner";
 
 export interface ImportData {
   [table: string]: {
-    [column: string]: unknown;
+    [column: string]: any;
   };
 }
 
@@ -55,6 +55,7 @@ export class InMemoryDatabase {
   }
 
   public async importData(data: ImportData): Promise<void> {
+    await this.clean();
     const tables = await this.getTables();
     for (const table of tables) {
       if (data[table]) {
