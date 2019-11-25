@@ -1,4 +1,4 @@
-import test from "ava";
+import {serial as test} from "ava";
 import { request } from "graphql-request";
 import gql from "graphql-tag"
 import { TestxServer } from ".";
@@ -10,16 +10,7 @@ const ITEM_MODEL = `
   }
 `;
 
-const CREATE_ITEM = `
-  mutation {
-    createItem( input: { title: "test" } ) {
-      id
-      title
-    }
-  }
-`;
-
-test.serial("test start() and close() methods", async t => {
+test("test start() and close() methods", async t => {
   const server = new TestxServer(ITEM_MODEL);
 
   await server.start();
@@ -44,14 +35,14 @@ test.skip("start multiple TestxServer servers at the same time", async t => {
   t.assert(true);
 });
 
-test.serial("stop() method should preserve stored items", async t => {
+test("stop() method should preserve stored items", async t => {
 
   const server = new TestxServer(ITEM_MODEL);
   
   await server.start();
   const serverUrl = server.url()
 
-  await request(serverUrl, CREATE_ITEM);
+  await request(serverUrl, server.getMutations().createItem, {title: "test"});
   let result = await request(serverUrl, server.getQueries().findAllItems);
   t.assert(result.findAllItems.length === 1, "Created item should be successfully fetched")
 
@@ -64,13 +55,13 @@ test.serial("stop() method should preserve stored items", async t => {
   t.assert(result.findAllItems.length === 1, "The item should be still present after resuming the server")
 })
 
-test.serial("cleanDatabase() method should remove all items", async t => {
+test("cleanDatabase() method should remove all items", async t => {
   const server = new TestxServer(ITEM_MODEL);
   
   await server.start();
   const serverUrl = server.url()
 
-  await request(serverUrl, CREATE_ITEM);
+  await request(serverUrl, server.getMutations().createItem, {title: "test"});
   let result = await request(serverUrl, server.getQueries().findAllItems);
   t.assert(result.findAllItems.length === 1, "Created item should be successfully fetched")
 
@@ -80,13 +71,13 @@ test.serial("cleanDatabase() method should remove all items", async t => {
   t.assert(result.findAllItems.length === 0, "The item should be gone after calling cleanDatabase() method")
 })
 
-test.serial("setData() should init DB with specified data and replace existing data", async t => {
+test("setData() should init DB with specified data and replace existing data", async t => {
   const server = new TestxServer(ITEM_MODEL);
   
   await server.start();
   const serverUrl = server.url()
 
-  await request(serverUrl, CREATE_ITEM);
+  await request(serverUrl, server.getMutations().createItem, {title: "test"});
   let result = await request(serverUrl, server.getQueries().findAllItems);
   t.assert(result.findAllItems.length === 1, "Created item should be successfully fetched")
 
@@ -98,7 +89,7 @@ test.serial("setData() should init DB with specified data and replace existing d
   t.deepEqual(result.findAllItems, dataToSet, "Only items created with setData() method should be fetched")
 })
 
-test.serial("getGraphQLSchema() method should produce GQL schema with required definitions", async t => {
+test("getGraphQLSchema() method should produce GQL schema with required definitions", async t => {
   const server = new TestxServer(ITEM_MODEL);
   const defsToBeGenerated = ['Item', 'ItemInput', 'ItemFilter', 'Query', 'Mutation']
   
@@ -112,7 +103,7 @@ test.serial("getGraphQLSchema() method should produce GQL schema with required d
 
 })
 
-test.serial("getDatabaseSchema() method should return column names for all types to be stored at DB", async t => {
+test("getDatabaseSchema() method should return column names for all types to be stored at DB", async t => {
   const server = new TestxServer(ITEM_MODEL);
   const itemDbSchema = ['id', 'title', 'created_at', 'updated_at']
   

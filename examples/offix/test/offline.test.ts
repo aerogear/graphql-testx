@@ -43,33 +43,6 @@ async function newClient(
   return [client, network];
 }
 
-// TODO: remove this queries once we expose client queries/mutations
-// TODO: from the TestxServer API
-// TODO: https://github.com/aerogear/graphql-testx/issues/15
-export const ADD_TASK = gql`
-  mutation createTask(
-    $version: Int!
-    $description: String!
-    $title: String!
-    $author: String!
-  ) {
-    createTask(
-      input: {
-        version: $version
-        title: $title
-        description: $description
-        author: $author
-      }
-    ) {
-      id
-      version
-      title
-      description
-      author
-    }
-  }
-`;
-
 let server: TestxServer;
 
 beforeAll(async () => {
@@ -94,7 +67,7 @@ it("update an object while offline and assert that the object get updated on the
 
   // create the task while online
   const createTaskResult = await client.offlineMutation({
-    mutation: ADD_TASK,
+    mutation: gql(server.getMutations().createTask),
     variables: {
       version: 1,
       title: "bo",
@@ -114,7 +87,7 @@ it("update an object while offline and assert that the object get updated on the
   // update the task while offline
   try {
     await client.offlineMutation({
-      mutation: gql`${server.getMutations().updateTask}`,
+      mutation: gql(server.getMutations().updateTask),
       variables: {
         ...newTask,
         title: "something new",
@@ -134,7 +107,7 @@ it("update an object while offline and assert that the object get updated on the
 
   // query all tasks ignoring the cache
   const findAllTasksResult = await client.query({
-    query: gql`${server.getQueries().findAllTasks}`,
+    query: gql(server.getQueries().findAllTasks),
     fetchPolicy: "network-only"
   });
 
