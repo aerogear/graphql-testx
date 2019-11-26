@@ -7,7 +7,7 @@
     "clean": "rm -rf dist/ node_modules/",
     "build": "tsc",
     "test": "ava",
-    "lint": "eslint '*(src|examples)/**/*.ts'",
+    "lint": "eslint '**/*.ts'",
     "print-schema": "ts-node bin/printSchema.ts"
   },
   "devDependencies": {
