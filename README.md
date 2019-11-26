@@ -18,13 +18,13 @@ Read our [contributing guide](CONTRIBUTING.md) if you're looking to contribute.
 Using npm:
 
 ```
-npm install graphql-testx@dev
+npm install graphql-testx
 ```
 
 or yarn:
 
 ```
-yarn add graphql-testx@dev
+yarn add graphql-testx
 ```
 
 ### Create and Start the server
