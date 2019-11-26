@@ -52,7 +52,7 @@ workflows:
               only: /.*/
       - publish:
           requires:
-            - build
+            - test
           filters:
             tags:
               only: /.*/
