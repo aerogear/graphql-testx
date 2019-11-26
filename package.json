@@ -8,7 +8,6 @@
     "build": "tsc",
     "test": "ava",
     "lint": "eslint '*(src|examples)/**/*.ts'",
-    "release": "./scripts/release.sh",
     "print-schema": "ts-node bin/printSchema.ts"
   },
   "devDependencies": {
