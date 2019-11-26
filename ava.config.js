@@ -1,5 +1,5 @@
 export default {
-    "files": ["!examples"],
+    "files": ["src/**"],
     "extensions": ["ts"],
     "require": ["ts-node/register"]
 }
