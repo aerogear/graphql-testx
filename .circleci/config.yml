@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/node:12.13
     steps:
@@ -9,19 +9,14 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
-      - run:
-          name: install dependencies
-          command: yarn install
+      - run: yarn install
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run:
-          name: lint
-          command: yarn lint
-      - run:
-          name: test
-          command: yarn test
+      - run: yarn build
+      - run: yarn lint
+      - run: yarn test
       - run:
           name: test apollo-client example
           command: |
@@ -34,3 +29,32 @@ jobs:
             cd examples/offix
             yarn install
             yarn test
+  publish:
+    docker:
+      - image: circleci/node:12.13
+    steps:
+      - checkout
+      - run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+          chmod 600 .npmrc
+      - run: yarn clean
+      - run: yarn install
+      - run: yarn build
+      - run: TAG="$CIRCLE_TAG" ./scripts/release.sh
+
+workflows:
+  version: 2
+  test_and_publish:
+    jobs:
+      - test:
+          filters:
+            tags:
+              only: /.*/
+      - publish:
+          requires:
+            - test
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/

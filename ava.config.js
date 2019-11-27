@@ -1,5 +1,5 @@
-export default {
-    "files": ["!examples"],
+exports.default = {
+    "files": ["src/**/*.test.ts"],
     "extensions": ["ts"],
     "require": ["ts-node/register"]
 }
