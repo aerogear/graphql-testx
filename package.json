@@ -27,7 +27,7 @@
   "dependencies": {
     "apollo-server-express": "2.9.12",
     "express": "4.17.1",
-    "graphback": "0.10.0-rc2",
+    "graphback": "1.0.0",
     "graphql": "14.5.8",
     "graphql-migrations": "0.10.0-rc2",
     "graphql-tag": "2.10.1",
