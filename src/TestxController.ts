@@ -7,12 +7,12 @@ import { getAvailablePort } from "./utils";
 type UnknownFunction = (...args: unknown[]) => unknown;
 
 export class TestxController {
-  private server: TestxServer;
-  private controller?: Server;
+  private testxServer: TestxServer;
+  private controllerServer?: Server;
   private controllerPort?: number;
 
-  constructor(schema: string) {
-    this.server = new TestxServer(schema);
+  constructor(server: TestxServer) {
+    this.testxServer = server;
   }
 
   public async start(): Promise<void> {
@@ -37,7 +37,7 @@ export class TestxController {
       }
 
       // cast method to unknown
-      const method = this.server[name].bind(this.server) as UnknownFunction;
+      const method = this.testxServer[name].bind(this.testxServer) as UnknownFunction;
 
       // execute the api method
       const result = method(...(req.body.args || []));
@@ -55,21 +55,21 @@ export class TestxController {
     });
 
     this.controllerPort = await getAvailablePort();
-    this.controller = app.listen(this.controllerPort);
+    this.controllerServer = app.listen(this.controllerPort);
   }
 
   public async close(): Promise<void> {
     // close the director server
     await new Promise(resolve => {
-      if (this.controller) {
-        this.controller.close(() => {
+      if (this.controllerServer) {
+        this.controllerServer.close(() => {
           resolve();
         });
       }
     });
 
     // also close the testx server
-    await this.server.close();
+    await this.testxServer.close();
   }
 
   public async httpUrl(): Promise<string> {

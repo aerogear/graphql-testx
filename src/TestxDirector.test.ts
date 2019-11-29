@@ -3,6 +3,7 @@ import { request } from "graphql-request";
 import gql from "graphql-tag";
 import { TestxDirector } from "./TestxDirector";
 import { TestxController } from "./TestxController";
+import { TestxServer } from "./TestxServer";
 
 const ITEM_MODEL = `
   type Item {
@@ -11,10 +12,18 @@ const ITEM_MODEL = `
   }
 `;
 
-test("test start() and close() methods", async t => {
-  const controller = new TestxController(ITEM_MODEL);
+async function newTestx(
+  schema: string
+): Promise<[TestxController, TestxDirector]> {
+  const server = new TestxServer(schema);
+  const controller = new TestxController(server);
   await controller.start();
   const director = new TestxDirector(await controller.httpUrl());
+  return [controller, director];
+}
+
+test("test start() and close() methods", async t => {
+  const [controller, director] = await newTestx(ITEM_MODEL);
 
   await director.start();
   const httpUrl = await director.httpUrl();
@@ -37,9 +46,7 @@ test("test start() and close() methods", async t => {
 });
 
 test("stop() method should preserve stored items", async t => {
-  const controller = new TestxController(ITEM_MODEL);
-  await controller.start();
-  const director = new TestxDirector(await controller.httpUrl());
+  const [controller, director] = await newTestx(ITEM_MODEL);
 
   await director.start();
   const httpUrl = await director.httpUrl();
@@ -74,9 +81,7 @@ test("stop() method should preserve stored items", async t => {
 });
 
 test("cleanDatabase() method should remove all items", async t => {
-  const controller = new TestxController(ITEM_MODEL);
-  await controller.start();
-  const director = new TestxDirector(await controller.httpUrl());
+  const [controller, director] = await newTestx(ITEM_MODEL);
 
   await director.start();
   const httpUrl = await director.httpUrl();
@@ -102,9 +107,7 @@ test("cleanDatabase() method should remove all items", async t => {
 });
 
 test("setData() should init DB with specified data and replace existing data", async t => {
-  const controller = new TestxController(ITEM_MODEL);
-  await controller.start();
-  const director = new TestxDirector(await controller.httpUrl());
+  const [controller, director] = await newTestx(ITEM_MODEL);
 
   await director.start();
   const httpUrl = await director.httpUrl();
@@ -136,9 +139,8 @@ test("setData() should init DB with specified data and replace existing data", a
 });
 
 test("getGraphQLSchema() method should produce GQL schema with required definitions", async t => {
-  const controller = new TestxController(ITEM_MODEL);
-  await controller.start();
-  const director = new TestxDirector(await controller.httpUrl());
+  const [controller, director] = await newTestx(ITEM_MODEL);
+
   const defsToBeGenerated = [
     "Item",
     "ItemInput",
@@ -161,9 +163,8 @@ test("getGraphQLSchema() method should produce GQL schema with required definiti
 });
 
 test("getDatabaseSchema() method should return column names for all types to be stored at DB", async t => {
-  const controller = new TestxController(ITEM_MODEL);
-  await controller.start();
-  const director = new TestxDirector(await controller.httpUrl());
+  const [controller, director] = await newTestx(ITEM_MODEL);
+
   const itemDbSchema = ["id", "title", "created_at", "updated_at"];
 
   await director.start();
