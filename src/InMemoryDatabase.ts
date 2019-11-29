@@ -2,16 +2,7 @@ import Knex from "knex";
 import { KnexDBDataProvider, GraphbackDataProvider } from "graphback";
 import { DropCreateDatabaseAlways, migrate } from "graphql-migrations";
 import knexCleaner from "knex-cleaner";
-
-export interface ImportData {
-  [table: string]: {
-    [column: string]: unknown;
-  }[];
-}
-
-export interface DatabaseSchema {
-  [table: string]: string[];
-}
+import { DatabaseSchema, ImportData } from "./generics";
 
 export class InMemoryDatabase {
   private knex: Knex;

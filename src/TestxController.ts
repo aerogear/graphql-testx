@@ -3,6 +3,7 @@ import { Server } from "http";
 import express, { json } from "express";
 import { isTestxApiMethod } from "./TestxApi";
 import { getAvailablePort } from "./utils";
+import cors from "cors";
 
 type UnknownFunction = (...args: unknown[]) => unknown;
 
@@ -18,6 +19,7 @@ export class TestxController {
   public async start(): Promise<void> {
     const app = express();
     app.use(json());
+    app.use(cors());
 
     app.post("/", (req, res) => {
       if (req.body === undefined) {
@@ -37,7 +39,9 @@ export class TestxController {
       }
 
       // cast method to unknown
-      const method = this.testxServer[name].bind(this.testxServer) as UnknownFunction;
+      const method = this.testxServer[name].bind(
+        this.testxServer
+      ) as UnknownFunction;
 
       // execute the api method
       const result = method(...(req.body.args || []));

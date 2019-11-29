@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ImportData, DatabaseSchema } from "./InMemoryDatabase";
+import { ImportData, DatabaseSchema } from "./generics";
 import { TestxApi } from "./TestxApi";
 
 export class TestxDirector implements TestxApi {

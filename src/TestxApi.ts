@@ -1,4 +1,4 @@
-import { ImportData, DatabaseSchema } from "./InMemoryDatabase";
+import { ImportData, DatabaseSchema } from "./generics";
 
 export interface StringDic {
   [name: string]: string;
