@@ -7,7 +7,6 @@ import {
 import { initGraphbackServer, GraphbackServer } from "./GraphbackServer";
 import { GraphQLBackendCreator } from "graphback";
 import { GraphbackClient, initGraphbackClient } from "./GraphbackClient";
-import { Server } from "http";
 import { TestxApi, StringDic } from "./TestxApi";
 
 const DEFAULT_CONFIG = {
