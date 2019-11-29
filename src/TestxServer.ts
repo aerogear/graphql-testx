@@ -25,7 +25,20 @@ const DEFAULT_CONFIG = {
 };
 
 /**
- * Class to represent a TestxServer.
+ * Describes a TestxServer. A TestxServer generates a GraphQL server from a data
+ * model with the resolvers, mutations, type defs and connection with a real
+ * in-memory database, and exposes it in a url.
+ * 
+ * @example
+ * const server = new TestxServer(`
+ * type Item {
+ *   id: ID!
+ *   name: String
+ *   title: String!
+ * }`);
+ * await server.start();
+ * console.log(`Running on ${server.url()}`);
+ * server.close();
  */
 export class TestxServer {
   private schema: string;
