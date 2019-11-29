@@ -1,11 +1,11 @@
 import portastic from "portastic";
 
-export function sourceModule(input: string, modules: { [id: string]: any } = {}): any {
+export function sourceModule(input: string, modules: { [id: string]: unknown } = {}): unknown {
   const m = new Function("exports", "require", "module", input);
   const fakeExports = { default: null };
   const fakeModule = { exports: fakeExports };
 
-  const fakeRequire = (id: string) => {
+  const fakeRequire = (id: string): unknown => {
     if (id in modules) {
       return modules[id];
     }
@@ -16,7 +16,7 @@ export function sourceModule(input: string, modules: { [id: string]: any } = {})
   return fakeExports;
 }
 
-export async function getAvailablePort() {
+export async function getAvailablePort(): Promise<number> {
   const ports = await portastic.find({ min: 29170, max: 29998 });
 
   if (ports.length < 1) {

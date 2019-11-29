@@ -1,7 +1,7 @@
 {
   "name": "graphql-testx-apollo-client-example",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha 'test/**/*.spec.ts'"
   },
   "dependencies": {
     "@types/chai": "4.2.5",

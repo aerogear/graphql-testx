@@ -5,7 +5,9 @@
     "moduleResolution": "node",
     "declaration": true,
     "outDir": "dist",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "strict": true
   },
-  "include": ["src/**/*", "bin/printSchema.ts"]
+  "include": ["src/**/*", "bin/*"],
+  "exclude": ["**/*.test.ts"]
 }

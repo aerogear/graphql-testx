@@ -15,6 +15,7 @@
     "@types/node": "12.12.14",
     "@typescript-eslint/eslint-plugin": "2.9.0",
     "@typescript-eslint/parser": "2.9.0",
+    "@types/pino": "5.8.13",
     "apollo-boost": "0.4.4",
     "ava": "2.4.0",
     "eslint": "6.7.1",
@@ -26,13 +27,14 @@
   "dependencies": {
     "apollo-server-express": "2.9.12",
     "express": "4.17.1",
-    "graphback": "0.9.6",
+    "graphback": "0.10.0-rc2",
     "graphql": "14.5.8",
+    "graphql-migrations": "0.10.0-rc2",
     "graphql-tag": "2.10.1",
-    "typescript": "3.7.2",
     "graphql-tools": "4.0.6",
     "knex-cleaner": "1.3.0",
-    "portastic": "1.0.1"
+    "portastic": "1.0.1",
+    "typescript": "3.7.2"
   },
   "bin": {
     "print-schema": "./dist/bin/printSchema.js"
