@@ -2,7 +2,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: circleci/node:12.13
+      - image: circleci/node:lts-browsers
     steps:
       - checkout
       - restore_cache:
