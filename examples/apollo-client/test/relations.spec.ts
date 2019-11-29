@@ -6,7 +6,8 @@ import { TestxServer } from "../../../src";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 
-describe("test relations", () => {
+// Broken because of: https://github.com/aerogear/graphql-testx/issues/82
+describe.skip("test relations", () => {
   let server: TestxServer;
 
   const CREATE_BAR = gql`
