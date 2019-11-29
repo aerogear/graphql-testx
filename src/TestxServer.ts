@@ -8,9 +8,7 @@ import { initGraphbackServer, GraphbackServer } from "./GraphbackServer";
 import { GraphQLBackendCreator } from "graphback";
 import { GraphbackClient, initGraphbackClient } from "./GraphbackClient";
 import { Server } from "http";
-import express from "express";
-import bodyParser from "body-parser";
-import { TestxApi, StringDic, isTestxApiMethod } from "./TestxApi";
+import { TestxApi, StringDic } from "./TestxApi";
 
 const DEFAULT_CONFIG = {
   create: true,
@@ -30,62 +28,9 @@ export class TestxServer implements TestxApi {
   private client?: GraphbackClient;
   private server?: GraphbackServer;
   private database?: InMemoryDatabase;
-  private cardinal?: Server;
 
   constructor(schema: string) {
     this.schema = schema;
-  }
-
-  public startCardinal(port = 4001): void {
-    const app = express();
-    app.use(bodyParser.json());
-
-    app.post("/", (req, res) => {
-      if (req.body === undefined) {
-        res.status(500).send("Error: body is undefined");
-        return;
-      }
-
-      if (req.body.name === undefined) {
-        res.status(500).send("Error: no method name passed");
-        return;
-      }
-
-      const name = req.body.name;
-      if (!isTestxApiMethod(name)) {
-        res.status(500).send(`Error: ${name} is not a TestxApi method`);
-        return;
-      }
-
-      // cast method to unknown
-      const method = this[name].bind(this) as (...args: unknown[]) => unknown;
-
-      // execute the api method
-      const result = method(...(req.body.args || []));
-
-      // cast to promise no matter what it is
-      Promise.resolve(result).then(
-        r => {
-          res.json(r);
-        },
-        e => {
-          console.error(e);
-          res.status(500).send(`Unknown Error: ${e}`);
-        }
-      );
-    });
-
-    this.cardinal = app.listen(port);
-  }
-
-  public async closeCardinal(): Promise<void> {
-    return new Promise(resolve => {
-      if (this.cardinal) {
-        this.cardinal.close(() => {
-          resolve();
-        });
-      }
-    });
   }
 
   public async start(): Promise<void> {
