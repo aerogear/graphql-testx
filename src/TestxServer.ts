@@ -7,6 +7,10 @@ import {
 import { initGraphbackServer, GraphbackServer } from "./GraphbackServer";
 import { GraphQLBackendCreator } from "graphback";
 import { GraphbackClient, initGraphbackClient } from "./GraphbackClient";
+import { Server } from "http";
+import express from "express";
+import bodyParser from "body-parser";
+import { TestxApi, StringDic, isTestxApiMethod } from "./TestxApi";
 
 const DEFAULT_CONFIG = {
   create: true,
@@ -20,15 +24,68 @@ const DEFAULT_CONFIG = {
   disableGen: false
 };
 
-export class TestxServer {
+export class TestxServer implements TestxApi {
   private schema: string;
   private creator?: GraphQLBackendCreator;
   private client?: GraphbackClient;
   private server?: GraphbackServer;
   private database?: InMemoryDatabase;
+  private cardinal?: Server;
 
   constructor(schema: string) {
     this.schema = schema;
+  }
+
+  public startCardinal(port = 4001): void {
+    const app = express();
+    app.use(bodyParser.json());
+
+    app.post("/", (req, res) => {
+      if (req.body === undefined) {
+        res.status(500).send("Error: body is undefined");
+        return;
+      }
+
+      if (req.body.name === undefined) {
+        res.status(500).send("Error: no method name passed");
+        return;
+      }
+
+      const name = req.body.name;
+      if (!isTestxApiMethod(name)) {
+        res.status(500).send(`Error: ${name} is not a TestxApi method`);
+        return;
+      }
+
+      // cast method to unknown
+      const method = this[name].bind(this) as (...args: unknown[]) => unknown;
+
+      // execute the api method
+      const result = method(...(req.body.args || []));
+
+      // cast to promise no matter what it is
+      Promise.resolve(result).then(
+        r => {
+          res.json(r);
+        },
+        e => {
+          console.error(e);
+          res.status(500).send(`Unknown Error: ${e}`);
+        }
+      );
+    });
+
+    this.cardinal = app.listen(port);
+  }
+
+  public async closeCardinal(): Promise<void> {
+    return new Promise(resolve => {
+      if (this.cardinal) {
+        this.cardinal.close(() => {
+          resolve();
+        });
+      }
+    });
   }
 
   public async start(): Promise<void> {
@@ -65,7 +122,7 @@ export class TestxServer {
     }
   }
 
-  public url(): string {
+  public async httpUrl(): Promise<string> {
     if (this.server === undefined) {
       throw new Error(
         `can not retrieve the http url from undefined server, ` +
@@ -73,10 +130,10 @@ export class TestxServer {
       );
     }
 
-    return this.server.getHttpUrl();
+    return Promise.resolve(this.server.getHttpUrl());
   }
 
-  public getGraphQlSchema(): string {
+  public async getGraphQlSchema(): Promise<string> {
     if (this.server === undefined) {
       throw new Error(
         `can not retrieve the graphql schema from undefined server, ` +
@@ -84,7 +141,7 @@ export class TestxServer {
       );
     }
 
-    return this.server.getSchema();
+    return Promise.resolve(this.server.getSchema());
   }
 
   public async getDatabaseSchema(): Promise<DatabaseSchema> {
@@ -130,7 +187,7 @@ export class TestxServer {
     }
   }
 
-  public getQueries(): { [name: string]: string } {
+  public async getQueries(): Promise<StringDic> {
     if (this.client === undefined) {
       throw new Error(
         `can not retrieve client queries from undefined client, ` +
@@ -138,10 +195,10 @@ export class TestxServer {
       );
     }
 
-    return this.client.getQueries();
+    return Promise.resolve(this.client.getQueries());
   }
 
-  public getMutations(): { [name: string]: string } {
+  public async getMutations(): Promise<StringDic> {
     if (this.client === undefined) {
       throw new Error(
         `can not retrieve client mutations from undefined client, ` +
@@ -149,6 +206,6 @@ export class TestxServer {
       );
     }
 
-    return this.client.getMutations();
+    return Promise.resolve(this.client.getMutations());
   }
 }

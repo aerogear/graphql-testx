@@ -2,6 +2,7 @@ import { serial as test } from "ava";
 import { request } from "graphql-request";
 import gql from "graphql-tag";
 import { TestxServer } from "./TestxServer";
+import { TestxDirector } from "./TestxDirector";
 
 const ITEM_MODEL = `
   type Item {
@@ -10,18 +11,25 @@ const ITEM_MODEL = `
   }
 `;
 
-test("test start() and close() methods", async t => {
+function initServer(): [TestxServer, TestxDirector] {
   const server = new TestxServer(ITEM_MODEL);
+  server.startCardinal(4004);
+  const director = new TestxDirector(`http://localhost:4004`);
+  return [server, director];
+}
 
-  await server.start();
-  const httpUrl = await server.httpUrl();
+test("test start() and close() methods", async t => {
+  const [server, director] = initServer();
+
+  await director.start();
+  const httpUrl = await director.httpUrl();
   t.assert(httpUrl);
 
-  const queries = await server.getQueries();
+  const queries = await director.getQueries();
   const result = await request(httpUrl, queries.findAllItems);
   t.assert(result.findAllItems.length === 0);
 
-  await server.close();
+  await director.close();
   await t.throwsAsync(
     async () => {
       await request(httpUrl, queries.findAllItems);
@@ -29,12 +37,14 @@ test("test start() and close() methods", async t => {
     null,
     "Should throw an error after closing the server (ECONNREFUSED)"
   );
+
+  await server.closeCardinal();
 });
 
 test.skip("start multiple TestxServer servers at the same time", async t => {
   // Issue: https://github.com/aerogear/graphql-testx/issues/47
-  const server1 = new TestxServer(ITEM_MODEL);
-  const server2 = new TestxServer(ITEM_MODEL);
+  const [server1] = initServer();
+  const [server2] = initServer();
 
   // start both servers at the same time
   await Promise.all([server1.start(), server2.start()]);
@@ -43,12 +53,12 @@ test.skip("start multiple TestxServer servers at the same time", async t => {
 });
 
 test("stop() method should preserve stored items", async t => {
-  const server = new TestxServer(ITEM_MODEL);
+  const [server, director] = initServer();
 
-  await server.start();
-  const httpUrl = await server.httpUrl();
-  const queries = await server.getQueries();
-  const mutations = await server.getMutations();
+  await director.start();
+  const httpUrl = await director.httpUrl();
+  const queries = await director.getQueries();
+  const mutations = await director.getMutations();
 
   await request(httpUrl, mutations.createItem, { title: "test" });
   let result = await request(httpUrl, queries.findAllItems);
@@ -57,7 +67,7 @@ test("stop() method should preserve stored items", async t => {
     "Created item should be successfully fetched"
   );
 
-  await server.stop();
+  await director.stop();
 
   await t.throwsAsync(
     async () => {
@@ -67,23 +77,23 @@ test("stop() method should preserve stored items", async t => {
     "Should throw an error after stopping the server (ECONNREFUSED)"
   );
 
-  await server.start();
+  await director.start();
   result = await request(httpUrl, queries.findAllItems);
   t.assert(
     result.findAllItems.length === 1,
     "The item should be still present after resuming the server"
   );
 
-  await server.close();
+  await server.closeCardinal();
 });
 
 test("cleanDatabase() method should remove all items", async t => {
-  const server = new TestxServer(ITEM_MODEL);
+  const [server, director] = initServer();
 
-  await server.start();
-  const httpUrl = await server.httpUrl();
-  const queries = await server.getQueries();
-  const mutations = await server.getMutations();
+  await director.start();
+  const httpUrl = await director.httpUrl();
+  const queries = await director.getQueries();
+  const mutations = await director.getMutations();
 
   await request(httpUrl, mutations.createItem, { title: "test" });
   let result = await request(httpUrl, queries.findAllItems);
@@ -92,7 +102,7 @@ test("cleanDatabase() method should remove all items", async t => {
     "Created item should be successfully fetched"
   );
 
-  await server.cleanDatabase();
+  await director.cleanDatabase();
 
   result = await request(httpUrl, queries.findAllItems);
   t.assert(
@@ -100,16 +110,16 @@ test("cleanDatabase() method should remove all items", async t => {
     "The item should be gone after calling cleanDatabase() method"
   );
 
-  await server.close();
+  await server.closeCardinal();
 });
 
 test("setData() should init DB with specified data and replace existing data", async t => {
-  const server = new TestxServer(ITEM_MODEL);
+  const [server, director] = initServer();
 
-  await server.start();
-  const httpUrl = await server.httpUrl();
-  const queries = await server.getQueries();
-  const mutations = await server.getMutations();
+  await director.start();
+  const httpUrl = await director.httpUrl();
+  const queries = await director.getQueries();
+  const mutations = await director.getMutations();
 
   await request(httpUrl, mutations.createItem, { title: "test" });
   let result = await request(httpUrl, queries.findAllItems);
@@ -122,7 +132,7 @@ test("setData() should init DB with specified data and replace existing data", a
     { id: "0", title: "foo" },
     { id: "1", title: "bar" }
   ];
-  await server.setData({
+  await director.setData({
     item: dataToSet
   });
   result = await request(httpUrl, queries.findAllItems);
@@ -132,11 +142,11 @@ test("setData() should init DB with specified data and replace existing data", a
     "Only items created with setData() method should be fetched"
   );
 
-  await server.close();
+  await server.closeCardinal();
 });
 
 test("getGraphQLSchema() method should produce GQL schema with required definitions", async t => {
-  const server = new TestxServer(ITEM_MODEL);
+  const [server, director] = initServer();
   const defsToBeGenerated = [
     "Item",
     "ItemInput",
@@ -145,8 +155,8 @@ test("getGraphQLSchema() method should produce GQL schema with required definiti
     "Mutation"
   ];
 
-  await server.start();
-  const schema = await server.getGraphQlSchema();
+  await director.start();
+  const schema = await director.getGraphQlSchema();
   t.assert(typeof schema === "string");
 
   const parsedSchema = gql`
@@ -155,17 +165,17 @@ test("getGraphQLSchema() method should produce GQL schema with required definiti
   const definitions = parsedSchema.definitions.map(d => d.name.value);
   t.deepEqual(definitions, defsToBeGenerated);
 
-  await server.close();
+  await server.closeCardinal();
 });
 
 test("getDatabaseSchema() method should return column names for all types to be stored at DB", async t => {
-  const server = new TestxServer(ITEM_MODEL);
+  const [server, director] = initServer();
   const itemDbSchema = ["id", "title", "created_at", "updated_at"];
 
-  await server.start();
-  const dbSchema = await server.getDatabaseSchema();
+  await director.start();
+  const dbSchema = await director.getDatabaseSchema();
   t.assert(dbSchema["item"]);
   t.deepEqual(dbSchema["item"], itemDbSchema);
 
-  await server.close();
+  server.closeCardinal();
 });

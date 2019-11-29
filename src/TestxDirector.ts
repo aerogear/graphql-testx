@@ -1,0 +1,64 @@
+import axios from "axios";
+import { ImportData, DatabaseSchema } from "./InMemoryDatabase";
+import { TestxApi } from "./TestxApi";
+
+export class TestxDirector implements TestxApi {
+  private endpoint: string;
+
+  constructor(url: string) {
+    this.endpoint = url;
+  }
+
+  private async call<T>(name: keyof TestxApi, ...args: unknown[]): Promise<T> {
+    try {
+      const response = await axios.post<T>(this.endpoint, { name, args });
+      return response.data;
+    } catch (e) {
+      throw new Error(`Call Failed: ${e.response.data}`);
+    }
+  }
+
+  public async start(): Promise<void> {
+    return await this.call("start");
+  }
+
+  public async stop(): Promise<void> {
+    return await this.call("stop");
+  }
+
+  public async close(): Promise<void> {
+    return await this.call("close");
+  }
+
+  public async cleanDatabase(): Promise<void> {
+    return await this.call("cleanDatabase");
+  }
+
+  public async httpUrl(): Promise<string> {
+    return await this.call("httpUrl");
+  }
+
+  public async getGraphQlSchema(): Promise<string> {
+    return await this.call("getGraphQlSchema");
+  }
+
+  public async getDatabaseSchema(): Promise<DatabaseSchema> {
+    return await this.call("getDatabaseSchema");
+  }
+
+  public async setData(data: ImportData): Promise<void> {
+    return await this.call("setData", data);
+  }
+
+  public async bootstrap(): Promise<void> {
+    return await this.call("bootstrap");
+  }
+
+  public async getQueries(): Promise<{ [name: string]: string }> {
+    return await this.call("getQueries");
+  }
+
+  public async getMutations(): Promise<{ [name: string]: string }> {
+    return await this.call("getMutations");
+  }
+}
