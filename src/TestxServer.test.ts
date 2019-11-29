@@ -1,7 +1,7 @@
 import {serial as test} from "ava";
 import { request } from "graphql-request";
 import gql from "graphql-tag"
-import { TestxServer } from ".";
+import { TestxServer } from "./TestxServer";
 
 const ITEM_MODEL = `
   type Item {
