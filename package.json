@@ -24,6 +24,7 @@
     "ts-node": "8.5.3"
   },
   "dependencies": {
+    "@types/pino": "5.8.13",
     "apollo-server-express": "2.9.12",
     "express": "4.17.1",
     "graphback": "0.10.0-rc2",
