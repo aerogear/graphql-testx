@@ -1,12 +1,12 @@
 {
   "name": "graphql-testx-karma-example",
   "scripts": {
-    "test": "karma start --testx-url \"$(./server/cli.js start)\"",
-    "posttest": "node ./server/cli.js stop"
+    "test": "gulp test"
   },
   "dependencies": {
     "chai": "4.2.0",
     "graphql-request": "1.8.2",
+    "gulp": "4.0.2",
     "karma": "4.4.1",
     "karma-chai": "0.1.0",
     "karma-chrome-launcher": "3.1.0",
