@@ -44,7 +44,7 @@ describe.skip("test relations", () => {
     server = new TestxServer(schema);
 
     await server.start();
-    console.log(`Running on ${server.url()}`);
+    console.log(`Running on ${await server.httpUrl()}`);
   });
 
   after("close graphql server", () => {
@@ -60,7 +60,7 @@ describe.skip("test relations", () => {
   });
 
   it("should add a new bar to existing foo", async () => {
-    const client = new ApolloClient({ uri: server.url(), fetch });
+    const client = new ApolloClient({ uri: await server.httpUrl(), fetch });
 
     const createBarResult = await client.mutate({
       mutation: CREATE_BAR,
