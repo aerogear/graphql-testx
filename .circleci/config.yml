@@ -29,6 +29,12 @@ jobs:
             cd examples/offix
             yarn install
             yarn test
+      - run:
+          name: test karma example
+          command: |
+            cd examples/karma
+            yarn install
+            yarn test
   publish:
     docker:
       - image: circleci/node:12.13
