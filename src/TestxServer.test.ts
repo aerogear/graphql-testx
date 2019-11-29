@@ -24,6 +24,22 @@ test("test start() and close() methods", async t => {
 
 });
 
+test.only("should start the server after closing it", async t => {
+  const server = new TestxServer(ITEM_MODEL);
+
+  await server.start();
+  const httpUrl = server.url()
+
+  await request(httpUrl, server.getMutations().createItem, {title: "test"});
+
+  await server.close()
+  await t.throwsAsync(async() => { await request(httpUrl, server.getQueries().findAllItems) }, null, "Should throw an error after closing the server (ECONNREFUSED)")
+
+  await server.start()
+  const result = await request(server.url(), server.getQueries().findAllItems);
+  t.assert(result.findAllItems.length === 0, "Should be empty");
+})
+
 test.skip("start multiple TestxServer servers at the same time", async t => {
   // Issue: https://github.com/aerogear/graphql-testx/issues/47
   const server1 = new TestxServer(ITEM_MODEL);
