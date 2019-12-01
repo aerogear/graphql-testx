@@ -224,4 +224,20 @@ export class TestxServer implements TestxApi {
 
     return Promise.resolve(this.client.getMutations());
   }
+
+
+    /**
+   * Get the generated client subscriptions.
+   * @return {Object} An object containing the subscriptions as properties
+   */
+  public getSubscriptions(): { [name: string]: string } {
+    if (this.client === undefined) {
+      throw new Error(
+        `can not retrieve client subscriptions from undefined client, ` +
+          `use bootstrap() or start() in order to initialize the client`
+      );
+    }
+
+    return this.client.getSubscriptions();
+  }
 }
