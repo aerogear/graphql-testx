@@ -20,11 +20,13 @@ export class GraphbackClient {
   private queries: StringDic;
   private mutations: StringDic;
   private fragments: StringDic;
+  private subscriptions: StringDic;
 
-  constructor(queries: StringDic, mutations: StringDic, fragments: StringDic) {
+  constructor(queries: StringDic, mutations: StringDic, fragments: StringDic, subscriptions: StringDic) {
     this.queries = queries;
     this.mutations = mutations;
     this.fragments = fragments;
+    this.subscriptions = subscriptions;
   }
 
   public getQueries(): StringDic {
@@ -38,6 +40,10 @@ export class GraphbackClient {
   public getFragments(): StringDic {
     return this.fragments;
   }
+
+  public getSubscriptions(): StringDic {
+    return this.subscriptions;
+  }
 }
 
 export async function initGraphbackClient(
@@ -49,6 +55,7 @@ export async function initGraphbackClient(
   const fragments: StringDic = {};
   const queries: StringDic = {};
   const mutations: StringDic = {};
+  const subscriptions: StringDic = {};
 
   if (client.fragments !== undefined) {
     client.fragments.forEach(item => {
@@ -72,5 +79,12 @@ export async function initGraphbackClient(
     });
   }
 
-  return new GraphbackClient(queries, mutations, fragments);
+  if (client.subscriptions !== undefined) {
+    client.subscriptions.forEach(item => {
+      const m = sourceModule(transpile(item.implementation), modules);
+      subscriptions[item.name] = print((m as ASTNodeDic)[item.name]);
+    });
+  }
+
+  return new GraphbackClient(queries, mutations, fragments, subscriptions);
 }
