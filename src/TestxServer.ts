@@ -15,9 +15,9 @@ const DEFAULT_CONFIG = {
   findAll: true,
   find: true,
   delete: true,
-  subCreate: false,
-  subUpdate: false,
-  subDelete: false,
+  subCreate: true,
+  subUpdate: true,
+  subDelete: true,
   disableGen: false
 };
 
