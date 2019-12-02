@@ -9,7 +9,7 @@ const ENDPOINT = "/graphql";
 
 export class GraphbackServer {
   private graphqlSchema: string;
-  private httpServer?: Server;
+  private httpServer: Server;
   private serverPort?: number;
 
   constructor(httpServer: Server, graphqlSchema: string) {
