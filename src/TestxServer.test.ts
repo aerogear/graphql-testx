@@ -35,15 +35,17 @@ test.only("should start the server after closing it", async t => {
   const server = new TestxServer(ITEM_MODEL);
 
   await server.start();
-  const httpUrl = server.url()
+  const httpUrl = await server.httpUrl()
+  const mutations = await server.getMutations();
+  const queries = await server.getQueries();
 
-  await request(httpUrl, server.getMutations().createItem, {title: "test"});
+  await request(httpUrl, mutations.createItem, {title: "test"});
 
   await server.close()
-  await t.throwsAsync(async() => { await request(httpUrl, server.getQueries().findAllItems) }, null, "Should throw an error after closing the server (ECONNREFUSED)")
+  await t.throwsAsync(async() => { await request(httpUrl, queries.findAllItems) }, null, "Should throw an error after closing the server (ECONNREFUSED)")
 
   await server.start()
-  const result = await request(server.url(), server.getQueries().findAllItems);
+  const result = await request(httpUrl, queries.findAllItems);
   t.assert(result.findAllItems.length === 0, "Should be empty");
 })
 
