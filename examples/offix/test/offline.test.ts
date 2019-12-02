@@ -46,11 +46,14 @@ async function newClient(
 let server: TestxServer;
 
 beforeAll(async () => {
-  const schema = readFileSync(resolve(__dirname, '../fixtures/schema.graphql'), 'utf8');
+  const schema = readFileSync(
+    resolve(__dirname, "../fixtures/schema.graphql"),
+    "utf8"
+  );
   server = new TestxServer(schema);
 
   await server.start();
-  console.log(`Running on ${server.url()}`);
+  console.log(`Running on ${await server.httpUrl()}`);
 }, 10 * 1000);
 
 afterAll(() => {
@@ -61,13 +64,15 @@ it("update an object while offline and assert that the object get updated on the
   expect.assertions(10);
 
   // setup client and network status in each tests
-  const [client, network] = await newClient(server.url());
+  const [client, network] = await newClient(await server.httpUrl());
+  const queries = await server.getQueries();
+  const mutations = await server.getMutations();
 
   network.setOnline(true);
 
   // create the task while online
   const createTaskResult = await client.offlineMutation({
-    mutation: gql(server.getMutations().createTask),
+    mutation: gql(mutations.createTask),
     variables: {
       version: 1,
       title: "bo",
@@ -87,7 +92,7 @@ it("update an object while offline and assert that the object get updated on the
   // update the task while offline
   try {
     await client.offlineMutation({
-      mutation: gql(server.getMutations().updateTask),
+      mutation: gql(mutations.updateTask),
       variables: {
         ...newTask,
         title: "something new",
@@ -107,7 +112,7 @@ it("update an object while offline and assert that the object get updated on the
 
   // query all tasks ignoring the cache
   const findAllTasksResult = await client.query({
-    query: gql(server.getQueries().findAllTasks),
+    query: gql(queries.findAllTasks),
     fetchPolicy: "network-only"
   });
 

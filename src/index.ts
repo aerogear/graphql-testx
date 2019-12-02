@@ -1,1 +1,2 @@
-export { TestxServer } from "./TestxServer"
+export { TestxServer } from "./TestxServer";
+export { TestxController } from "./TestxController";

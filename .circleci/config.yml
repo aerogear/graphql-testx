@@ -2,7 +2,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: circleci/node:12.13
+      - image: circleci/node:lts-browsers
     steps:
       - checkout
       - restore_cache:
@@ -27,6 +27,12 @@ jobs:
           name: test offix example
           command: |
             cd examples/offix
+            yarn install
+            yarn test
+      - run:
+          name: test karma example
+          command: |
+            cd examples/karma
             yarn install
             yarn test
   publish:

@@ -1,12 +1,9 @@
-import {
-  initInMemoryDatabase,
-  InMemoryDatabase,
-  ImportData,
-  DatabaseSchema
-} from "./InMemoryDatabase";
+import { initInMemoryDatabase, InMemoryDatabase } from "./InMemoryDatabase";
 import { initGraphbackServer, GraphbackServer } from "./GraphbackServer";
 import { GraphQLBackendCreator } from "graphback";
 import { GraphbackClient, initGraphbackClient } from "./GraphbackClient";
+import { TestxApi, StringDic } from "./TestxApi";
+import { DatabaseSchema, ImportData } from "./generics";
 
 /**
  * Graphback configuration for generating the graphql resolvers.
@@ -28,7 +25,7 @@ const DEFAULT_CONFIG = {
  * Describes a TestxServer. A TestxServer generates a GraphQL server from a data
  * model with the resolvers, mutations, type defs and connection with a real
  * in-memory database, and exposes it in a url.
- * 
+ *
  * @example
  * const server = new TestxServer(`
  * type Item {
@@ -40,7 +37,7 @@ const DEFAULT_CONFIG = {
  * console.log(`Running on ${server.url()}`);
  * server.close();
  */
-export class TestxServer {
+export class TestxServer implements TestxApi {
   private schema: string;
   private creator?: GraphQLBackendCreator;
   private client?: GraphbackClient;
@@ -49,7 +46,7 @@ export class TestxServer {
 
   /**
    * Create a TestxServer.
-   * @param {string} schema - The Grahpback data model definition 
+   * @param {string} schema - The Grahpback data model definition
    * @see {@link https://graphback.dev/docs/datamodel|Grahpback data model definition}
    */
   constructor(schema: string) {
@@ -59,7 +56,7 @@ export class TestxServer {
   /**
    * Executes the bootstrap() method to generate the GraphQL backend and initialize
    * the server.
-   * Starts the GraphQL server exposing it in http://localhost:port/graphql, 
+   * Starts the GraphQL server exposing it in http://localhost:port/graphql,
    * the port is generated in the range 29170 - 29998.
    * The full url server can be retrieved by url() method after the server starts.
    */
@@ -77,7 +74,7 @@ export class TestxServer {
   /**
    * Stops the server to receive requests, but keeps the generated GraphQL backend
    * and database connection.
-   * The server can be resumed with the stored GraphQL backend and database 
+   * The server can be resumed with the stored GraphQL backend and database
    * connection by using start() method.
    */
   public async stop(): Promise<void> {
@@ -112,7 +109,7 @@ export class TestxServer {
   /**
    * Get the server URL.
    */
-  public url(): string {
+  public async httpUrl(): Promise<string> {
     if (this.server === undefined) {
       throw new Error(
         `can not retrieve the http url from undefined server, ` +
@@ -120,15 +117,15 @@ export class TestxServer {
       );
     }
 
-    return this.server.getHttpUrl();
+    return Promise.resolve(this.server.getHttpUrl());
   }
 
   /**
    * Get the generated GraphQL schema.
-   * Only returns the GraphQL schema if it's called after using bootstrap() or 
+   * Only returns the GraphQL schema if it's called after using bootstrap() or
    * start() methods.
    */
-  public getGraphQlSchema(): string {
+  public async getGraphQlSchema(): Promise<string> {
     if (this.server === undefined) {
       throw new Error(
         `can not retrieve the graphql schema from undefined server, ` +
@@ -136,12 +133,12 @@ export class TestxServer {
       );
     }
 
-    return this.server.getSchema();
+    return Promise.resolve(this.server.getSchema());
   }
 
   /**
    * Get the generated database schema.
-   * Only returns the database schema if it's called after using bootstrap() or 
+   * Only returns the database schema if it's called after using bootstrap() or
    * start() methods.
    * @return {Object} An object containing the name of the tables as properties, each property has as value the info about the corresponding table
    */
@@ -173,8 +170,8 @@ export class TestxServer {
   }
 
   /**
-   * Bootstraps the TestxServer, generating the GraphQL backend with the 
-   * database connection, client queries and mutations and filling in some 
+   * Bootstraps the TestxServer, generating the GraphQL backend with the
+   * database connection, client queries and mutations and filling in some
    * properties needed to start the server.
    */
   public async bootstrap(): Promise<void> {
@@ -202,7 +199,7 @@ export class TestxServer {
    * Get the generated client queries.
    * @return {Object} An object containing the queries as properties
    */
-  public getQueries(): { [name: string]: string } {
+  public async getQueries(): Promise<StringDic> {
     if (this.client === undefined) {
       throw new Error(
         `can not retrieve client queries from undefined client, ` +
@@ -210,14 +207,14 @@ export class TestxServer {
       );
     }
 
-    return this.client.getQueries();
+    return Promise.resolve(this.client.getQueries());
   }
 
   /**
    * Get the generated client mutations.
    * @return {Object} An object containing the mutations as properties
    */
-  public getMutations(): { [name: string]: string } {
+  public async getMutations(): Promise<StringDic> {
     if (this.client === undefined) {
       throw new Error(
         `can not retrieve client mutations from undefined client, ` +
@@ -225,6 +222,6 @@ export class TestxServer {
       );
     }
 
-    return this.client.getMutations();
+    return Promise.resolve(this.client.getMutations());
   }
 }
