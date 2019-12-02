@@ -22,7 +22,7 @@ fi
 
 # validate that TAG == version found in package.json
 if [[ "$TAG" != "$PACKAGE_VERSION" ]]; then
-    echo "tag $TAG is not the same as package version found in lerna.json $PACKAGE_VERSION"
+    echo "tag $TAG is not the same as package version found in package.json $PACKAGE_VERSION"
     exit 1
 fi
 
