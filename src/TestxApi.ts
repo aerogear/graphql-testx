@@ -26,6 +26,8 @@ export interface TestxApi {
   getQueries(): Promise<StringDic>;
 
   getMutations(): Promise<StringDic>;
+
+  getSubscriptions(): Promise<StringDic>
 }
 
 class FakeApi implements TestxApi {
@@ -60,6 +62,9 @@ class FakeApi implements TestxApi {
     throw new Error("fake");
   }
   public getMutations(): Promise<StringDic> {
+    throw new Error("fake");
+  }
+  public getSubscriptions(): Promise<StringDic> {
     throw new Error("fake");
   }
 }

@@ -230,7 +230,7 @@ export class TestxServer implements TestxApi {
    * Get the generated client subscriptions.
    * @return {Object} An object containing the subscriptions as properties
    */
-  public getSubscriptions(): { [name: string]: string } {
+  public async getSubscriptions(): Promise<StringDic> {
     if (this.client === undefined) {
       throw new Error(
         `can not retrieve client subscriptions from undefined client, ` +
@@ -238,6 +238,6 @@ export class TestxServer implements TestxApi {
       );
     }
 
-    return this.client.getSubscriptions();
+    return Promise.resolve(this.client.getSubscriptions());
   }
 }

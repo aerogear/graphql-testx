@@ -61,4 +61,8 @@ export class TestxDirector implements TestxApi {
   public async getMutations(): Promise<{ [name: string]: string }> {
     return await this.call("getMutations");
   }
+
+  public async getSubscriptions(): Promise<{ [name: string]: string }> {
+    return await this.call("getSubscriptions");
+  }
 }
