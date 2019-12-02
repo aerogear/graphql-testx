@@ -18,7 +18,7 @@
     "@types/pino": "5.8.13",
     "apollo-boost": "0.4.4",
     "ava": "2.4.0",
-    "eslint": "6.7.1",
+    "eslint": "6.7.2",
     "eslint-config-prettier": "6.7.0",
     "graphql-request": "1.8.2",
     "prettier": "1.19.1",
