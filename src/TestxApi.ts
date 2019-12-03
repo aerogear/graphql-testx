@@ -15,6 +15,8 @@ export interface TestxApi {
 
   httpUrl(): Promise<string>;
 
+  wsUrl(): Promise<string>;
+
   getGraphQlSchema(): Promise<string>;
 
   getDatabaseSchema(): Promise<DatabaseSchema>;
@@ -26,6 +28,8 @@ export interface TestxApi {
   getQueries(): Promise<StringDic>;
 
   getMutations(): Promise<StringDic>;
+
+  getSubscriptions(): Promise<StringDic>
 }
 
 export function isTestxApiMethod(

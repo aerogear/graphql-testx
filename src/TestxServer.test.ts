@@ -31,9 +31,8 @@ test("test start() and close() methods", async t => {
   );
 });
 
-test.only("should start the server after closing it", async t => {
+test("should start the server after closing it", async t => {
   const server = new TestxServer(ITEM_MODEL);
-
   await server.start();
   const httpUrl = await server.httpUrl()
   const mutations = await server.getMutations();
@@ -160,7 +159,8 @@ test("getGraphQLSchema() method should produce GQL schema with required definiti
     "ItemInput",
     "ItemFilter",
     "Query",
-    "Mutation"
+    "Mutation",
+    "Subscription"
   ];
 
   await server.start();
