@@ -108,6 +108,7 @@ export class TestxServer implements TestxApi {
 
   /**
    * Get the server URL.
+   * This URL is used to make basic queries and mutations.
    */
   public async httpUrl(): Promise<string> {
     if (this.server === undefined) {
@@ -122,6 +123,7 @@ export class TestxServer implements TestxApi {
 
   /**
    * Get the subscriptions URL.
+   * This URL is used to make subscription queries.
    */
   public async wsUrl(): Promise<string> {
     if (this.server === undefined) {
