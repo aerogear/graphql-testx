@@ -45,7 +45,7 @@ describe("test subscriptions", () => {
 
   before("initialize apollo client", async () => {
     const httpUrl = await server.httpUrl();
-    const wsUrl = httpUrl.replace('http', 'ws');
+    const wsUrl = await server.subscriptionsUrl();
 
     clientSub = new SubscriptionClient(
       wsUrl, {reconnect: true}, WebSocket
