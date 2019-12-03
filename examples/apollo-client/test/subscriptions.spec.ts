@@ -79,17 +79,14 @@ describe("test subscriptions", () => {
       {query: gql(subscriptions.newItem), variables: {}}
     );
 
-    let subResult;
-    makePromise(query).then(data => {
-      subResult = data.data.newItem;
-    });
+    let subResult = makePromise(query);
 
     const item = (await client.mutate({
       mutation: gql(mutations.createItem),
       variables: { title: "TestA" }
     })).data.createItem;
 
-    expect(item.title).to.be.equal(subResult.title);
+    expect(item.title).to.be.equal((await subResult).data.newItem.title);
   });
 
   it("should updatedItem subscription", async () => {
@@ -98,16 +95,13 @@ describe("test subscriptions", () => {
       {query: gql(subscriptions.updatedItem), variables: {}}
     );
 
-    let subResult;
-    makePromise(query).then(data => {
-      subResult = data.data.updatedItem;
-    });
+    let subResult = makePromise(query);
 
     const itemV2 = (await client.mutate({
       mutation: gql(mutations.updateItem),
       variables: { id: 1, title: "TestB" }
     })).data.updateItem;
 
-    expect(itemV2.title).to.be.equal(subResult.title);
+    expect(itemV2.title).to.be.equal((await subResult).data.updatedItem.title);
   });
 });
