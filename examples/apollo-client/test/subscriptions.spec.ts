@@ -17,7 +17,6 @@ import { StringDic } from "../../../src/TestxApi";
 describe("test subscriptions", () => {
   let server: TestxServer;
   let client: ApolloClient<unknown>;
-  let queries: StringDic;
   let mutations: StringDic;
   let subscriptions: StringDic;
   let wsLink: WebSocketLink;
@@ -32,7 +31,6 @@ describe("test subscriptions", () => {
     await server.start();
     console.log(`Running on ${await server.httpUrl()}`);
 
-    queries = await server.getQueries()
     mutations = await server.getMutations();
     subscriptions = await server.getSubscriptions();
   });
@@ -79,7 +77,7 @@ describe("test subscriptions", () => {
       {query: gql(subscriptions.newItem), variables: {}}
     );
 
-    let subResult = makePromise(query);
+    const subResult = makePromise(query);
 
     const item = (await client.mutate({
       mutation: gql(mutations.createItem),
@@ -95,7 +93,7 @@ describe("test subscriptions", () => {
       {query: gql(subscriptions.updatedItem), variables: {}}
     );
 
-    let subResult = makePromise(query);
+    const subResult = makePromise(query);
 
     const itemV2 = (await client.mutate({
       mutation: gql(mutations.updateItem),

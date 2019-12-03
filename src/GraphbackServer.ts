@@ -1,6 +1,5 @@
 import { ApolloServer, PubSub } from "apollo-server-express";
 import newExpress from "express";
-import { Express } from "express-serve-static-core";
 import { GraphbackDataProvider, GraphQLBackendCreator } from "graphback";
 import { Server, createServer } from "http";
 import { getAvailablePort } from "./utils";
