@@ -1,6 +1,6 @@
 {
   "name": "graphql-testx",
-  "version": "0.2.0-dev2",
+  "version": "0.2.0-dev3",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
