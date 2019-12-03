@@ -4,19 +4,17 @@ import express, { json } from "express";
 import { isTestxApiMethod } from "./TestxApi";
 import { getAvailablePort } from "./utils";
 import cors from "cors";
+import { Express } from "express-serve-static-core";
 
 type UnknownFunction = (...args: unknown[]) => unknown;
 
 export class TestxController {
   private testxServer: TestxServer;
+  private expressApp: Express;
   private controllerServer?: Server;
   private controllerPort?: number;
 
-  constructor(server: TestxServer) {
-    this.testxServer = server;
-  }
-
-  public async start(): Promise<void> {
+  constructor(testxServer: TestxServer) {
     const app = express();
     app.use(json());
     app.use(cors());
@@ -33,15 +31,13 @@ export class TestxController {
       }
 
       const name = req.body.name;
-      if (!isTestxApiMethod(name)) {
+      if (!isTestxApiMethod(testxServer, name)) {
         res.status(500).send(`Error: ${name} is not a TestxApi method`);
         return;
       }
 
       // cast method to unknown
-      const method = this.testxServer[name].bind(
-        this.testxServer
-      ) as UnknownFunction;
+      const method = testxServer[name].bind(testxServer) as UnknownFunction;
 
       // execute the api method
       const result = method(...(req.body.args || []));
@@ -58,22 +54,40 @@ export class TestxController {
       );
     });
 
-    this.controllerPort = await getAvailablePort();
-    this.controllerServer = app.listen(this.controllerPort);
+    this.testxServer = testxServer;
+    this.expressApp = app;
+  }
+
+  public async start(port?: number): Promise<void> {
+    if (port === undefined) {
+      port = await getAvailablePort();
+    }
+
+    if (
+      this.controllerServer === undefined ||
+      !this.controllerServer.listening
+    ) {
+      this.controllerServer = this.expressApp.listen(port);
+      this.controllerPort = port;
+    }
   }
 
   public async close(): Promise<void> {
+    // close the testx server
+    await this.testxServer.close();
+
     // close the director server
-    await new Promise(resolve => {
+    await new Promise((resolve, reject) => {
       if (this.controllerServer) {
-        this.controllerServer.close(() => {
-          resolve();
+        this.controllerServer.close(e => {
+          if (e === undefined) {
+            resolve();
+          } else {
+            reject(e);
+          }
         });
       }
     });
-
-    // also close the testx server
-    await this.testxServer.close();
   }
 
   public async httpUrl(): Promise<string> {

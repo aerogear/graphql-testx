@@ -1,8 +1,10 @@
 import test from "ava";
 import { isTestxApiMethod } from "./TestxApi";
+import { TestxServer } from "./TestxServer";
 
 test("is TestxApi method", t => {
-  t.true(isTestxApiMethod("setData"));
-  t.true(isTestxApiMethod("start"));
-  t.false(isTestxApiMethod("foo"));
+  const testx = new TestxServer(``);
+  t.true(isTestxApiMethod(testx, "setData"));
+  t.true(isTestxApiMethod(testx, "start"));
+  t.false(isTestxApiMethod(testx, "foo"));
 });
