@@ -1,20 +1,18 @@
 import { ApolloServer, PubSub } from "apollo-server-express";
 import newExpress from "express";
-import { Express } from "express-serve-static-core";
 import { GraphbackDataProvider, GraphQLBackendCreator } from "graphback";
-import { Server } from "http";
+import { Server, createServer } from "http";
 import { getAvailablePort } from "./utils";
 
 const ENDPOINT = "/graphql";
 
 export class GraphbackServer {
-  private express: Express;
   private graphqlSchema: string;
-  private httpServer?: Server;
+  private httpServer: Server;
   private serverPort?: number;
 
-  constructor(express: Express, graphqlSchema: string) {
-    this.express = express;
+  constructor(httpServer: Server, graphqlSchema: string) {
+    this.httpServer = httpServer;
     this.graphqlSchema = graphqlSchema;
   }
 
@@ -29,13 +27,13 @@ export class GraphbackServer {
       }
     }
 
-    this.httpServer = this.express.listen({ port });
+    this.httpServer.listen({ port });
     this.serverPort = port;
   }
 
   public async stop(): Promise<void> {
     const server = this.httpServer;
-    if (server === undefined) {
+    if (!server.listening) {
       return;
     }
 
@@ -61,6 +59,16 @@ export class GraphbackServer {
     return `http://localhost:${this.serverPort}${ENDPOINT}`;
   }
 
+  public getWsUrl(): string {
+    if (this.serverPort === undefined) {
+      throw new Error(
+        `can not retrieve the subscriptions url because the server has not been started yet`
+      );
+    }
+
+    return `ws://localhost:${this.serverPort}${ENDPOINT}`;
+  }
+
   public getSchema(): string {
     return this.graphqlSchema;
   }
@@ -81,5 +89,8 @@ export async function initGraphbackServer(
 
   apollo.applyMiddleware({ app: express, path: ENDPOINT });
 
-  return new GraphbackServer(express, runtime.schema);
+  const httpServer = createServer(express);
+  apollo.installSubscriptionHandlers(httpServer);
+
+  return new GraphbackServer(httpServer, runtime.schema);
 }

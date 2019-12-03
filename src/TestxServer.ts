@@ -15,9 +15,9 @@ const DEFAULT_CONFIG = {
   findAll: true,
   find: true,
   delete: true,
-  subCreate: false,
-  subUpdate: false,
-  subDelete: false,
+  subCreate: true,
+  subUpdate: true,
+  subDelete: true,
   disableGen: false
 };
 
@@ -108,6 +108,7 @@ export class TestxServer implements TestxApi {
 
   /**
    * Get the server URL.
+   * This URL is used to make basic queries and mutations.
    */
   public async httpUrl(): Promise<string> {
     if (this.server === undefined) {
@@ -118,6 +119,21 @@ export class TestxServer implements TestxApi {
     }
 
     return Promise.resolve(this.server.getHttpUrl());
+  }
+
+  /**
+   * Get the subscriptions URL.
+   * This URL is used to make subscription queries.
+   */
+  public async wsUrl(): Promise<string> {
+    if (this.server === undefined) {
+      throw new Error(
+        `can not retrieve the subscriptions url from undefined server, ` +
+          `use bootstrap() or start() in order to initialize the server`
+      );
+    }
+
+    return Promise.resolve(this.server.getWsUrl());
   }
 
   /**
@@ -223,5 +239,21 @@ export class TestxServer implements TestxApi {
     }
 
     return Promise.resolve(this.client.getMutations());
+  }
+
+
+    /**
+   * Get the generated client subscriptions.
+   * @return {Object} An object containing the subscriptions as properties
+   */
+  public async getSubscriptions(): Promise<StringDic> {
+    if (this.client === undefined) {
+      throw new Error(
+        `can not retrieve client subscriptions from undefined client, ` +
+          `use bootstrap() or start() in order to initialize the client`
+      );
+    }
+
+    return Promise.resolve(this.client.getSubscriptions());
   }
 }

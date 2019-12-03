@@ -15,6 +15,8 @@ export interface TestxApi {
 
   httpUrl(): Promise<string>;
 
+  wsUrl(): Promise<string>;
+
   getGraphQlSchema(): Promise<string>;
 
   getDatabaseSchema(): Promise<DatabaseSchema>;
@@ -26,6 +28,8 @@ export interface TestxApi {
   getQueries(): Promise<StringDic>;
 
   getMutations(): Promise<StringDic>;
+
+  getSubscriptions(): Promise<StringDic>
 }
 
 class FakeApi implements TestxApi {
@@ -44,6 +48,9 @@ class FakeApi implements TestxApi {
   public httpUrl(): Promise<string> {
     throw new Error("fake");
   }
+  public wsUrl(): Promise<string> {
+    throw new Error("fake");
+  }
   public getGraphQlSchema(): Promise<string> {
     throw new Error("fake");
   }
@@ -60,6 +67,9 @@ class FakeApi implements TestxApi {
     throw new Error("fake");
   }
   public getMutations(): Promise<StringDic> {
+    throw new Error("fake");
+  }
+  public getSubscriptions(): Promise<StringDic> {
     throw new Error("fake");
   }
 }
