@@ -38,6 +38,10 @@ export class TestxDirector implements TestxApi {
     return await this.call("httpUrl");
   }
 
+  public async wsUrl(): Promise<string> {
+    return await this.call("wsUrl");
+  }
+
   public async getGraphQlSchema(): Promise<string> {
     return await this.call("getGraphQlSchema");
   }

@@ -123,7 +123,7 @@ export class TestxServer implements TestxApi {
   /**
    * Get the subscriptions URL.
    */
-  public async subscriptionsUrl(): Promise<string> {
+  public async wsUrl(): Promise<string> {
     if (this.server === undefined) {
       throw new Error(
         `can not retrieve the subscriptions url from undefined server, ` +
@@ -131,7 +131,7 @@ export class TestxServer implements TestxApi {
       );
     }
 
-    return Promise.resolve(this.server.getSubscriptionsUrl());
+    return Promise.resolve(this.server.getWsUrl());
   }
 
   /**

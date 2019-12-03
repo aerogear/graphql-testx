@@ -15,6 +15,8 @@ export interface TestxApi {
 
   httpUrl(): Promise<string>;
 
+  wsUrl(): Promise<string>;
+
   getGraphQlSchema(): Promise<string>;
 
   getDatabaseSchema(): Promise<DatabaseSchema>;
@@ -44,6 +46,9 @@ class FakeApi implements TestxApi {
     throw new Error("fake");
   }
   public httpUrl(): Promise<string> {
+    throw new Error("fake");
+  }
+  public wsUrl(): Promise<string> {
     throw new Error("fake");
   }
   public getGraphQlSchema(): Promise<string> {

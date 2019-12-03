@@ -59,7 +59,7 @@ export class GraphbackServer {
     return `http://localhost:${this.serverPort}${ENDPOINT}`;
   }
 
-  public getSubscriptionsUrl(): string {
+  public getWsUrl(): string {
     if (this.serverPort === undefined) {
       throw new Error(
         `can not retrieve the subscriptions url because the server has not been started yet`
