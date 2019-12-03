@@ -121,6 +121,20 @@ export class TestxServer implements TestxApi {
   }
 
   /**
+   * Get the subscriptions URL.
+   */
+  public async subscriptionsUrl(): Promise<string> {
+    if (this.server === undefined) {
+      throw new Error(
+        `can not retrieve the subscriptions url from undefined server, ` +
+          `use bootstrap() or start() in order to initialize the server`
+      );
+    }
+
+    return Promise.resolve(this.server.getSubscriptionsUrl());
+  }
+
+  /**
    * Get the generated GraphQL schema.
    * Only returns the GraphQL schema if it's called after using bootstrap() or
    * start() methods.
