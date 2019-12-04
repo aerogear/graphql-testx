@@ -84,7 +84,7 @@ await server.setData({
 - Major tests framework supported: **Mocha**, **Ava**, **Jasmine**, **Jest** and **Karma**
 
 - Minimum configuration required to generate out-of-the-box queries, mutations
-  and subscriptions (subscriptions are in wip: [#13](https://github.com/aerogear/graphql-testx/issues/13)):
+  and subscriptions:
 
   ```js
   server = new TestxServer(`
@@ -117,7 +117,7 @@ await server.setData({
   expect(result.data.findAllItems[0].title).to.be.equal("TestA");
   ```
 
-- Auto generated client queries, mutations and subscriptions (wip: [#15](https://github.com/aerogear/graphql-testx/issues/15))
+- Auto generated client queries, mutations and subscriptions
 
 - Rich API to control the server execution and database state
   [ `start()`, `stop()`, `close()`, `cleanDatabase()`, ... ]
