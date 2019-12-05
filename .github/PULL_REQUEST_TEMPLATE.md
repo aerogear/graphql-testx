@@ -11,6 +11,7 @@ Bug fixes and new features should include tests.
 If it fixes a bug or resolves a feature request, be sure to link to that issue.-->
 
 ##### Checklist
+
 <!-- Remove items that do not apply. For completed items, change [ ] to [x]. -->
 
 - [ ] `npm test` passes

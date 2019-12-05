@@ -18,6 +18,8 @@
 # tests
 /ava.config.js
 *.test.ts
+*.test.d.ts
+*.test.js
 
 # lint
 /.prettierrc.json

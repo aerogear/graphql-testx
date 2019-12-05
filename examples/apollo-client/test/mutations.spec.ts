@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import fetch from "node-fetch";
 import { readFileSync } from "fs";
 import { resolve } from "path";
-import { TestxServer } from "../../../src";
+import { TestxServer } from "../../../dist/src";
 
 describe("test mutations", () => {
   let server: TestxServer;
@@ -21,7 +21,7 @@ describe("test mutations", () => {
     await server.start();
     console.log(`Running on ${await server.httpUrl()}`);
 
-    queries = await server.getQueries()
+    queries = await server.getQueries();
     mutations = await server.getMutations();
   });
 

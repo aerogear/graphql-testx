@@ -1,19 +1,13 @@
 version: 2
 jobs:
-  test:
+  ## Build
+  build:
     docker:
       - image: circleci/node:lts-browsers
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
       - run: yarn install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn pretty
       - run: yarn build
       - run: yarn lint
       - run: yarn test
@@ -35,30 +29,34 @@ jobs:
             cd examples/karma
             yarn install
             yarn test
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  ## Publish
   publish:
     docker:
       - image: circleci/node:12.13
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/project
       - run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
           chmod 600 .npmrc
-      - run: yarn clean
-      - run: yarn install
-      - run: yarn build
       - run: TAG="$CIRCLE_TAG" ./scripts/release.sh
 
 workflows:
   version: 2
-  test_and_publish:
+  build_and_publish:
     jobs:
-      - test:
+      - build:
           filters:
             tags:
               only: /.*/
       - publish:
           requires:
-            - test
+            - build
           filters:
             tags:
               only: /.*/

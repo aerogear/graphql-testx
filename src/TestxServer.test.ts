@@ -34,19 +34,25 @@ test("test start() and close() methods", async t => {
 test("should start the server after closing it", async t => {
   const server = new TestxServer(ITEM_MODEL);
   await server.start();
-  const httpUrl = await server.httpUrl()
+  const httpUrl = await server.httpUrl();
   const mutations = await server.getMutations();
   const queries = await server.getQueries();
 
-  await request(httpUrl, mutations.createItem, {title: "test"});
+  await request(httpUrl, mutations.createItem, { title: "test" });
 
-  await server.close()
-  await t.throwsAsync(async() => { await request(httpUrl, queries.findAllItems) }, null, "Should throw an error after closing the server (ECONNREFUSED)")
+  await server.close();
+  await t.throwsAsync(
+    async () => {
+      await request(httpUrl, queries.findAllItems);
+    },
+    null,
+    "Should throw an error after closing the server (ECONNREFUSED)"
+  );
 
-  await server.start()
+  await server.start();
   const result = await request(httpUrl, queries.findAllItems);
   t.assert(result.findAllItems.length === 0, "Should be empty");
-})
+});
 
 test.skip("start multiple TestxServer servers at the same time", async t => {
   // Issue: https://github.com/aerogear/graphql-testx/issues/47
@@ -170,7 +176,8 @@ test("getGraphQLSchema() method should produce GQL schema with required definiti
   const parsedSchema = gql`
     ${schema}
   `;
-  const definitions = parsedSchema.definitions.map(d => d.name.value);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const definitions = parsedSchema.definitions.map((d: any) => d.name.value);
   t.deepEqual(definitions, defsToBeGenerated);
 
   await server.close();

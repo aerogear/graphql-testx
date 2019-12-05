@@ -10,7 +10,7 @@ import {
 } from "offix-client";
 import { readFileSync } from "fs";
 import { resolve } from "path";
-import { TestxServer } from "../../../src";
+import { TestxServer } from "../../../dist/src";
 
 class ToggleableNetworkStatus implements NetworkStatus {
   private online = true;

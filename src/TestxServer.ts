@@ -241,8 +241,7 @@ export class TestxServer implements TestxApi {
     return Promise.resolve(this.client.getMutations());
   }
 
-
-    /**
+  /**
    * Get the generated client subscriptions.
    * @return {Object} An object containing the subscriptions as properties
    */

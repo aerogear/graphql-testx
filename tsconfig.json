@@ -8,6 +8,5 @@
     "esModuleInterop": true,
     "strict": true
   },
-  "include": ["src/**/*", "bin/*"],
-  "exclude": ["**/*.test.ts"]
+  "include": ["src/**/*", "bin/*"]
 }
