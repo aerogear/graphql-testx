@@ -1,19 +1,19 @@
-import { GraphQLBackendCreator } from "graphback";
-import { sourceModule } from "./utils";
-import { transpile } from "typescript";
-import { print } from "graphql/language/printer";
-import { ASTNode } from "graphql";
-
-interface ASTNodeDic {
-  [key: string]: ASTNode;
-}
-
-interface UnknownDic {
-  [key: string]: unknown;
-}
+import { GraphbackCRUDGeneratorConfig, createClient, graphQLInputContext, ClientDocument } from "graphback";
 
 interface StringDic {
   [key: string]: string;
+}
+
+/**
+ * Inserts the implementations of the items of source into a destination as its 
+ * properties.
+ * @param source An array containing operations and their implementation
+ * @param destination An object with string properties and values
+ */
+function insertImplInto(source: ClientDocument[], destination: StringDic): void {
+  source.forEach(item => {
+    destination[item.name] = item.implementation;
+  });
 }
 
 export class GraphbackClient {
@@ -47,44 +47,22 @@ export class GraphbackClient {
 }
 
 export async function initGraphbackClient(
-  creator: GraphQLBackendCreator
+  schemaText: string,
+  config: GraphbackCRUDGeneratorConfig
 ): Promise<GraphbackClient> {
-  const client = await creator.createClient();
 
-  const modules: UnknownDic = {};
   const fragments: StringDic = {};
   const queries: StringDic = {};
   const mutations: StringDic = {};
   const subscriptions: StringDic = {};
 
-  if (client.fragments !== undefined) {
-    client.fragments.forEach(item => {
-      const m = sourceModule(transpile(item.implementation));
-      modules[`../fragments/${item.name}`] = m;
-      fragments[item.name] = print((m as ASTNodeDic)[item.name]);
-    });
-  }
+  const inputContext = graphQLInputContext.createModelContext(schemaText, config);
+  const client = await createClient(inputContext, { output: 'gql' });
 
-  if (client.queries !== undefined) {
-    client.queries.forEach(item => {
-      const m = sourceModule(transpile(item.implementation), modules);
-      queries[item.name] = print((m as ASTNodeDic)[item.name]);
-    });
-  }
-
-  if (client.mutations !== undefined) {
-    client.mutations.forEach(item => {
-      const m = sourceModule(transpile(item.implementation), modules);
-      mutations[item.name] = print((m as ASTNodeDic)[item.name]);
-    });
-  }
-
-  if (client.subscriptions !== undefined) {
-    client.subscriptions.forEach(item => {
-      const m = sourceModule(transpile(item.implementation), modules);
-      subscriptions[item.name] = print((m as ASTNodeDic)[item.name]);
-    });
-  }
+  if (client.fragments !== undefined) insertImplInto(client.fragments, fragments);
+  if (client.queries !== undefined) insertImplInto(client.queries, queries);
+  if (client.mutations !== undefined) insertImplInto(client.mutations, mutations);
+  if (client.subscriptions !== undefined) insertImplInto(client.subscriptions, subscriptions);
 
   return new GraphbackClient(queries, mutations, fragments, subscriptions);
 }
