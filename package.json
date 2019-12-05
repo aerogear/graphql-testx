@@ -8,6 +8,7 @@
     "build": "tsc",
     "test": "ava",
     "lint": "eslint --ext js,ts .",
+    "pretty": "prettier --check '**/*.{ts,js,json,yml,md}'",
     "print-schema": "ts-node bin/printSchema.ts"
   },
   "devDependencies": {
