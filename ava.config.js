@@ -4,5 +4,5 @@ exports.default = {
     "files": ["!examples", "!dist"],
     "extensions": ["ts"],
     "require": ["ts-node/register"],
-    "environmentVariables": { "TS_NODE_PROJECT": "./tsconfig.tests.json" }
+    "environmentVariables": { "TS_NODE_FILES": "true" }
 }

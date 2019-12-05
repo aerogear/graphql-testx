@@ -170,7 +170,7 @@ test("getGraphQLSchema() method should produce GQL schema with required definiti
   const parsedSchema = gql`
     ${schema}
   `;
-  const definitions = parsedSchema.definitions.map(d => d.name.value);
+  const definitions = parsedSchema.definitions.map((d: any) => d.name.value);
   t.deepEqual(definitions, defsToBeGenerated);
 
   await server.close();

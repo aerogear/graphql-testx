@@ -9,5 +9,4 @@
     "strict": true
   },
   "include": ["src/**/*", "bin/*"],
-  "exclude": ["**/*.test.ts"]
 }
