@@ -21,12 +21,6 @@
       ]
     },
     {
-      "files": "src/**/*.test.ts",
-      "parserOptions": {
-        "project": "tsconfig.tests.json"
-      }
-    },
-    {
       "files": "**/*.js",
       "extends": ["eslint:recommended", "prettier"]
     }
