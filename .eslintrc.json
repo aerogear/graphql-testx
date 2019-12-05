@@ -1,22 +1,25 @@
 {
   "env": {
-    "node": true
+    "node": true,
+    "es6": true
   },
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "tsconfig.json"
-  },
-  "plugins": ["@typescript-eslint"],
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "prettier",
-    "prettier/@typescript-eslint"
-  ],
-  "rules": {},
   "overrides": [
+    {
+      "files": "**/*.ts",
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "project": "tsconfig.json"
+      },
+      "plugins": ["@typescript-eslint"],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "prettier",
+        "prettier/@typescript-eslint"
+      ]
+    },
     {
       "files": "src/**/*.test.ts",
       "parserOptions": {
@@ -24,16 +27,8 @@
       }
     },
     {
-      "files": "examples/offix/**",
-      "parserOptions": {
-        "project": "examples/offix/tsconfig.json"
-      }
-    },
-    {
-      "files": "examples/apollo-client/**",
-      "parserOptions": {
-        "project": "examples/apollo-client/tsconfig.json"
-      }
+      "files": "**/*.js",
+      "extends": ["eslint:recommended", "prettier"]
     }
   ]
 }

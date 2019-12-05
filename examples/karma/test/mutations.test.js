@@ -1,5 +1,7 @@
+/* global __karma__ */
 const { TestxDirector } = require("../../../dist/src/TestxDirector");
 const { request } = require("graphql-request");
+const { expect } = require("chai")
 
 describe("test mutations", () => {
   let server;
