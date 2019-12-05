@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import fetch from "node-fetch";
 import { readFileSync } from "fs";
 import { resolve } from "path";
-import { TestxServer } from "../../../src";
+import { TestxServer } from "../../../dist/src";
 
 describe("test mutations", () => {
   let server: TestxServer;

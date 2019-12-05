@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import fetch from "node-fetch";
 import { readFileSync } from "fs";
 import { resolve } from "path";
-import { TestxServer } from "../../../src";
+import { TestxServer } from "../../../dist/src";
 import { execute, makePromise, split } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
@@ -12,7 +12,7 @@ import { getMainDefinition } from 'apollo-utilities';
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
-import { StringDic } from "../../../src/TestxApi";
+import { StringDic } from "../../../dist/src/TestxApi";
 
 describe("test subscriptions", () => {
   let server: TestxServer;
