@@ -29,7 +29,7 @@ export interface TestxApi {
 
   getMutations(): Promise<StringDic>;
 
-  getSubscriptions(): Promise<StringDic>
+  getSubscriptions(): Promise<StringDic>;
 }
 
 export function isTestxApiMethod(

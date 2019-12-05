@@ -5,6 +5,7 @@ First of all, thank you for your interest in contributing to the project :heart_
 The following is a set of guidelines for contributing to **GraphQL Testx**. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
 ## Table of Contents
+
 - [Code of Conduct](#code-of-conduct)
 - [Pull Requests Guideline](#pull-requests-guideline)
 - [Git Commit Messages Style Guide](#git-commit-messages-style-guide)
