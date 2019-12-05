@@ -1,1 +1,11 @@
-dist
+*
+!*/
+
+!*.js
+!*.ts
+!*.yml
+!*.json
+!*.md
+
+/dist
+/.vscode
