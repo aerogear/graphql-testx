@@ -170,6 +170,7 @@ test("getGraphQLSchema() method should produce GQL schema with required definiti
   const parsedSchema = gql`
     ${schema}
   `;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const definitions = parsedSchema.definitions.map((d: any) => d.name.value);
   t.deepEqual(definitions, defsToBeGenerated);
 
