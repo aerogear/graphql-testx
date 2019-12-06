@@ -354,3 +354,22 @@ Return the http url to the `TestxController` API.
 #### `stop(): Promise<void>`
 
 Stop and close the `TestxController` and the `TestxServer`
+
+### `TestxDirector`
+
+Client API for the `TestxController` that implements all `TestxServer` methods.
+
+Is used in combination wit the `TestxController`.
+
+```ts
+import { TestxDirector } from "graphql-testx/dist/src/TestxDirector";
+
+// controller: TestxController
+// controllerHttpUrl = await controller.httpUrl();
+const director = new TestxDirector(controllerHttpUrl);
+
+await director.start();  // start the TestxServer
+await director.httUrl(); // TestxServer http url
+// ... all others TestxServer methods
+await director.close();   // close the TestxServer
+```
