@@ -115,9 +115,9 @@ const server = new TestxServer(`
 
 await server.start();
 
-console.log(`Running on ${server.url()}`);
+console.log(`Running on ${await server.httpUrl()}`);
 
-server.close();
+await server.close();
 ```
 
 #### `bootstrap(): Promise<void>`
