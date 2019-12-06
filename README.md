@@ -31,8 +31,8 @@ yarn add graphql-testx
 const server = new TestxServer(`
   type Item {
     id: ID!
-    name: String
-    title: String!
+    name: String!
+    author: String
   }`);
 
 // start the server
@@ -110,8 +110,7 @@ const { TestxServer } = require("graphql-testx");
 const server = new TestxServer(`
   type Item {
     id: ID!
-    name: String
-    title: String!
+    name: String!
   }`);
 
 await server.start();
@@ -127,7 +126,7 @@ Generate the GraphQL server, the GraphQL resolvers, the client
 queries/mutations/subscriptions and the database.
 
 ```js
-const server = new TestxServer(`type Item { id: ID! }`);
+// server: TestxServer
 await server.bootstrap();
 ```
 
@@ -136,7 +135,7 @@ await server.bootstrap();
 Start or re-start the GraphQL server.
 
 ```js
-const server = new TestxServer(`type Item { id: ID! }`);
+// server: TestxServer
 await server.start();
 ```
 
@@ -156,7 +155,7 @@ Stop the GraphQL server, so that it can be restarted on the same port, and also
 preserve the database.
 
 ```js
-const server = new TestxServer(`type Item { id: ID! }`);
+// server: TestxServer
 await server.start();
 await server.stop();
 await server.start(); // re-start
@@ -172,7 +171,7 @@ If the server is not running it will return immediately.
 Close the GraphQL server and the database.
 
 ```js
-const server = new TestxServer(`type Item { id: ID! }`);
+// server: TestxServer
 await server.start();
 await server.close();
 ```
@@ -182,7 +181,7 @@ await server.close();
 Return the http url to the GraphQL server after starting the server.
 
 ```js
-const server = new TestxServer(`type Item { id: ID! }`);
+// server: TestxServer
 await server.start();
 console.log(`Running at ${await server.httUrl()}`);
 ```
@@ -192,7 +191,7 @@ console.log(`Running at ${await server.httUrl()}`);
 Return the websocket url to the GraphQL server after starting the server.
 
 ```js
-const server = new TestxServer(`type Item { id: ID! }`);
+// server: TestxServer
 await server.start();
 console.log(`Running at ${await server.wsUrl()}`);
 ```
@@ -205,7 +204,7 @@ The websocket url can be used to subscribe to the server like in this example:
 Remove all data from the database.
 
 ```js
-const server = new TestxServer(`type Item { id: ID! }`);
+// server: TestxServer
 await server.start();
 
 // some mutations
@@ -221,11 +220,7 @@ Clean the database and insert the passed data directly to the database without
 passing through GraphQL mutations.
 
 ```js
-const server = new TestxServer(`
-  type Item { 
-    id: ID!
-    name: String! 
-  }`);
+// server: TestxServer
 await server.bootstrap();
 await server.setData({
   item: [
@@ -246,11 +241,7 @@ method.
 Return the generated GraphQL schema.
 
 ```js
-const server = new TestxServer(`
-  type Item {
-    id: ID!
-    name: String!
-  }`);
+// server: TestxServer
 await server.bootstrap();
 console.log(await server.getGraphQlSchema());
 ```
@@ -293,11 +284,7 @@ type Subscription {
 Return the generated database schema.
 
 ```js
-const server = new TestxServer(`
-    type Item { 
-      id: ID!
-      name: String! 
-    }`);
+// server: TestxServer
 await server.bootstrap();
 console.log(await server.getDatabaseSchema());
 ```
@@ -313,11 +300,7 @@ console.log(await server.getDatabaseSchema());
 Return ready-to-use client queries.
 
 ```js
-const server = new TestxServer(`
-    type Item { 
-      id: ID!
-      name: String! 
-    }`);
+// server: TestxServer
 await server.bootstrap();
 console.log((await server.getQueries()).findAllItems);
 ```
