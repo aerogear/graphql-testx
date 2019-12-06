@@ -311,3 +311,46 @@ Return ready-to-use client mutations like for `getQueries()`.
 #### `getSubscriptions(): Promise<{[query: string]: string}>`
 
 Return ready-to-use client subscriptions like for `getQueries()`.
+
+### `TestxController`
+
+Controls the `TestxServer` remotely using the `TestxDirector`.
+
+The `TestxController` is used in combination with the `TestxDirector` in the
+[Karma example](./example/karma) in order to start/stop the server, and clean
+the database from the browser.
+
+```
+ TestxDirector.start()     | Browser
+          |
+POST / { name: "start" }
+          |
+    TestxController        |
+          |                | Node.js
+  TestxServer.start()      |
+```
+
+```js
+import { TestxServer, TestxController } from "graphql-testx";
+
+// server: TestxServer
+const controller = new TestxController(server);
+await controller.start();
+
+console.log(`Controller running on ${await controller.httUrl()}`);
+
+await controller.close();
+```
+
+#### `start(port?: number): Promise<void>`
+
+Start the `TestxController` API to a random available port on localhost or to
+the passed port.
+
+#### `httpUrl(): Promise<string>`
+
+Return the http url to the `TestxController` API.
+
+#### `stop(): Promise<void>`
+
+Stop and close the `TestxController` and the `TestxServer`
