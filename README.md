@@ -368,8 +368,8 @@ import { TestxDirector } from "graphql-testx/dist/src/TestxDirector";
 // controllerHttpUrl = await controller.httpUrl();
 const director = new TestxDirector(controllerHttpUrl);
 
-await director.start();  // start the TestxServer
+await director.start(); // start the TestxServer
 await director.httUrl(); // TestxServer http url
 // ... all others TestxServer methods
-await director.close();   // close the TestxServer
+await director.close(); // close the TestxServer
 ```
