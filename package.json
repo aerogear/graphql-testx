@@ -28,7 +28,7 @@
     "typescript": "3.7.3"
   },
   "dependencies": {
-    "apollo-server-express": "2.9.12",
+    "apollo-server-express": "2.9.13",
     "axios": "0.19.0",
     "express": "4.17.1",
     "graphback": "0.10.0-rc2",
