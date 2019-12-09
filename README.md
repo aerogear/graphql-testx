@@ -30,12 +30,14 @@ yarn add graphql-testx
 
 ```js
 // create the server using a data model
-const server = new TestxServer(`
-  type Item {
-    id: ID!
-    name: String!
-    author: String
-  }`);
+const server = new TestxServer({
+  schema: `
+    type Item {
+      id: ID!
+      name: String!
+      author: String
+    }`
+});
 
 // start the server
 await server.start();
@@ -95,11 +97,13 @@ Graphback.
 ```js
 import { TestxServer } from "graphql-testx";
 
-const server = new TestxServer(`
-  type Item {
-    id: ID!
-    name: String!
-  }`);
+const server = new TestxServer({
+  schema: `
+    type Item {
+      id: ID!
+      name: String!
+    }`
+});
 
 await server.start();
 
