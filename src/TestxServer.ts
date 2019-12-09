@@ -1,6 +1,10 @@
 import { initInMemoryDatabase, InMemoryDatabase } from "./InMemoryDatabase";
-import { initGraphbackServer, GraphbackServer } from "./GraphbackServer";
-import { GraphQLBackendCreator } from "graphback";
+import {
+  initGraphbackServer,
+  GraphbackServer,
+  ServiceBuilder
+} from "./GraphbackServer";
+import { graphQLInputContext, InputModelTypeContext } from "graphback";
 import { GraphbackClient, initGraphbackClient } from "./GraphbackClient";
 import { TestxApi, StringDic, DatabaseSchema, ImportData } from "./TestxApi";
 
@@ -22,6 +26,7 @@ const DEFAULT_CONFIG = {
 
 export interface TestxServerOptions {
   schema: string;
+  serviceBuilder?: ServiceBuilder;
 }
 
 /**
@@ -45,18 +50,24 @@ export interface TestxServerOptions {
  */
 export class TestxServer implements TestxApi {
   private readonly options: TestxServerOptions;
-  private creator?: GraphQLBackendCreator;
+  private readonly context: InputModelTypeContext[];
   private client?: GraphbackClient;
   private server?: GraphbackServer;
   private database?: InMemoryDatabase;
 
   /**
    * Create a TestxServer.
-   * @param {string} options.should - The Grahpback data model definition
+   * @param options.schema - The Graphback data model definition
+   * @param options.serviceBuilder - Function to overwrite the default GraphbackCRUDService
    * @see {@link https://graphback.dev/docs/datamodel|Grahpback data model definition}
    */
   constructor(options: TestxServerOptions) {
     this.options = options;
+
+    this.context = graphQLInputContext.createModelContext(
+      options.schema,
+      DEFAULT_CONFIG
+    );
   }
 
   /**
@@ -201,17 +212,11 @@ export class TestxServer implements TestxApi {
       this.database = await initInMemoryDatabase(this.options.schema);
     }
 
-    if (this.creator === undefined) {
-      this.creator = new GraphQLBackendCreator(
-        this.options.schema,
-        DEFAULT_CONFIG
-      );
-    }
-
     if (this.server === undefined) {
       this.server = await initGraphbackServer(
-        this.creator,
-        this.database.getProvider()
+        this.context,
+        this.database.getProvider(),
+        this.options.serviceBuilder
       );
     }
 

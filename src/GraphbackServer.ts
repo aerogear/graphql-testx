@@ -1,14 +1,27 @@
 import { ApolloServer, PubSub } from "apollo-server-express";
 import newExpress from "express";
-import { GraphbackDataProvider, GraphQLBackendCreator } from "graphback";
+import {
+  GraphbackDataProvider,
+  GraphbackCRUDService,
+  InputModelTypeContext,
+  SchemaGenerator,
+  CRUDService,
+  LayeredRuntimeResolverGenerator
+} from "graphback";
 import { Server, createServer } from "http";
 import { getAvailablePort } from "./utils";
 
 const ENDPOINT = "/graphql";
 
+export interface ServiceBuilder {
+  (data: GraphbackDataProvider, sub: PubSub):
+    | Promise<GraphbackCRUDService>
+    | GraphbackCRUDService;
+}
+
 export class GraphbackServer {
-  private graphqlSchema: string;
-  private httpServer: Server;
+  private readonly graphqlSchema: string;
+  private readonly httpServer: Server;
   private serverPort?: number;
 
   constructor(httpServer: Server, graphqlSchema: string) {
@@ -75,16 +88,30 @@ export class GraphbackServer {
 }
 
 export async function initGraphbackServer(
-  creator: GraphQLBackendCreator,
-  provider: GraphbackDataProvider
+  context: InputModelTypeContext[],
+  data: GraphbackDataProvider,
+  serviceBuilder?: ServiceBuilder
 ): Promise<GraphbackServer> {
-  const runtime = await creator.createRuntime(provider, new PubSub());
+  const schemaGenerator = new SchemaGenerator(context);
+  const schema = schemaGenerator.generate();
+
+  const sub = new PubSub();
+
+  const service: GraphbackCRUDService = serviceBuilder
+    ? await serviceBuilder(data, sub)
+    : new CRUDService(data, sub);
+
+  const resolverGenerator = new LayeredRuntimeResolverGenerator(
+    context,
+    service
+  );
+  const resolvers = resolverGenerator.generate();
 
   const express = newExpress();
 
   const apollo = new ApolloServer({
-    typeDefs: runtime.schema,
-    resolvers: runtime.resolvers
+    typeDefs: schema,
+    resolvers: resolvers
   });
 
   apollo.applyMiddleware({ app: express, path: ENDPOINT });
@@ -92,5 +119,5 @@ export async function initGraphbackServer(
   const httpServer = createServer(express);
   apollo.installSubscriptionHandlers(httpServer);
 
-  return new GraphbackServer(httpServer, runtime.schema);
+  return new GraphbackServer(httpServer, schema);
 }
