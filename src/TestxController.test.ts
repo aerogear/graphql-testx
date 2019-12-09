@@ -4,7 +4,7 @@ import { TestxController } from "./TestxController";
 import axios from "axios";
 
 function newTestxController(): TestxController {
-  const server = new TestxServer(``);
+  const server = new TestxServer({ schema: "" });
   return new TestxController(server);
 }
 

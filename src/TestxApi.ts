@@ -1,7 +1,15 @@
-import { ImportData, DatabaseSchema } from "./generics";
-
 export interface StringDic {
   [name: string]: string;
+}
+
+export interface ImportData {
+  [table: string]: {
+    [column: string]: unknown;
+  }[];
+}
+
+export interface DatabaseSchema {
+  [table: string]: string[];
 }
 
 export interface TestxApi {

@@ -50,7 +50,7 @@ beforeAll(async () => {
     resolve(__dirname, "../fixtures/schema.graphql"),
     "utf8"
   );
-  server = new TestxServer(schema);
+  server = new TestxServer({ schema });
 
   await server.start();
   console.log(`Running on ${await server.httpUrl()}`);

@@ -15,7 +15,7 @@ async function newTestx(
   schema: string
 ): Promise<[TestxController, TestxDirector]> {
   // create classic TestxServer
-  const server = new TestxServer(schema);
+  const server = new TestxServer({ schema });
 
   // wrap the TestxServer inside the TestxController
   const controller = new TestxController(server);
