@@ -221,10 +221,7 @@ export class TestxServer implements TestxApi {
     }
 
     if (this.client === undefined) {
-      this.client = await initGraphbackClient(
-        this.options.schema,
-        DEFAULT_CONFIG
-      );
+      this.client = await initGraphbackClient(this.context);
     }
   }
 
