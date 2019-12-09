@@ -20,6 +20,10 @@ const DEFAULT_CONFIG = {
   disableGen: false
 };
 
+export interface TestxServerOptions {
+  schema: string;
+}
+
 /**
  * Describes a TestxServer. A TestxServer generates a GraphQL server from a data
  * model with the resolvers, mutations, type defs and connection with a real
@@ -37,7 +41,7 @@ const DEFAULT_CONFIG = {
  * server.close();
  */
 export class TestxServer implements TestxApi {
-  private schema: string;
+  private readonly options: TestxServerOptions;
   private creator?: GraphQLBackendCreator;
   private client?: GraphbackClient;
   private server?: GraphbackServer;
@@ -45,11 +49,11 @@ export class TestxServer implements TestxApi {
 
   /**
    * Create a TestxServer.
-   * @param {string} schema - The Grahpback data model definition
+   * @param {string} options.should - The Grahpback data model definition
    * @see {@link https://graphback.dev/docs/datamodel|Grahpback data model definition}
    */
-  constructor(schema: string) {
-    this.schema = schema;
+  constructor(options: TestxServerOptions) {
+    this.options = options;
   }
 
   /**
@@ -191,11 +195,14 @@ export class TestxServer implements TestxApi {
    */
   public async bootstrap(): Promise<void> {
     if (this.database === undefined) {
-      this.database = await initInMemoryDatabase(this.schema);
+      this.database = await initInMemoryDatabase(this.options.schema);
     }
 
     if (this.creator === undefined) {
-      this.creator = new GraphQLBackendCreator(this.schema, DEFAULT_CONFIG);
+      this.creator = new GraphQLBackendCreator(
+        this.options.schema,
+        DEFAULT_CONFIG
+      );
     }
 
     if (this.server === undefined) {
@@ -206,7 +213,10 @@ export class TestxServer implements TestxApi {
     }
 
     if (this.client === undefined) {
-      this.client = await initGraphbackClient(this.schema, DEFAULT_CONFIG);
+      this.client = await initGraphbackClient(
+        this.options.schema,
+        DEFAULT_CONFIG
+      );
     }
   }
 
