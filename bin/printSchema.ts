@@ -9,7 +9,7 @@ import { TestxServer } from "../src";
   const schemaFile = process.argv[2];
   const schema = readFileSync(schemaFile, "utf8");
 
-  const server = new TestxServer(schema);
+  const server = new TestxServer({ schema });
   await server.bootstrap();
 
   // tslint:disable-next-line:no-console

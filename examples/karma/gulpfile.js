@@ -21,11 +21,13 @@ const karmaConfig = {
 
 async function test() {
   // create the TestxServer and the TestxController
-  const server = new TestxServer(`
-    type Item {
-      id: ID!
-      title: String!
-    }`);
+  const server = new TestxServer({
+    schema: `
+      type Item {
+        id: ID!
+        title: String!
+      }`
+  });
   const controller = new TestxController(server);
   await controller.start();
   const testxUrl = await controller.httpUrl();
