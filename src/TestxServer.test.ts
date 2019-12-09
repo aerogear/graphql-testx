@@ -2,6 +2,7 @@ import { serial as test } from "ava";
 import { request } from "graphql-request";
 import gql from "graphql-tag";
 import { TestxServer } from "./TestxServer";
+import { CRUDService, GraphbackCRUDService } from "graphback";
 
 const ITEM_MODEL = `
   type Item {
@@ -193,4 +194,26 @@ test("getDatabaseSchema() method should return column names for all types to be 
   t.deepEqual(dbSchema["item"], itemDbSchema);
 
   await server.close();
+});
+
+test("overwrite default GraphbackCRUDService using serviceBuilder option", async t => {
+  class TestService extends CRUDService {
+    public async findAll(): Promise<unknown[]> {
+      return Promise.resolve([{ id: 1, title: "Overwritten" }]);
+    }
+  }
+
+  const server = new TestxServer({
+    schema: ITEM_MODEL,
+    serviceBuilder: (data, sub): GraphbackCRUDService =>
+      new TestService(data, sub)
+  });
+
+  await server.start();
+  const httpUrl = await server.httpUrl();
+  const queries = await server.getQueries();
+
+  const result = await request(httpUrl, queries.findAllItems);
+  t.assert(result.findAllItems.length === 1);
+  t.assert(result.findAllItems[0].title === "Overwritten");
 });

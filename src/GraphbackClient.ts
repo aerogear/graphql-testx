@@ -1,9 +1,4 @@
-import {
-  GraphbackCRUDGeneratorConfig,
-  createClient,
-  graphQLInputContext,
-  ClientDocument
-} from "graphback";
+import { createClient, ClientDocument, InputModelTypeContext } from "graphback";
 
 interface StringDic {
   [key: string]: string;
@@ -25,10 +20,10 @@ function insertImplInto(
 }
 
 export class GraphbackClient {
-  private queries: StringDic;
-  private mutations: StringDic;
-  private fragments: StringDic;
-  private subscriptions: StringDic;
+  private readonly queries: StringDic;
+  private readonly mutations: StringDic;
+  private readonly fragments: StringDic;
+  private readonly subscriptions: StringDic;
 
   constructor(
     queries: StringDic,
@@ -60,27 +55,30 @@ export class GraphbackClient {
 }
 
 export async function initGraphbackClient(
-  schemaText: string,
-  config: GraphbackCRUDGeneratorConfig
+  context: InputModelTypeContext[]
 ): Promise<GraphbackClient> {
   const fragments: StringDic = {};
   const queries: StringDic = {};
   const mutations: StringDic = {};
   const subscriptions: StringDic = {};
 
-  const inputContext = graphQLInputContext.createModelContext(
-    schemaText,
-    config
-  );
-  const client = await createClient(inputContext, { output: "gql" });
+  const client = await createClient(context, { output: "gql" });
 
-  if (client.fragments !== undefined)
+  if (client.fragments !== undefined) {
     insertImplInto(client.fragments, fragments);
-  if (client.queries !== undefined) insertImplInto(client.queries, queries);
-  if (client.mutations !== undefined)
+  }
+
+  if (client.queries !== undefined) {
+    insertImplInto(client.queries, queries);
+  }
+
+  if (client.mutations !== undefined) {
     insertImplInto(client.mutations, mutations);
-  if (client.subscriptions !== undefined)
+  }
+
+  if (client.subscriptions !== undefined) {
     insertImplInto(client.subscriptions, subscriptions);
+  }
 
   return new GraphbackClient(queries, mutations, fragments, subscriptions);
 }

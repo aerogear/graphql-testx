@@ -18,7 +18,10 @@
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "prettier",
         "prettier/@typescript-eslint"
-      ]
+      ],
+      "rules": {
+        "@typescript-eslint/prefer-readonly": "warn"
+      }
     },
     {
       "files": "**/*.js",
