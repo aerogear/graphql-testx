@@ -14,7 +14,7 @@ import { TestxServer } from "../../../dist/src";
 
 class ToggleableNetworkStatus implements NetworkStatus {
   private online = true;
-  private callbacks: NetworkStatusChangeCallback[] = [];
+  private readonly callbacks: NetworkStatusChangeCallback[] = [];
 
   public onStatusChangeListener(callback: NetworkStatusChangeCallback): void {
     this.callbacks.push(callback);

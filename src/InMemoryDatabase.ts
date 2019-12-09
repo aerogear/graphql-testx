@@ -5,8 +5,8 @@ import knexCleaner from "knex-cleaner";
 import { DatabaseSchema, ImportData } from "./TestxApi";
 
 export class InMemoryDatabase {
-  private knex: Knex;
-  private provider: KnexDBDataProvider;
+  private readonly knex: Knex;
+  private readonly provider: KnexDBDataProvider;
 
   constructor(knex: Knex) {
     this.knex = knex;

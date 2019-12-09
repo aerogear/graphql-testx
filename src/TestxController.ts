@@ -9,8 +9,8 @@ import { Express } from "express-serve-static-core";
 type UnknownFunction = (...args: unknown[]) => unknown;
 
 export class TestxController {
-  private testxServer: TestxServer;
-  private expressApp: Express;
+  private readonly testxServer: TestxServer;
+  private readonly expressApp: Express;
   private controllerServer?: Server;
   private controllerPort?: number;
 

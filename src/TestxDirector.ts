@@ -2,7 +2,7 @@ import axios from "axios";
 import { TestxApi, DatabaseSchema, ImportData } from "./TestxApi";
 
 export class TestxDirector implements TestxApi {
-  private endpoint: string;
+  private readonly endpoint: string;
 
   constructor(url: string) {
     this.endpoint = url;
