@@ -2,8 +2,7 @@ import { initInMemoryDatabase, InMemoryDatabase } from "./InMemoryDatabase";
 import { initGraphbackServer, GraphbackServer } from "./GraphbackServer";
 import { GraphQLBackendCreator } from "graphback";
 import { GraphbackClient, initGraphbackClient } from "./GraphbackClient";
-import { TestxApi, StringDic } from "./TestxApi";
-import { DatabaseSchema, ImportData } from "./generics";
+import { TestxApi, StringDic, DatabaseSchema, ImportData } from "./TestxApi";
 
 /**
  * Graphback configuration for generating the graphql resolvers.

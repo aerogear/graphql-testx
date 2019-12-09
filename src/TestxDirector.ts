@@ -1,6 +1,5 @@
 import axios from "axios";
-import { ImportData, DatabaseSchema } from "./generics";
-import { TestxApi } from "./TestxApi";
+import { TestxApi, DatabaseSchema, ImportData } from "./TestxApi";
 
 export class TestxDirector implements TestxApi {
   private endpoint: string;
