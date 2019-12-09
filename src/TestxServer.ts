@@ -30,15 +30,18 @@ export interface TestxServerOptions {
  * in-memory database, and exposes it in a url.
  *
  * @example
- * const server = new TestxServer(`
- * type Item {
- *   id: ID!
- *   name: String
- *   title: String!
- * }`);
+ * const server = new TestxServer({
+ *  schema: `
+ *    type Item {
+ *      id: ID!
+ *      name: String
+ *      title: String!
+ *    }
+ *  `
+ * });
  * await server.start();
- * console.log(`Running on ${server.url()}`);
- * server.close();
+ * console.log(`Running on ${await server.httpUrl()}`);
+ * await server.close();
  */
 export class TestxServer implements TestxApi {
   private readonly options: TestxServerOptions;
