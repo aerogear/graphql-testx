@@ -1,6 +1,6 @@
 # Contributing to GraphQL Testx
 
-First of all, thank you for your interest in contributing to the project
+Thank you for your interest in contributing to the GraphQL-TestX project
 :heart_eyes::tada:
 
 The following is a set of guidelines for contributing to **GraphQL Testx**.
