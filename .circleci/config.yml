@@ -44,7 +44,9 @@ jobs:
       - run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
           chmod 600 .npmrc
-      - run: ./scripts/release.sh --release dev
+      - run: |
+          npm whoami
+          ./scripts/release.sh --release dev
 
   publish:
     docker:
