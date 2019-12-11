@@ -49,11 +49,11 @@ export interface TestxServerOptions {
  * await server.close();
  */
 export class TestxServer implements TestxApi {
-  private readonly options: TestxServerOptions;
-  private readonly context: InputModelTypeContext[];
-  private client?: GraphbackClient;
-  private server?: GraphbackServer;
-  private database?: InMemoryDatabase;
+  protected readonly options: TestxServerOptions;
+  protected readonly context: InputModelTypeContext[];
+  protected client?: GraphbackClient;
+  protected server?: GraphbackServer;
+  protected database?: InMemoryDatabase;
 
   /**
    * Create a TestxServer.
