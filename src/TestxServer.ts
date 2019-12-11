@@ -34,7 +34,7 @@ export interface TestxServerOptions {
   /**
    * Custom database
    */
-  database: InMemoryDatabase;
+  database?: InMemoryDatabase;
 }
 
 /**
@@ -139,7 +139,7 @@ export class TestxServer implements TestxApi {
     if (this.server === undefined) {
       throw new Error(
         `can not retrieve the http url from undefined server, ` +
-        `use bootstrap() or start() in order to initialize the server`
+          `use bootstrap() or start() in order to initialize the server`
       );
     }
 
@@ -154,7 +154,7 @@ export class TestxServer implements TestxApi {
     if (this.server === undefined) {
       throw new Error(
         `can not retrieve the subscriptions url from undefined server, ` +
-        `use bootstrap() or start() in order to initialize the server`
+          `use bootstrap() or start() in order to initialize the server`
       );
     }
 
@@ -170,7 +170,7 @@ export class TestxServer implements TestxApi {
     if (this.server === undefined) {
       throw new Error(
         `can not retrieve the graphql schema from undefined server, ` +
-        `use bootstrap() or start() in order to initialize the server`
+          `use bootstrap() or start() in order to initialize the server`
       );
     }
 
@@ -187,7 +187,7 @@ export class TestxServer implements TestxApi {
     if (this.database === undefined) {
       throw new Error(
         `can not retrieve database schema from undefined database, ` +
-        `use bootstrap() or start() in order to initialize the database`
+          `use bootstrap() or start() in order to initialize the database`
       );
     }
 
@@ -203,7 +203,7 @@ export class TestxServer implements TestxApi {
     if (this.database === undefined) {
       throw new Error(
         `can not import data into undefined database, ` +
-        `use bootstrap() or start() in order to initialize the database`
+          `use bootstrap() or start() in order to initialize the database`
       );
     }
 
@@ -218,7 +218,7 @@ export class TestxServer implements TestxApi {
   public async bootstrap(): Promise<void> {
     if (this.database === undefined) {
       if (this.options.database) {
-        this.database = this.options.database
+        this.database = this.options.database;
       } else {
         this.database = await initInMemoryDatabase(this.options.schema);
       }
@@ -245,7 +245,7 @@ export class TestxServer implements TestxApi {
     if (this.client === undefined) {
       throw new Error(
         `can not retrieve client queries from undefined client, ` +
-        `use bootstrap() or start() in order to initialize the client`
+          `use bootstrap() or start() in order to initialize the client`
       );
     }
 
@@ -260,7 +260,7 @@ export class TestxServer implements TestxApi {
     if (this.client === undefined) {
       throw new Error(
         `can not retrieve client mutations from undefined client, ` +
-        `use bootstrap() or start() in order to initialize the client`
+          `use bootstrap() or start() in order to initialize the client`
       );
     }
 
@@ -275,7 +275,7 @@ export class TestxServer implements TestxApi {
     if (this.client === undefined) {
       throw new Error(
         `can not retrieve client subscriptions from undefined client, ` +
-        `use bootstrap() or start() in order to initialize the client`
+          `use bootstrap() or start() in order to initialize the client`
       );
     }
 
