@@ -1,5 +1,5 @@
 /* global __karma__ */
-const { TestxDirector } = require("../../../dist/src/TestxDirector");
+const { TestxDirector } = require("../../../");
 const { request } = require("graphql-request");
 const { expect } = require("chai");
 
