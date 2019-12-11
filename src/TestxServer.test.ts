@@ -114,11 +114,11 @@ test("url server should be same after resuming the server", async t => {
 
   await server.start();
   const firstUrl = await server.httpUrl();
-  
+
   await server.stop();
   await server.start();
   const secondUrl = await server.httpUrl();
-  
+
   t.assert(firstUrl === secondUrl);
 });
 
