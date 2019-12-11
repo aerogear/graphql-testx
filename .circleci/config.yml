@@ -69,7 +69,8 @@ workflows:
           requires:
             - build
           filters:
-            branches: master
+            branches: 
+              only: /^master$/
       - publish:
           requires:
             - build
