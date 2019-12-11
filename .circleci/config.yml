@@ -35,6 +35,17 @@ jobs:
             - .
 
   ## Publish
+  publish_master:
+    docker:
+      - image: circleci/node:12.13
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+          chmod 600 .npmrc
+      - run: ./scripts/release.sh --release dev
+
   publish:
     docker:
       - image: circleci/node:12.13
@@ -44,7 +55,7 @@ jobs:
       - run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
           chmod 600 .npmrc
-      - run: TAG="$CIRCLE_TAG" ./scripts/release.sh
+      - run: ./scripts/release.sh --release "${CIRCLE_TAG}"
 
 workflows:
   version: 2
@@ -54,6 +65,12 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - publish_master:
+          requires:
+            - build
+          filters:
+            branches:
+              only: /master/
       - publish:
           requires:
             - build
