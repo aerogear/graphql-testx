@@ -2,7 +2,7 @@ import { TestxServer } from "./TestxServer";
 import { Server } from "http";
 import express, { json } from "express";
 import { isTestxApiMethod } from "./TestxApi";
-import { getAvailablePort } from "./utils";
+import getPort from "get-port";
 import cors from "cors";
 import { Express } from "express-serve-static-core";
 
@@ -60,7 +60,7 @@ export class TestxController {
 
   public async start(port?: number): Promise<void> {
     if (port === undefined) {
-      port = await getAvailablePort();
+      port = await getPort();
     }
 
     if (
