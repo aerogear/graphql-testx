@@ -80,7 +80,7 @@ graphql clients and javascript test frameworks.
 
 - Testing generic application with **Karma**
 
-  [graphql-testx-karma-example](./example/karma)
+  [graphql-testx-karma-example](./examples/karma)
 
 ## Contributing
 
