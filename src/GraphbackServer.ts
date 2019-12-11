@@ -30,6 +30,11 @@ export class GraphbackServer {
   }
 
   public async start(port?: number): Promise<void> {
+    if (this.httpServer.listening) {
+      // the server is already running
+      return;
+    }
+
     if (port === undefined) {
       // if no port is passed, use the previous port
       // or get a new available port
