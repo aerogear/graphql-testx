@@ -74,6 +74,22 @@ test("start multiple TestxServer servers at the same time", async t => {
   t.assert(true);
 });
 
+test("start the server when it is already running", async t => {
+  const server = new TestxServer({ schema: ITEM_MODEL });
+  await server.start();
+  const httpUrl = await server.httpUrl();
+  const queries = await server.getQueries();
+
+  // try to start the server again without stopping or closing it
+  await server.start();
+
+  const result = await request(httpUrl, queries.findAllItems);
+  t.assert(result.findAllItems.length === 0);
+
+  // also ensure the httpUrl didn't change
+  t.assert(httpUrl === (await server.httpUrl()));
+});
+
 test("stop() method should preserve stored items", async t => {
   const server = new TestxServer({ schema: ITEM_MODEL });
 
