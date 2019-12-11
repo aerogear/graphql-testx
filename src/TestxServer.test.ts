@@ -35,33 +35,41 @@ test("test start() and close() methods", async t => {
 test("should start the server after closing it", async t => {
   const server = new TestxServer({ schema: ITEM_MODEL });
   await server.start();
-  const httpUrl = await server.httpUrl();
+  const httpUrl1 = await server.httpUrl();
   const mutations = await server.getMutations();
   const queries = await server.getQueries();
 
-  await request(httpUrl, mutations.createItem, { title: "test" });
+  await request(httpUrl1, mutations.createItem, { title: "test" });
 
   await server.close();
   await t.throwsAsync(
     async () => {
-      await request(httpUrl, queries.findAllItems);
+      await request(httpUrl1, queries.findAllItems);
     },
     null,
     "Should throw an error after closing the server (ECONNREFUSED)"
   );
 
   await server.start();
-  const result = await request(httpUrl, queries.findAllItems);
+  const httpUrl2 = await server.httpUrl();
+
+  const result = await request(httpUrl2, queries.findAllItems);
   t.assert(result.findAllItems.length === 0, "Should be empty");
 });
 
-test.skip("start multiple TestxServer servers at the same time", async t => {
-  // Issue: https://github.com/aerogear/graphql-testx/issues/47
+test("start multiple TestxServer servers at the same time", async t => {
   const server1 = new TestxServer({ schema: ITEM_MODEL });
   const server2 = new TestxServer({ schema: ITEM_MODEL });
+  const server3 = new TestxServer({ schema: ITEM_MODEL });
+  const server4 = new TestxServer({ schema: ITEM_MODEL });
 
   // start both servers at the same time
-  await Promise.all([server1.start(), server2.start()]);
+  await Promise.all([
+    server1.start(),
+    server2.start(),
+    server3.start(),
+    server4.start()
+  ]);
 
   t.assert(true);
 });
@@ -99,6 +107,19 @@ test("stop() method should preserve stored items", async t => {
   );
 
   await server.close();
+});
+
+test("url server should be same after resuming the server", async t => {
+  const server = new TestxServer({ schema: ITEM_MODEL });
+
+  await server.start();
+  const firstUrl = await server.httpUrl();
+
+  await server.stop();
+  await server.start();
+  const secondUrl = await server.httpUrl();
+
+  t.assert(firstUrl === secondUrl);
 });
 
 test("cleanDatabase() method should remove all items", async t => {

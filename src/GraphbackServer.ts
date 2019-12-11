@@ -9,7 +9,7 @@ import {
   LayeredRuntimeResolverGenerator
 } from "graphback";
 import { Server, createServer } from "http";
-import { getAvailablePort } from "./utils";
+import getPort from "get-port";
 
 const ENDPOINT = "/graphql";
 
@@ -36,7 +36,7 @@ export class GraphbackServer {
       if (this.serverPort !== undefined) {
         port = this.serverPort;
       } else {
-        port = await getAvailablePort();
+        port = await getPort();
       }
     }
 

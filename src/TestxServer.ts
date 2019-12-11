@@ -74,8 +74,8 @@ export class TestxServer implements TestxApi {
    * Executes the bootstrap() method to generate the GraphQL backend and initialize
    * the server.
    * Starts the GraphQL server exposing it in http://localhost:port/graphql,
-   * the port is generated in the range 29170 - 29998.
-   * The full url server can be retrieved by url() method after the server starts.
+   * the port is random.
+   * The full url server can be retrieved by httpUrl() method after the server starts.
    */
   public async start(): Promise<void> {
     await this.bootstrap();
