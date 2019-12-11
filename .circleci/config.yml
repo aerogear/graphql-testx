@@ -44,7 +44,7 @@ jobs:
       - run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
           chmod 600 .npmrc
-      - run: TAG="$CIRCLE_TAG" ./scripts/release.sh
+      - run: ./scripts/release.sh --release "${CIRCLE_TAG}"
 
 workflows:
   version: 2
