@@ -26,7 +26,15 @@ const DEFAULT_CONFIG = {
 
 export interface TestxServerOptions {
   schema: string;
+  /**
+   * Custom service layer
+   */
   serviceBuilder?: ServiceBuilder;
+
+  /**
+   * Custom database
+   */
+  database?: InMemoryDatabase;
 }
 
 /**
@@ -209,7 +217,11 @@ export class TestxServer implements TestxApi {
    */
   public async bootstrap(): Promise<void> {
     if (this.database === undefined) {
-      this.database = await initInMemoryDatabase(this.options.schema);
+      if (this.options.database) {
+        this.database = this.options.database;
+      } else {
+        this.database = await initInMemoryDatabase(this.options.schema);
+      }
     }
 
     if (this.server === undefined) {
