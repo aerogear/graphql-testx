@@ -18,7 +18,7 @@ export interface DatabaseImportData {
  * If using the GraphbackServer to generate the GraphQL resolvers the
  *  database schema must be compatible with Graphback. You can do so
  *  using the graphql-migrations package.
- * 
+ *
  * @experimental - this interface is most likely to change in future release
  *                  please keep an eye on the breaking changes
  */

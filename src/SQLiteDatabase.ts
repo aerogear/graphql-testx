@@ -6,7 +6,7 @@ import { DatabaseSchema, Database, DatabaseImportData } from "./Database";
 
 /**
  * The default implementation for the Database interface.
- * 
+ *
  * This object is compatible only with sqlite.
  */
 export class SQLiteDatabase implements Database {
@@ -15,7 +15,7 @@ export class SQLiteDatabase implements Database {
 
   constructor(knex: Knex) {
     this.knex = knex;
-    knex()
+    knex();
     this.provider = new KnexDBDataProvider(knex);
   }
 
