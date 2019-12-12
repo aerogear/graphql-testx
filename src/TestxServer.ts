@@ -1,4 +1,7 @@
-import { initInMemoryDatabase, InMemoryDatabase } from "./InMemoryDatabase";
+import {
+  sqliteInMemoryDatabaseBuilder,
+  SQLiteDatabase
+} from "./SQLiteDatabase";
 import {
   initGraphbackServer,
   GraphbackServer,
@@ -6,7 +9,9 @@ import {
 } from "./GraphbackServer";
 import { graphQLInputContext, InputModelTypeContext } from "graphback";
 import { GraphbackClient, initGraphbackClient } from "./GraphbackClient";
-import { TestxApi, StringDic, DatabaseSchema, ImportData } from "./TestxApi";
+import { TestxApi, StringDic } from "./TestxApi";
+import { DatabaseImportData, DatabaseSchema, Database } from "./Database";
+import { Data } from "ws";
 
 /**
  * Graphback configuration for generating the graphql resolvers.
@@ -28,13 +33,17 @@ export interface TestxServerOptions {
   schema: string;
   /**
    * Custom service layer
+   *
+   * @experimental
    */
   serviceBuilder?: ServiceBuilder;
 
   /**
    * Custom database
+   *
+   * @experimental
    */
-  database?: InMemoryDatabase;
+  database?: Database;
 }
 
 /**
@@ -61,7 +70,7 @@ export class TestxServer implements TestxApi {
   protected readonly context: InputModelTypeContext[];
   protected client?: GraphbackClient;
   protected server?: GraphbackServer;
-  protected database?: InMemoryDatabase;
+  protected database?: Database;
 
   /**
    * Create a TestxServer.
@@ -115,7 +124,7 @@ export class TestxServer implements TestxApi {
     await this.stop();
 
     if (this.database !== undefined) {
-      await this.database.destroy();
+      await this.database.close();
     }
 
     this.server = undefined;
@@ -199,7 +208,7 @@ export class TestxServer implements TestxApi {
    * Which means that the data doesn't pass through any mutation.
    * @param {Object[]} data - Data to insert
    */
-  public async setData(data: ImportData): Promise<void> {
+  public async setData(data: DatabaseImportData): Promise<void> {
     if (this.database === undefined) {
       throw new Error(
         `can not import data into undefined database, ` +
@@ -220,7 +229,9 @@ export class TestxServer implements TestxApi {
       if (this.options.database) {
         this.database = this.options.database;
       } else {
-        this.database = await initInMemoryDatabase(this.options.schema);
+        this.database = await sqliteInMemoryDatabaseBuilder(
+          this.options.schema
+        );
       }
     }
 

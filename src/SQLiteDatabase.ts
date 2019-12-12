@@ -2,27 +2,23 @@ import Knex from "knex";
 import { KnexDBDataProvider, GraphbackDataProvider } from "graphback";
 import { DropCreateDatabaseAlways, migrate } from "graphql-migrations";
 import knexCleaner from "knex-cleaner";
-import { DatabaseSchema, ImportData } from "./TestxApi";
+import { DatabaseSchema, Database, DatabaseImportData } from "./Database";
 
-export class InMemoryDatabase {
+/**
+ * The default implementation for the Database interface.
+ * 
+ * This object is compatible only with sqlite.
+ */
+export class SQLiteDatabase implements Database {
   private readonly knex: Knex;
   private readonly provider: KnexDBDataProvider;
 
   constructor(knex: Knex) {
     this.knex = knex;
+    knex()
     this.provider = new KnexDBDataProvider(knex);
   }
 
-  /**
-   * Destroy the database
-   */
-  public async destroy(): Promise<void> {
-    await this.knex.destroy();
-  }
-
-  /**
-   * Return the Graphback provider for this database
-   */
   public getProvider(): GraphbackDataProvider {
     return this.provider;
   }
@@ -40,7 +36,7 @@ export class InMemoryDatabase {
     return schema;
   }
 
-  public async importData(data: ImportData): Promise<void> {
+  public async importData(data: DatabaseImportData): Promise<void> {
     await this.clean();
     const tables = await this.getTables();
     for (const table of tables) {
@@ -50,6 +46,10 @@ export class InMemoryDatabase {
     }
   }
 
+  public async close(): Promise<void> {
+    await this.knex.destroy();
+  }
+
   private async getTables(): Promise<string[]> {
     return (await this.knex("sqlite_master").where("type", "table"))
       .map(x => x.name)
@@ -57,9 +57,9 @@ export class InMemoryDatabase {
   }
 }
 
-export async function initInMemoryDatabase(
+export async function sqliteInMemoryDatabaseBuilder(
   schema: string
-): Promise<InMemoryDatabase> {
+): Promise<SQLiteDatabase> {
   // initialize the knex db
   const knex = Knex({
     client: "sqlite3",
@@ -70,5 +70,5 @@ export async function initInMemoryDatabase(
   const strategy = new DropCreateDatabaseAlways("sqlite3", knex);
   await migrate(schema, strategy);
 
-  return new InMemoryDatabase(knex);
+  return new SQLiteDatabase(knex);
 }
