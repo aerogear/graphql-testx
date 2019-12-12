@@ -1,5 +1,6 @@
 import axios from "axios";
-import { TestxApi, DatabaseSchema, ImportData } from "./TestxApi";
+import { TestxApi } from "./TestxApi";
+import { DatabaseSchema, DatabaseImportData } from "./Database";
 
 export class TestxDirector implements TestxApi {
   private readonly endpoint: string;
@@ -49,7 +50,7 @@ export class TestxDirector implements TestxApi {
     return await this.call("getDatabaseSchema");
   }
 
-  public async setData(data: ImportData): Promise<void> {
+  public async setData(data: DatabaseImportData): Promise<void> {
     return await this.call("setData", data);
   }
 

@@ -1,15 +1,7 @@
+import { DatabaseSchema, DatabaseImportData } from "./Database";
+
 export interface StringDic {
   [name: string]: string;
-}
-
-export interface ImportData {
-  [table: string]: {
-    [column: string]: unknown;
-  }[];
-}
-
-export interface DatabaseSchema {
-  [table: string]: string[];
 }
 
 export interface TestxApi {
@@ -29,7 +21,7 @@ export interface TestxApi {
 
   getDatabaseSchema(): Promise<DatabaseSchema>;
 
-  setData(data: ImportData): Promise<void>;
+  setData(data: DatabaseImportData): Promise<void>;
 
   bootstrap(): Promise<void>;
 
