@@ -368,7 +368,7 @@ Client API for the `TestxController` that implements all `TestxServer` methods.
 Is used in combination wit the `TestxController`.
 
 ```ts
-import { TestxDirector } from "graphql-testx/dist/src/TestxDirector";
+import { TestxDirector } from "graphql-testx/director";
 
 // controller: TestxController
 // controllerHttpUrl = await controller.httpUrl();
