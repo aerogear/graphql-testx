@@ -21,8 +21,8 @@ describe("test mutations", () => {
     await server.start();
     console.log(`Running on ${await server.httpUrl()}`);
 
-    queries = await server.getQueries();
-    mutations = await server.getMutations();
+    queries = server.getQueries();
+    mutations = server.getMutations();
   });
 
   after("close graphql server", () => {

@@ -287,7 +287,7 @@ console.log(await server.getDatabaseSchema());
 }
 ```
 
-#### `getQueries(): Promise<{[query: string]: string}>`
+#### `getQueries(): {[query: string]: string}`
 
 Return ready-to-use client queries.
 
@@ -310,13 +310,17 @@ fragment ItemFields on Item {
 }
 ```
 
-#### `getMutations(): Promise<{[query: string]: string}>`
+#### `getMutations(): {[query: string]: string}`
 
 Return ready-to-use client mutations like for `getQueries()`.
 
-#### `getSubscriptions(): Promise<{[query: string]: string}>`
+#### `getSubscriptions(): {[query: string]: string}`
 
 Return ready-to-use client subscriptions like for `getQueries()`.
+
+#### `getFragments(): {[query: string]: string}`
+
+Return fragments that will need to be attached to specific queries and mutations
 
 ### `TestxController`
 

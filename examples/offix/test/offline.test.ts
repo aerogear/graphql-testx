@@ -65,8 +65,8 @@ it("update an object while offline and assert that the object get updated on the
 
   // setup client and network status in each tests
   const [client, network] = await newClient(await server.httpUrl());
-  const queries = await server.getQueries();
-  const mutations = await server.getMutations();
+  const queries = server.getQueries();
+  const mutations = server.getMutations();
 
   network.setOnline(true);
 
