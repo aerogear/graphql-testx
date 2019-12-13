@@ -1,4 +1,5 @@
 import { DatabaseSchema, DatabaseImportData } from "./Database";
+import { GraphbackClient } from "./GraphbackClient";
 
 export interface StringDic {
   [name: string]: string;
@@ -25,11 +26,15 @@ export interface TestxApi {
 
   bootstrap(): Promise<void>;
 
-  getQueries(): Promise<StringDic>;
+  getQueries(): StringDic;
 
-  getMutations(): Promise<StringDic>;
+  getMutations(): StringDic;
 
-  getSubscriptions(): Promise<StringDic>;
+  getSubscriptions(): StringDic;
+
+  getFragments(): StringDic;
+
+  getClient(): GraphbackClient;
 }
 
 export function isTestxApiMethod(

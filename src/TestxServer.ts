@@ -148,7 +148,7 @@ export class TestxServer implements TestxApi {
     if (this.server === undefined) {
       throw new Error(
         `can not retrieve the http url from undefined server, ` +
-          `use bootstrap() or start() in order to initialize the server`
+        `use bootstrap() or start() in order to initialize the server`
       );
     }
 
@@ -163,7 +163,7 @@ export class TestxServer implements TestxApi {
     if (this.server === undefined) {
       throw new Error(
         `can not retrieve the subscriptions url from undefined server, ` +
-          `use bootstrap() or start() in order to initialize the server`
+        `use bootstrap() or start() in order to initialize the server`
       );
     }
 
@@ -179,7 +179,7 @@ export class TestxServer implements TestxApi {
     if (this.server === undefined) {
       throw new Error(
         `can not retrieve the graphql schema from undefined server, ` +
-          `use bootstrap() or start() in order to initialize the server`
+        `use bootstrap() or start() in order to initialize the server`
       );
     }
 
@@ -196,7 +196,7 @@ export class TestxServer implements TestxApi {
     if (this.database === undefined) {
       throw new Error(
         `can not retrieve database schema from undefined database, ` +
-          `use bootstrap() or start() in order to initialize the database`
+        `use bootstrap() or start() in order to initialize the database`
       );
     }
 
@@ -212,7 +212,7 @@ export class TestxServer implements TestxApi {
     if (this.database === undefined) {
       throw new Error(
         `can not import data into undefined database, ` +
-          `use bootstrap() or start() in order to initialize the database`
+        `use bootstrap() or start() in order to initialize the database`
       );
     }
 
@@ -252,44 +252,73 @@ export class TestxServer implements TestxApi {
    * Get the generated client queries.
    * @return {Object} An object containing the queries as properties
    */
-  public async getQueries(): Promise<StringDic> {
+  public getQueries(): StringDic {
     if (this.client === undefined) {
       throw new Error(
         `can not retrieve client queries from undefined client, ` +
-          `use bootstrap() or start() in order to initialize the client`
+        `use bootstrap() or start() in order to initialize the client`
       );
     }
 
-    return Promise.resolve(this.client.getQueries());
+    return this.client.getQueries();
   }
 
   /**
    * Get the generated client mutations.
    * @return {Object} An object containing the mutations as properties
    */
-  public async getMutations(): Promise<StringDic> {
+  public getMutations(): StringDic {
     if (this.client === undefined) {
       throw new Error(
         `can not retrieve client mutations from undefined client, ` +
-          `use bootstrap() or start() in order to initialize the client`
+        `use bootstrap() or start() in order to initialize the client`
       );
     }
-
-    return Promise.resolve(this.client.getMutations());
+  
+    return this.client.getMutations();
   }
 
   /**
    * Get the generated client subscriptions.
    * @return {Object} An object containing the subscriptions as properties
    */
-  public async getSubscriptions(): Promise<StringDic> {
+  public getSubscriptions(): StringDic {
     if (this.client === undefined) {
       throw new Error(
         `can not retrieve client subscriptions from undefined client, ` +
-          `use bootstrap() or start() in order to initialize the client`
+        `use bootstrap() or start() in order to initialize the client`
       );
     }
 
-    return Promise.resolve(this.client.getSubscriptions());
+    return this.client.getSubscriptions();
+  }
+
+  /**
+   * Get the generated client subscriptions.
+   * @return {Object} An object containing the subscriptions as properties
+   */
+  public getFragments(): StringDic {
+    if (this.client === undefined) {
+      throw new Error(
+        `can not retrieve client subscriptions from undefined client, ` +
+        `use bootstrap() or start() in order to initialize the client`
+      );
+    }
+
+    return this.client.getFragments();
+  }
+
+  /**
+   * Get the generated client.
+   */
+  public getClient(): GraphbackClient {
+    if (this.client === undefined) {
+      throw new Error(
+        `can not retrieve client subscriptions from undefined client, ` +
+        `use bootstrap() or start() in order to initialize the client`
+      );
+    }
+
+    return this.client;
   }
 }
