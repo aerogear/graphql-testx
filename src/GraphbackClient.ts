@@ -1,5 +1,5 @@
-import { createClient, ClientDocument, InputModelTypeContext } from "graphback";
-
+import { createClient, ClientDocument } from "@graphback/codegen-client";
+import { InputModelTypeContext } from "graphback";
 interface StringDic {
   [key: string]: string;
 }
@@ -62,7 +62,7 @@ export async function initGraphbackClient(
   const mutations: StringDic = {};
   const subscriptions: StringDic = {};
 
-  const client = await createClient(context, { output: "gql" });
+  const client = await createClient(context, { output: "gqlwithfragment" });
 
   if (client.fragments !== undefined) {
     insertImplInto(client.fragments, fragments);
