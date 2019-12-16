@@ -390,6 +390,13 @@
   dependencies:
     arrify "^1.0.1"
 
+"@graphback/codegen-client@0.10.0-dev6":
+  version "0.10.0-dev6"
+  resolved "https://registry.yarnpkg.com/@graphback/codegen-client/-/codegen-client-0.10.0-dev6.tgz#513f06a2b15ad1c2a4fa4a2abd12550230740157"
+  integrity sha512-puQTPm0ChRE0CT5u79XAOVTZx9ArloYvD2GWbv2/JdCSCmX5hbCFcNsU39FJBXDqJmi1N9zDEdwsTDBA1e5Gcg==
+  dependencies:
+    "@graphback/core" "0.10.0-rc2"
+
 "@graphback/codegen-client@^0.10.0-rc2":
   version "0.10.0-rc2"
   resolved "https://registry.yarnpkg.com/@graphback/codegen-client/-/codegen-client-0.10.0-rc2.tgz#bac8af4a75037c794294647dfb0e7e0b66436da4"
@@ -414,7 +421,7 @@
   dependencies:
     "@graphback/core" "^0.10.0-rc2"
 
-"@graphback/core@^0.10.0-rc2":
+"@graphback/core@0.10.0-rc2", "@graphback/core@^0.10.0-rc2":
   version "0.10.0-rc2"
   resolved "https://registry.yarnpkg.com/@graphback/core/-/core-0.10.0-rc2.tgz#127a4388fe95e16868cb4e4f1e32eb1a8c4782b3"
   integrity sha512-owKRQo1shDVKNy+eS6Z/RtEtwvd27eg140s3IygEW8Mz1F3HeJ4d8Aij/dmj/ILkFIbznhgRMGYnP1Y16PHOEw==
@@ -685,10 +692,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.11.tgz#bec2961975888d964196bf0016a2f984d793d3ce"
   integrity sha512-O+x6uIpa6oMNTkPuHDa9MhMMehlxLAd5QcOvKRjAFsBVpeFWTOPnXbDvILvFgFFZfQ1xh1EZi1FbXxUix+zpsQ==
 
-"@types/node@12.12.17":
-  version "12.12.17"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.17.tgz#191b71e7f4c325ee0fb23bc4a996477d92b8c39b"
-  integrity sha512-Is+l3mcHvs47sKy+afn2O1rV4ldZFU7W8101cNlOd+MRbjM4Onida8jSZnJdTe/0Pcf25g9BNIUsuugmE6puHA==
+"@types/node@12.12.18":
+  version "12.12.18"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.18.tgz#8d16634797d63c2af5bc647ce879f8de20b56469"
+  integrity sha512-DBkZuIMFuAfjJHiunyRc+aNvmXYNwV1IPMgGKGlwCp6zh6MKrVtmvjSWK/axWcD25KJffkXgkfvFra8ndenXAw==
 
 "@types/node@^10.1.0":
   version "10.17.5"
