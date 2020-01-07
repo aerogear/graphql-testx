@@ -390,6 +390,13 @@
   dependencies:
     arrify "^1.0.1"
 
+"@graphback/codegen-client@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@graphback/codegen-client/-/codegen-client-0.10.0.tgz#079fd65486f97cd9c10f84844d6cdf38188c07c9"
+  integrity sha512-ehOvQ7soj6H+xUKD9uj0uNfSZyAD19Jh8ubwVLs/MuVnzqnj7RfBbZ43mwUD5T9mrX1v7RK7ZDfP9VaPzo0GJA==
+  dependencies:
+    "@graphback/core" "0.10.0"
+
 "@graphback/codegen-client@0.10.0-dev6":
   version "0.10.0-dev6"
   resolved "https://registry.yarnpkg.com/@graphback/codegen-client/-/codegen-client-0.10.0-dev6.tgz#513f06a2b15ad1c2a4fa4a2abd12550230740157"
@@ -397,29 +404,31 @@
   dependencies:
     "@graphback/core" "0.10.0-rc2"
 
-"@graphback/codegen-client@^0.10.0-rc2":
-  version "0.10.0-rc2"
-  resolved "https://registry.yarnpkg.com/@graphback/codegen-client/-/codegen-client-0.10.0-rc2.tgz#bac8af4a75037c794294647dfb0e7e0b66436da4"
-  integrity sha512-s6nKXaWZ/hQZBw2be4gc1rTBewOYRPRpiN3ND74exsxg60G8AnaC7ycFOsKAVelLl/WWGWDvZxbTs4w5Ouz+dg==
+"@graphback/codegen-resolvers@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@graphback/codegen-resolvers/-/codegen-resolvers-0.10.0.tgz#b3f27af7d1b303aa2043d74099ffd0ccccfd15d7"
+  integrity sha512-u4l7msuEdKvjKnxqCXcnHuiT+s/4C3XrfVeRSgNloTM8jGm9lWG4gpcqtzDjQqAKLKWoOV+bPKD1fVs1Ylstdw==
   dependencies:
-    "@graphback/core" "^0.10.0-rc2"
+    "@graphback/core" "0.10.0"
+    knex "0.20.6"
+    pg "7.17.0"
+    sqlite3 "4.1.1"
 
-"@graphback/codegen-resolvers@^0.10.0-rc2":
-  version "0.10.0-rc2"
-  resolved "https://registry.yarnpkg.com/@graphback/codegen-resolvers/-/codegen-resolvers-0.10.0-rc2.tgz#45b7bf90e065b18f4b60313c6a55c8baafd0e088"
-  integrity sha512-cGlkhaPuPr72z9SgqJVmTdo6N7vClQj3mJKQlU4SOee3jUUdhIebq2sindunGbwTC8ARddnXm9jZIPCLE29CgA==
+"@graphback/codegen-schema@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@graphback/codegen-schema/-/codegen-schema-0.10.0.tgz#273a9ead5f8f7417cd8feb87f9262a2628d95935"
+  integrity sha512-3IAkU+V7nNFYRv3u6aJcUbNnocqFpcSdvoM0qQQPbBWtCz7htPKEoh53w3CIQdgvn1zkCeVu1LkBb9WTeolqZQ==
   dependencies:
-    "@graphback/core" "^0.10.0-rc2"
-    knex "0.20.2"
-    pg "7.14.0"
-    sqlite3 "4.1.0"
+    "@graphback/core" "0.10.0"
 
-"@graphback/codegen-schema@^0.10.0-rc2":
-  version "0.10.0-rc2"
-  resolved "https://registry.yarnpkg.com/@graphback/codegen-schema/-/codegen-schema-0.10.0-rc2.tgz#78ef41eba1bd789256ad05adc0ad1e2c3db1c870"
-  integrity sha512-bgt35fWDoiRE6jKVCPWecEVBHJasbkrDq3dTFYQpgRZWA1+ImC7WY5GGHkG+h32rNQlYQv2qu9b1G6AL3DrSeA==
+"@graphback/core@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@graphback/core/-/core-0.10.0.tgz#713db36ff383b2038db1869aefc3ed5cc6c72df1"
+  integrity sha512-I0Ym8+7D4I2hW71x3CxGZv1MdWtK+4qtj1UaNvxHBL2s8dA6Xi7hlfblDoYPhNfquv9/VPzmV1ZTE6Ybxi2Jig==
   dependencies:
-    "@graphback/core" "^0.10.0-rc2"
+    glob "7.1.6"
+    graphql-annotations "0.0.3"
+    pino "5.15.0"
 
 "@graphback/core@0.10.0-rc2", "@graphback/core@^0.10.0-rc2":
   version "0.10.0-rc2"
@@ -429,15 +438,15 @@
     glob "7.1.6"
     pino "5.14.0"
 
-"@graphback/runtime@^0.10.0-rc2":
-  version "0.10.0-rc2"
-  resolved "https://registry.yarnpkg.com/@graphback/runtime/-/runtime-0.10.0-rc2.tgz#0b4909f63d3de981330a1df92966489c0ad94118"
-  integrity sha512-rfMPE48H8vNoTRK7VKQSkQwDdPed14sqFdMauhufNa/q7fe14x4l9yf8EPpN6pVl6UisEF5IDAE4yrGPcU+D6A==
+"@graphback/runtime@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@graphback/runtime/-/runtime-0.10.0.tgz#fa81d8bf79ab7ab515b8778a670b2a05b2fd1ce2"
+  integrity sha512-0UTol7telBWYfUIxE4pn4E6Qmtztyjo4nVCGQPWlHHkMXOoiwKo4yOHl0U8fAbhBwSnIAF70pUycOFW5EO5YRA==
   dependencies:
-    "@graphback/core" "^0.10.0-rc2"
+    "@graphback/core" "0.10.0"
     dataloader "2.0.0"
     graphql-subscriptions "1.1.0"
-    knex "0.20.2"
+    knex "0.20.6"
 
 "@graphql-inspector/core@1.26.0":
   version "1.26.0"
@@ -445,6 +454,13 @@
   integrity sha512-j9jz2+RhJnJjbYNm9TyqoqTDIpuPZJBXmha6kjZSS363gJiRlEyIjoSYp6MbAsrxysdfm3QVEurlWTdfGY6Ssw==
   dependencies:
     dependency-graph "0.8.0"
+
+"@graphql-inspector/core@1.27.0":
+  version "1.27.0"
+  resolved "https://registry.yarnpkg.com/@graphql-inspector/core/-/core-1.27.0.tgz#87993675e9a1fd1e2f6cc1e1ea42afa098ae58b4"
+  integrity sha512-A5VnmNXj/5w8aoBLI3oEHWCYZAiRyMmmM0cJefKv/HYyBe6TYMzSRJLPvNp9mq3bKXU2szYp5NM5b1Bud2t5rQ==
+  dependencies:
+    dependency-graph "0.8.1"
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
@@ -1365,6 +1381,11 @@ bluebird@^3.5.5, bluebird@^3.7.1:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.1.tgz#df70e302b471d7473489acf26a93d63b53f874de"
   integrity sha512-DdmyoGCleJnkbp3nkbxTLJ18rjDsE4yCggEwKNXkeV123sPNfOCYeDoeuOY+F2FrSjO1YXcTU+dsy96KMy+gcg==
 
+bluebird@^3.7.2:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
+  integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
+
 blueimp-md5@^2.10.0:
   version "2.12.0"
   resolved "https://registry.yarnpkg.com/blueimp-md5/-/blueimp-md5-2.12.0.tgz#be7367938a889dec3ffbb71138617c117e9c130a"
@@ -2022,6 +2043,11 @@ dependency-graph@0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/dependency-graph/-/dependency-graph-0.8.0.tgz#2da2d35ed852ecc24a5d6c17788ba57c3708755b"
   integrity sha512-DCvzSq2UiMsuLnj/9AL484ummEgLtZIcRS7YvtO38QnpX3vqh9nJ8P+zhu8Ja+SmLrBHO2iDbva20jq38qvBkQ==
+
+dependency-graph@0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/dependency-graph/-/dependency-graph-0.8.1.tgz#9b8cae3aa2c7bd95ccb3347a09a2d1047a6c3c5a"
+  integrity sha512-g213uqF8fyk40W8SBjm079n3CZB4qSpCrA2ye1fLGzH/4HEgB6tzuW2CbLE7leb4t45/6h44Ud59Su1/ROTfqw==
 
 deprecated-decorator@^0.1.6:
   version "0.1.6"
@@ -2863,24 +2889,31 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
   integrity sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
 
-graphback@0.10.0-rc2:
-  version "0.10.0-rc2"
-  resolved "https://registry.yarnpkg.com/graphback/-/graphback-0.10.0-rc2.tgz#58f72586c30ff08dec7796803d2e3d6403d3ee59"
-  integrity sha512-xYgnkpjWU3cyDweCc2I5UOnKUSh/qaK5Cig0R/yyyAaQwhCtFJe3sLD2YaX8g5uKQOo7XQ+GoWokBWAEiTiSZg==
+graphback@0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/graphback/-/graphback-0.10.0.tgz#62da5b358d6fa7a7213c76ec15d6eb4c1a30ac67"
+  integrity sha512-Kn8jxvSZbjwxlv9zVwv3W2iqcRPLHFwlE5l64SxE0YVg2V27Qza9uMzBOF118UYX3TmX2cwFVSpt58llqut7dQ==
   dependencies:
-    "@graphback/codegen-client" "^0.10.0-rc2"
-    "@graphback/codegen-resolvers" "^0.10.0-rc2"
-    "@graphback/codegen-schema" "^0.10.0-rc2"
-    "@graphback/core" "^0.10.0-rc2"
-    "@graphback/runtime" "^0.10.0-rc2"
-    "@graphql-inspector/core" "1.26.0"
+    "@graphback/codegen-client" "0.10.0"
+    "@graphback/codegen-resolvers" "0.10.0"
+    "@graphback/codegen-schema" "0.10.0"
+    "@graphback/core" "0.10.0"
+    "@graphback/runtime" "0.10.0"
+    "@graphql-inspector/core" "1.27.0"
     glob "7.1.6"
     graphql-subscriptions "1.1.0"
-    knex "0.20.2"
-    pg "7.14.0"
-    pino "5.14.0"
-    sqlite3 "4.1.0"
+    knex "0.20.6"
+    pg "7.17.0"
+    pino "5.15.0"
+    sqlite3 "4.1.1"
     tslib "1.10.0"
+
+graphql-annotations@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/graphql-annotations/-/graphql-annotations-0.0.3.tgz#e257b07dceaa7e6fbb7fd73cca191693bd16bf98"
+  integrity sha512-PoBix+oEl4xNAmpJro40DqW9YnKDwFG6saffV7Fj95fffkXJeBIp21xjFTBtUnsJD7lNhL++j2Go8nq5DVzm4w==
+  dependencies:
+    safe-eval "^0.4.1"
 
 graphql-extensions@^0.10.9:
   version "0.10.9"
@@ -3666,6 +3699,27 @@ knex@0.20.2:
   integrity sha512-nw7/RsaZrIGdzbsb1evcEaZv8sL/Ji2W7o5OoF0NIKei4ySU01D4G5mRNVNtneoLoPjUMgqSFRanabhGacJUIA==
   dependencies:
     bluebird "^3.7.1"
+    colorette "1.1.0"
+    commander "^4.0.1"
+    debug "4.1.1"
+    getopts "2.2.5"
+    inherits "~2.0.4"
+    interpret "^2.0.0"
+    liftoff "3.1.0"
+    lodash "^4.17.15"
+    mkdirp "^0.5.1"
+    pg-connection-string "2.1.0"
+    tarn "^2.0.0"
+    tildify "2.0.0"
+    uuid "^3.3.3"
+    v8flags "^3.1.3"
+
+knex@0.20.6:
+  version "0.20.6"
+  resolved "https://registry.yarnpkg.com/knex/-/knex-0.20.6.tgz#81eda6ec6580c05164a6317d3d4818ba20fca7bb"
+  integrity sha512-yuqAwRShmUOXqFiQMyQz+iBTJYiUcPAiE3Vy7Biuo64LLBDu7afwJeGhrr5/qwIgJ9idC/2kORGIwU9YrnLXEw==
+  dependencies:
+    bluebird "^3.7.2"
     colorette "1.1.0"
     commander "^4.0.1"
     debug "4.1.1"
@@ -4607,10 +4661,20 @@ pg-int8@1.0.1:
   resolved "https://registry.yarnpkg.com/pg-int8/-/pg-int8-1.0.1.tgz#943bd463bf5b71b4170115f80f8efc9a0c0eb78c"
   integrity sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==
 
+pg-packet-stream@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/pg-packet-stream/-/pg-packet-stream-1.1.0.tgz#e45c3ae678b901a2873af1e17b92d787962ef914"
+  integrity sha512-kRBH0tDIW/8lfnnOyTwKD23ygJ/kexQVXZs7gEyBljw4FYqimZFxnMMx50ndZ8In77QgfGuItS5LLclC2TtjYg==
+
 pg-pool@^2.0.7:
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/pg-pool/-/pg-pool-2.0.7.tgz#f14ecab83507941062c313df23f6adcd9fd0ce54"
   integrity sha512-UiJyO5B9zZpu32GSlP0tXy8J2NsJ9EFGFfz5v6PSbdz/1hBLX1rNiiy5+mAm5iJJYwfCv4A0EBcQLGWwjbpzZw==
+
+pg-pool@^2.0.9:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/pg-pool/-/pg-pool-2.0.9.tgz#7ed69a27e204f99e9804a851404db6aa908a6dea"
+  integrity sha512-gNiuIEKNCT3OnudQM2kvgSnXsLkSpd6mS/fRnqs6ANtrke6j8OY5l9mnAryf1kgwJMWLg0C1N1cYTZG1xmEYHQ==
 
 pg-types@^2.1.0:
   version "2.2.0"
@@ -4632,6 +4696,20 @@ pg@7.14.0:
     packet-reader "1.0.0"
     pg-connection-string "0.1.3"
     pg-pool "^2.0.7"
+    pg-types "^2.1.0"
+    pgpass "1.x"
+    semver "4.3.2"
+
+pg@7.17.0:
+  version "7.17.0"
+  resolved "https://registry.yarnpkg.com/pg/-/pg-7.17.0.tgz#1fcf82238dcbebea63e192c944345c25c86992fc"
+  integrity sha512-70Q4ZzIdPgwMPb3zUIzAUwigNJ4v5vsWdMED6OzXMfOECeYTvTm7iSC3FpKizu/R1BHL8Do3bLs6ltGfOTAnqg==
+  dependencies:
+    buffer-writer "2.0.0"
+    packet-reader "1.0.0"
+    pg-connection-string "0.1.3"
+    pg-packet-stream "^1.1.0"
+    pg-pool "^2.0.9"
     pg-types "^2.1.0"
     pgpass "1.x"
     semver "4.3.2"
@@ -4684,6 +4762,18 @@ pino@5.14.0:
   version "5.14.0"
   resolved "https://registry.yarnpkg.com/pino/-/pino-5.14.0.tgz#eec56c6388797528e526f969ee022592cc538d4e"
   integrity sha512-Vj1f2wAojTGesogT0hsA/ua8ALltCOBCcA1nkEoDfnTsVWpgBu5UVSY7OdjiGmrMOKHBm24nd3nKXzyPUYJ3ig==
+  dependencies:
+    fast-redact "^2.0.0"
+    fast-safe-stringify "^2.0.7"
+    flatstr "^1.0.12"
+    pino-std-serializers "^2.4.2"
+    quick-format-unescaped "^3.0.3"
+    sonic-boom "^0.7.5"
+
+pino@5.15.0:
+  version "5.15.0"
+  resolved "https://registry.yarnpkg.com/pino/-/pino-5.15.0.tgz#6703164ce74dd4786d44887cd33268e13fd463d8"
+  integrity sha512-7+FXMTA3H3sNP5+2miY2K9JKnAAW5GKuhHfNWsukFCsPprGQY3ctqpwbV74wAHW3Nl93cEEQ1G82MgOLM8P7TQ==
   dependencies:
     fast-redact "^2.0.0"
     fast-safe-stringify "^2.0.7"
@@ -5155,6 +5245,11 @@ safe-buffer@^5.0.1, safe-buffer@^5.1.2:
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.0.tgz#b74daec49b1148f88c64b68d49b1e815c1f2f519"
   integrity sha512-fZEwUGbVl7kouZs1jCdMLdt95hdIv0ZeHg6L7qPeciMZhZ+/gdesW4wgTARkrFWEpspjEATAzUGPG8N2jJiwbg==
 
+safe-eval@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/safe-eval/-/safe-eval-0.4.1.tgz#e54ba5a1bbdec795d488f6c8765e0c2a78b4cdc0"
+  integrity sha512-wmiu4RSYVZ690RP1+cv/LxfPK1dIlEN35aW7iv4SMYdqDrHbkll4+NJcHmKm7PbCuI1df1otOcPwgcc2iFR85g==
+
 safe-regex@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/safe-regex/-/safe-regex-1.1.0.tgz#40a3669f3b077d1e943d44629e157dd48023bf2e"
@@ -5407,6 +5502,15 @@ sqlite3@4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/sqlite3/-/sqlite3-4.1.0.tgz#e051fb9c133be15726322a69e2e37ec560368380"
   integrity sha512-RvqoKxq+8pDHsJo7aXxsFR18i+dU2Wp5o12qAJOV5LNcDt+fgJsc2QKKg3sIRfXrN9ZjzY1T7SNe/DFVqAXjaw==
+  dependencies:
+    nan "^2.12.1"
+    node-pre-gyp "^0.11.0"
+    request "^2.87.0"
+
+sqlite3@4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/sqlite3/-/sqlite3-4.1.1.tgz#539a42e476640796578e22d589b3283c28055242"
+  integrity sha512-CvT5XY+MWnn0HkbwVKJAyWEMfzpAPwnTiB3TobA5Mri44SrTovmmh499NPQP+gatkeOipqPlBLel7rn4E/PCQg==
   dependencies:
     nan "^2.12.1"
     node-pre-gyp "^0.11.0"
