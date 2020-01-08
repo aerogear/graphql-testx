@@ -1,7 +1,4 @@
-import {
-  sqliteInMemoryDatabaseBuilder,
-  SQLiteDatabase
-} from "./SQLiteDatabase";
+import { sqliteInMemoryDatabaseBuilder } from "./SQLiteDatabase";
 import {
   graphbackServerBuilder,
   GraphbackServer,
@@ -11,7 +8,6 @@ import { graphQLInputContext, InputModelTypeContext } from "graphback";
 import { GraphbackClient, graphbackClientBuilder } from "./GraphbackClient";
 import { TestxApi, StringDic } from "./TestxApi";
 import { DatabaseImportData, DatabaseSchema, Database } from "./Database";
-import { Data } from "ws";
 
 /**
  * Graphback configuration for generating the graphql resolvers.
