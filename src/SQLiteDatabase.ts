@@ -26,6 +26,10 @@ export class SQLiteDatabase implements Database {
     return this.provider;
   }
 
+  public getKnex(): Knex {
+    return this.knex;
+  }
+
   public async clean(): Promise<void> {
     await knexCleaner.clean(this.knex);
   }
