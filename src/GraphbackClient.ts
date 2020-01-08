@@ -54,7 +54,7 @@ export class GraphbackClient {
   }
 }
 
-export async function initGraphbackClient(
+export async function graphbackClientBuilder(
   context: InputModelTypeContext[]
 ): Promise<GraphbackClient> {
   const fragments: StringDic = {};

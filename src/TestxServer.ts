@@ -3,12 +3,12 @@ import {
   SQLiteDatabase
 } from "./SQLiteDatabase";
 import {
-  initGraphbackServer,
+  graphbackServerBuilder,
   GraphbackServer,
   ServiceBuilder
 } from "./GraphbackServer";
 import { graphQLInputContext, InputModelTypeContext } from "graphback";
-import { GraphbackClient, initGraphbackClient } from "./GraphbackClient";
+import { GraphbackClient, graphbackClientBuilder } from "./GraphbackClient";
 import { TestxApi, StringDic } from "./TestxApi";
 import { DatabaseImportData, DatabaseSchema, Database } from "./Database";
 import { Data } from "ws";
@@ -219,6 +219,30 @@ export class TestxServer implements TestxApi {
     await this.database.importData(data);
   }
 
+  protected async buildDatabase(): Promise<Database> {
+    if (this.options.database) {
+      return this.options.database;
+    }
+
+    return await sqliteInMemoryDatabaseBuilder(this.options.schema);
+  }
+
+  protected async buildServer(): Promise<GraphbackServer> {
+    if (this.database === undefined) {
+      throw new Error(`the database must be bootstrap before the server`);
+    }
+
+    return await graphbackServerBuilder(
+      this.context,
+      this.database.getProvider(),
+      this.options.serviceBuilder
+    );
+  }
+
+  protected async buildClient(): Promise<GraphbackClient> {
+    return await graphbackClientBuilder(this.context);
+  }
+
   /**
    * Bootstraps the TestxServer, generating the GraphQL backend with the
    * database connection, client queries and mutations and filling in some
@@ -226,25 +250,15 @@ export class TestxServer implements TestxApi {
    */
   public async bootstrap(): Promise<void> {
     if (this.database === undefined) {
-      if (this.options.database) {
-        this.database = this.options.database;
-      } else {
-        this.database = await sqliteInMemoryDatabaseBuilder(
-          this.options.schema
-        );
-      }
+      this.database = await this.buildDatabase();
     }
 
     if (this.server === undefined) {
-      this.server = await initGraphbackServer(
-        this.context,
-        this.database.getProvider(),
-        this.options.serviceBuilder
-      );
+      this.server = await this.buildServer();
     }
 
     if (this.client === undefined) {
-      this.client = await initGraphbackClient(this.context);
+      this.client = await this.buildClient();
     }
   }
 
