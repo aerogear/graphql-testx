@@ -3,13 +3,13 @@ import { TestxApi } from "./TestxApi";
 import { DatabaseSchema, DatabaseImportData } from "./Database";
 
 export class TestxDirector implements TestxApi {
-  private readonly endpoint: string;
+  protected readonly endpoint: string;
 
   constructor(url: string) {
     this.endpoint = url;
   }
 
-  private async call<T>(name: keyof TestxApi, ...args: unknown[]): Promise<T> {
+  protected async call<T>(name: keyof TestxApi, ...args: unknown[]): Promise<T> {
     try {
       const response = await axios.post<T>(this.endpoint, { name, args });
       return response.data;
