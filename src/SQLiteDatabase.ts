@@ -1,6 +1,9 @@
 import Knex from "knex";
 import { KnexDBDataProvider, GraphbackDataProvider } from "graphback";
-import { DropCreateDatabaseAlways, migrate } from "graphql-migrations";
+import {
+  DropCreateDatabaseAlways,
+  migrateDBUsingSchema
+} from "graphql-migrations";
 import knexCleaner from "knex-cleaner";
 import { DatabaseSchema, Database, DatabaseImportData } from "./Database";
 
@@ -68,7 +71,7 @@ export async function sqliteInMemoryDatabaseBuilder(
 
   // migrate the schema
   const strategy = new DropCreateDatabaseAlways("sqlite3", knex);
-  await migrate(schema, strategy);
+  await migrateDBUsingSchema(schema, strategy);
 
   return new SQLiteDatabase(knex);
 }
