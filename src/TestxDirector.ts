@@ -9,7 +9,10 @@ export class TestxDirector implements TestxApi {
     this.endpoint = url;
   }
 
-  protected async call<T>(name: keyof TestxApi, ...args: unknown[]): Promise<T> {
+  protected async call<T>(
+    name: keyof TestxApi,
+    ...args: unknown[]
+  ): Promise<T> {
     try {
       const response = await axios.post<T>(this.endpoint, { name, args });
       return response.data;
