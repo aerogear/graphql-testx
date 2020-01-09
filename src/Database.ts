@@ -1,4 +1,4 @@
-import { GraphbackDataProvider } from "graphback";
+import { GraphbackDataProvider } from "@graphback/runtime";
 
 export interface DatabaseSchema {
   [table: string]: string[];
