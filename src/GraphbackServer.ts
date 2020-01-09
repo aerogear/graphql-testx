@@ -92,7 +92,7 @@ export class GraphbackServer {
   }
 }
 
-export async function graphbackServerBuilder(
+export async function buildGraphbackServer(
   context: InputModelTypeContext[],
   data: GraphbackDataProvider,
   serviceBuilder?: ServiceBuilder

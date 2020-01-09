@@ -1,11 +1,11 @@
 import { sqliteInMemoryDatabaseBuilder } from "./SQLiteDatabase";
 import {
-  graphbackServerBuilder,
+  buildGraphbackServer,
   GraphbackServer,
   ServiceBuilder
 } from "./GraphbackServer";
 import { graphQLInputContext, InputModelTypeContext } from "graphback";
-import { GraphbackClient, graphbackClientBuilder } from "./GraphbackClient";
+import { GraphbackClient, buildGraphbackClient } from "./GraphbackClient";
 import { TestxApi, StringDic } from "./TestxApi";
 import { DatabaseImportData, DatabaseSchema, Database } from "./Database";
 
@@ -228,7 +228,7 @@ export class TestxServer implements TestxApi {
       throw new Error(`the database must be bootstrap before the server`);
     }
 
-    return await graphbackServerBuilder(
+    return await buildGraphbackServer(
       this.context,
       this.database.getProvider(),
       this.options.serviceBuilder
@@ -236,7 +236,7 @@ export class TestxServer implements TestxApi {
   }
 
   protected async buildClient(): Promise<GraphbackClient> {
-    return await graphbackClientBuilder(this.context);
+    return await buildGraphbackClient(this.context);
   }
 
   /**
