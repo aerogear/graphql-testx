@@ -9,10 +9,10 @@ import { Express } from "express-serve-static-core";
 type UnknownFunction = (...args: unknown[]) => unknown;
 
 export class TestxController {
-  private readonly testxServer: TestxServer;
-  private readonly expressApp: Express;
-  private controllerServer?: Server;
-  private controllerPort?: number;
+  protected readonly testxServer: TestxServer;
+  protected readonly expressApp: Express;
+  protected controllerServer?: Server;
+  protected controllerPort?: number;
 
   constructor(testxServer: TestxServer) {
     const app = express();

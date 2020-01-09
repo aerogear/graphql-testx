@@ -20,9 +20,9 @@ export interface ServiceBuilder {
 }
 
 export class GraphbackServer {
-  private readonly graphqlSchema: string;
-  private readonly httpServer: Server;
-  private serverPort?: number;
+  protected readonly graphqlSchema: string;
+  protected readonly httpServer: Server;
+  protected serverPort?: number;
 
   constructor(httpServer: Server, graphqlSchema: string) {
     this.httpServer = httpServer;
@@ -92,7 +92,7 @@ export class GraphbackServer {
   }
 }
 
-export async function initGraphbackServer(
+export async function buildGraphbackServer(
   context: InputModelTypeContext[],
   data: GraphbackDataProvider,
   serviceBuilder?: ServiceBuilder

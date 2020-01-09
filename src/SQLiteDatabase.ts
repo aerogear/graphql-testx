@@ -13,8 +13,8 @@ import { DatabaseSchema, Database, DatabaseImportData } from "./Database";
  * This object is compatible only with sqlite.
  */
 export class SQLiteDatabase implements Database {
-  private readonly knex: Knex;
-  private readonly provider: KnexDBDataProvider;
+  protected readonly knex: Knex;
+  protected readonly provider: KnexDBDataProvider;
 
   constructor(knex: Knex) {
     this.knex = knex;
@@ -24,6 +24,10 @@ export class SQLiteDatabase implements Database {
 
   public getProvider(): GraphbackDataProvider {
     return this.provider;
+  }
+
+  public getKnex(): Knex {
+    return this.knex;
   }
 
   public async clean(): Promise<void> {
@@ -53,7 +57,7 @@ export class SQLiteDatabase implements Database {
     await this.knex.destroy();
   }
 
-  private async getTables(): Promise<string[]> {
+  protected async getTables(): Promise<string[]> {
     return (await this.knex("sqlite_master").where("type", "table"))
       .map(x => x.name)
       .filter(x => !x.includes("sqlite"));

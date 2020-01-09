@@ -20,10 +20,10 @@ function insertImplInto(
 }
 
 export class GraphbackClient {
-  private readonly queries: StringDic;
-  private readonly mutations: StringDic;
-  private readonly fragments: StringDic;
-  private readonly subscriptions: StringDic;
+  protected readonly queries: StringDic;
+  protected readonly mutations: StringDic;
+  protected readonly fragments: StringDic;
+  protected readonly subscriptions: StringDic;
 
   constructor(
     queries: StringDic,
@@ -54,7 +54,7 @@ export class GraphbackClient {
   }
 }
 
-export async function initGraphbackClient(
+export async function buildGraphbackClient(
   context: InputModelTypeContext[]
 ): Promise<GraphbackClient> {
   const fragments: StringDic = {};
