@@ -28,7 +28,7 @@
     "typescript": "3.7.4"
   },
   "dependencies": {
-    "@graphback/codegen-client": "0.10.0",
+    "@graphback/codegen-client": "0.10.1",
     "apollo-server-express": "2.9.15",
     "axios": "0.19.1",
     "express": "4.17.1",
