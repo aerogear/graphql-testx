@@ -3,11 +3,11 @@ import newExpress from "express";
 import {
   GraphbackDataProvider,
   GraphbackCRUDService,
-  InputModelTypeContext,
-  SchemaGenerator,
   CRUDService,
   LayeredRuntimeResolverGenerator
-} from "graphback";
+} from "@graphback/runtime";
+import { InputModelTypeContext } from "@graphback/core";
+import { SchemaGenerator } from "@graphback/codegen-schema";
 import { Server, createServer } from "http";
 import getPort from "get-port";
 

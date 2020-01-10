@@ -1,5 +1,5 @@
 import Knex from "knex";
-import { KnexDBDataProvider, GraphbackDataProvider } from "graphback";
+import { KnexDBDataProvider, GraphbackDataProvider } from "@graphback/runtime";
 import {
   DropCreateDatabaseAlways,
   migrateDBUsingSchema

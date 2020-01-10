@@ -1,5 +1,5 @@
 import { createClient, ClientDocument } from "@graphback/codegen-client";
-import { InputModelTypeContext } from "graphback";
+import { InputModelTypeContext } from "@graphback/core";
 interface StringDic {
   [key: string]: string;
 }

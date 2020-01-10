@@ -4,7 +4,7 @@ import {
   GraphbackServer,
   ServiceBuilder
 } from "./GraphbackServer";
-import { graphQLInputContext, InputModelTypeContext } from "graphback";
+import { graphQLInputContext, InputModelTypeContext } from "@graphback/core";
 import { GraphbackClient, buildGraphbackClient } from "./GraphbackClient";
 import { TestxApi, StringDic } from "./TestxApi";
 import { DatabaseImportData, DatabaseSchema, Database } from "./Database";
