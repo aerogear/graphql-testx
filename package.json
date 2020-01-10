@@ -30,7 +30,7 @@
   "dependencies": {
     "@graphback/codegen-client": "0.10.1",
     "@graphback/codegen-schema": "0.10.2",
-    "@graphback/core": "0.10.1",
+    "@graphback/core": "0.10.2",
     "@graphback/runtime": "0.10.1",
     "apollo-server-express": "2.9.15",
     "axios": "0.19.1",
