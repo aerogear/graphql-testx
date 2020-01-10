@@ -390,12 +390,12 @@
   dependencies:
     arrify "^1.0.1"
 
-"@graphback/codegen-client@0.10.1":
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/@graphback/codegen-client/-/codegen-client-0.10.1.tgz#c4fae40356a759b149e0bf74ae9a23d99feb691a"
-  integrity sha512-CFK9xScVA/ChtxzYG3xCZNHQ+7xA5euR4DxgCDFIIrgISUttCgJYVRNFNhXTXVpIA1kMTqxcaBZWvo052XlgYA==
+"@graphback/codegen-client@0.10.2":
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/@graphback/codegen-client/-/codegen-client-0.10.2.tgz#e59fb27b3b9a3c3215fbc99fc0133c885e44c247"
+  integrity sha512-HP4h7gOBjwg/d5oz5M4r80UcDgE0HuCV2sWpd+g2zJ1DdRHyvD1cKio2OB7p+TWbPqI5w/3j1XqSps6I4vrjhw==
   dependencies:
-    "@graphback/core" "^0.10.1"
+    "@graphback/core" "0.10.2"
 
 "@graphback/codegen-schema@0.10.2":
   version "0.10.2"
