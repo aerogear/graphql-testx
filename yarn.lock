@@ -397,17 +397,26 @@
   dependencies:
     "@graphback/core" "^0.10.1"
 
-"@graphback/codegen-schema@0.10.1":
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/@graphback/codegen-schema/-/codegen-schema-0.10.1.tgz#17ff1ff621e46907aef21627331b69d50ba1ad62"
-  integrity sha512-ckqp2tHwMnxgX/IXLVFyObXclNJGn76gsBxqwvWdD36VqHu3qb1R9w5oZfcCPKwxHIWSXvgJfZFky+eY3jQx9A==
+"@graphback/codegen-schema@0.10.2":
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/@graphback/codegen-schema/-/codegen-schema-0.10.2.tgz#67f4d02f3bbd86108f242960b721437d71eaf928"
+  integrity sha512-bjRv1Q2OyIrb6Om8yMJfNYYk89vowunz3Pr7bjVIoxdyYZmi+86s/mYGSS4xPIwErpEDsisYT2pt26PVa0qWkA==
   dependencies:
-    "@graphback/core" "^0.10.1"
+    "@graphback/core" "0.10.2"
 
 "@graphback/core@0.10.1", "@graphback/core@^0.10.1":
   version "0.10.1"
   resolved "https://registry.yarnpkg.com/@graphback/core/-/core-0.10.1.tgz#078bf05617fcf3139013ac630997c0972856811a"
   integrity sha512-wJcZuF7rHUXhFp47M5/cmKgUrc5U2kLFsumzygVHEtrs+ncYNq9nCt18KqyK1FQhtoPS1ob22iIALMWfyKwU2g==
+  dependencies:
+    glob "7.1.6"
+    graphql-annotations "0.0.3"
+    pino "5.15.0"
+
+"@graphback/core@0.10.2":
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/@graphback/core/-/core-0.10.2.tgz#dcd9380e4e77a55d5b0d0f9821af5f32bfdb9dab"
+  integrity sha512-P5dku088LF3O9+kCr6ciicMPTQpibVBtez4RNphMQEq0/rYZJWO5h7l2InlBsJ51PyUb8KBzYj1EXfnMLvkd/g==
   dependencies:
     glob "7.1.6"
     graphql-annotations "0.0.3"
