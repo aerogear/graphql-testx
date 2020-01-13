@@ -413,24 +413,15 @@
     graphql-annotations "0.0.3"
     pino "5.15.0"
 
-"@graphback/core@^0.10.1":
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/@graphback/core/-/core-0.10.1.tgz#078bf05617fcf3139013ac630997c0972856811a"
-  integrity sha512-wJcZuF7rHUXhFp47M5/cmKgUrc5U2kLFsumzygVHEtrs+ncYNq9nCt18KqyK1FQhtoPS1ob22iIALMWfyKwU2g==
+"@graphback/runtime@0.10.2":
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/@graphback/runtime/-/runtime-0.10.2.tgz#8fcb4008fa4139bc0c10d115e4edf9ac2c3df69e"
+  integrity sha512-QuGrnMYo/Rdnc63utofKC3TppaXIhpFXB35YQG36kpWq2KOVvWLNSgq0GXsoBGZlucMUL5Wqtv2xIO8JJqcPyg==
   dependencies:
-    glob "7.1.6"
-    graphql-annotations "0.0.3"
-    pino "5.15.0"
-
-"@graphback/runtime@0.10.1":
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/@graphback/runtime/-/runtime-0.10.1.tgz#9218ba008dbd919eb24dda91cb030092a3690f46"
-  integrity sha512-Ndrrb9c6Rn0Kz2/oqo3Q8ObR9zXv71iUMrI6gVuPEQo6RYZJ29hFN2r+SSqH3G4SDpjvWk5ti0gh6c48bI6+FA==
-  dependencies:
-    "@graphback/core" "^0.10.1"
+    "@graphback/core" "0.10.2"
     dataloader "2.0.0"
     graphql-subscriptions "1.1.0"
-    knex "0.20.6"
+    knex "0.20.7"
 
 "@graphql-inspector/core@1.27.0":
   version "1.27.0"
@@ -1696,10 +1687,10 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-4.0.1.tgz#b67622721785993182e807f4883633e6401ba53c"
-  integrity sha512-IPF4ouhCP+qdlcmCedhxX4xiGBPyigb8v5NeUp+0LyhwLgxMqyp3S0vl7TAPfS/hiP7FC3caI/PB9lTmP8r1NA==
+commander@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-4.1.0.tgz#545983a0603fe425bc672d66c9e3c89c42121a83"
+  integrity sha512-NIQrwvv9V39FHgGFm36+U9SMQzbiHvU79k+iADraJTpmrFFfx7Ds0IvDoAdZsDrknlkRk14OYoWXb57uTh7/sw==
 
 common-path-prefix@^1.0.0:
   version "1.0.0"
@@ -2876,17 +2867,17 @@ graphql-extensions@^0.10.9:
     apollo-server-env "^2.4.3"
     apollo-server-types "^0.2.10"
 
-graphql-migrations@0.10.1:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/graphql-migrations/-/graphql-migrations-0.10.1.tgz#6ec4d5aa8444a9a92fe2ae3206d29d92aa6cd5c7"
-  integrity sha512-UNLFRbqH06i5/EenJ5Q1963VFaeQZXjnu3qBSk3KdpDS2TLCQIgJeZWu4Ra48ivKhlNGQEnwsph5xI0qldUv/A==
+graphql-migrations@0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/graphql-migrations/-/graphql-migrations-0.10.2.tgz#0ec02970890812da2ed01873677ac86b97a29443"
+  integrity sha512-X8jINgnxTELZd6GeAZKtY6Qj67zOH/VGCscOeHo2QBU2bX9otYwtKSX6lrkLK0onuKqYSP17E+a3lu8G127sng==
   dependencies:
-    "@graphback/core" "^0.10.1"
+    "@graphback/core" "0.10.2"
     "@graphql-inspector/core" "1.27.0"
     case "1.6.2"
     glob "7.1.6"
     graphql-annotations "0.0.3"
-    knex "0.20.6"
+    knex "0.20.7"
     lodash "4.17.15"
     lodash-es "4.17.15"
     node-emoji "1.10.0"
@@ -3641,14 +3632,14 @@ knex-cleaner@1.3.0:
     bluebird "^2.9.13"
     lodash "^4.17.13"
 
-knex@0.20.6:
-  version "0.20.6"
-  resolved "https://registry.yarnpkg.com/knex/-/knex-0.20.6.tgz#81eda6ec6580c05164a6317d3d4818ba20fca7bb"
-  integrity sha512-yuqAwRShmUOXqFiQMyQz+iBTJYiUcPAiE3Vy7Biuo64LLBDu7afwJeGhrr5/qwIgJ9idC/2kORGIwU9YrnLXEw==
+knex@0.20.7:
+  version "0.20.7"
+  resolved "https://registry.yarnpkg.com/knex/-/knex-0.20.7.tgz#659ef45a395add4a40412bba6c749fe290f01cd5"
+  integrity sha512-Yu5WfQqK9JSkxMAWnCdeWbsjTKTzsjMYjqmUowOQnyLMs4RspVehqXCVjg+aTtcVrTtIZ3WvoeE00OzFsZKJow==
   dependencies:
     bluebird "^3.7.2"
     colorette "1.1.0"
-    commander "^4.0.1"
+    commander "^4.1.0"
     debug "4.1.1"
     getopts "2.2.5"
     inherits "~2.0.4"
