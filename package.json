@@ -32,7 +32,7 @@
     "@graphback/codegen-schema": "0.10.2",
     "@graphback/core": "0.10.2",
     "@graphback/runtime": "0.10.2",
-    "apollo-server-express": "2.9.15",
+    "apollo-server-express": "2.9.16",
     "axios": "0.19.1",
     "express": "4.17.1",
     "get-port": "5.1.1",

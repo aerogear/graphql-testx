@@ -50,7 +50,7 @@ describe("test subscriptions", () => {
     wsLink = new WebSocketLink(clientSub);
     const httpLink = createHttpLink({
       uri: httpUrl,
-      fetch: fetch
+      fetch: fetch as any
     });
 
     const link = split(
