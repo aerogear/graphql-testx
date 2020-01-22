@@ -33,7 +33,7 @@
     "@graphback/core": "0.10.2",
     "@graphback/runtime": "0.10.2",
     "apollo-server-express": "2.9.16",
-    "axios": "0.19.1",
+    "axios": "0.19.2",
     "express": "4.17.1",
     "get-port": "5.1.1",
     "graphql": "14.5.8",
