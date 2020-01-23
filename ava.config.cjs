@@ -1,5 +1,4 @@
-exports.default = {
-  compileEnhancements: false,
+module.exports = {
   concurrency: 1,
   files: ["!examples", "!dist"],
   extensions: ["ts"],
