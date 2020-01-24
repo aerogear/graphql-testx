@@ -17,7 +17,11 @@ export class TestxDirector implements TestxApi {
       const response = await axios.post<T>(this.endpoint, { name, args });
       return response.data;
     } catch (e) {
-      throw new Error(`Call Failed: ${e.response.data}`);
+      if (e.response) {
+        throw new Error(`call responded with error: ${e.response.data}`);
+      }
+
+      throw new Error(`failed with error: ${e.message}`);
     }
   }
 
