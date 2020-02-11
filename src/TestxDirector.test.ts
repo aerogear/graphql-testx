@@ -27,6 +27,18 @@ async function newTestx(
   return [controller, director];
 }
 
+test("server is not reachable", async t => {
+  t.plan(1);
+
+  const director = new TestxDirector("http://localhost:44345");
+
+  try {
+    await director.start();
+  } catch (e) {
+    t.assert(e.message.includes("ECONNREFUSED"));
+  }
+});
+
 test("test start() and close() methods", async t => {
   const [controller, director] = await newTestx(ITEM_MODEL);
 
